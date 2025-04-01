@@ -1,0 +1,32 @@
+# .github/labeler.yml - Config for actions/labeler action
+# Defines labels based on files modified in a PR
+
+# Label for CI/CD changes
+ci/cd:
+  - .github/workflows/*
+
+# Label for documentation changes
+documentation:
+  - README.md
+  - docs/**/*.md # Updated path for all docs
+  - '*.md' # Root level markdown files
+
+# Label for source code changes
+source:
+  - main.ts
+  - '**/*.ts' # All TypeScript files
+
+# Label for configuration changes / patches
+patch:
+  - LICENSE
+  - justfile # Added
+  - deno.json # Added
+  - deno.lock # Added
+  - .github/labeler.yml
+  - .github/settings.yml
+  - .github/dependabot.yml # Keep if dependabot is used
+  - .github/ISSUE_TEMPLATE/* # Added
+  - .github/CODEOWNERS # Added
+  - .github/*.yml # Other root .github YAML configs
+  - .gitignore
+  - .gitattributes

@@ -1,0 +1,102 @@
+# Repository settings are managed by the settings app (https://github.com/apps/settings)
+# Documentation: https://github.com/repository-settings/app#configuration
+---
+repository:
+  # Updated repository name
+  name: mcp-terragrunt-docs
+  # Updated repository description
+  description: Deno/TypeScript MCP Server providing context related to Terragrunt documentation.
+
+  # This is not a template repository
+  is_template: false
+
+  # Updated topics relevant to this project
+  topics:
+    - mcp
+    - typescript
+    - deno
+    - terragrunt
+    - documentation
+    - language-server # Assuming it might act like one
+
+  # Merge Strategy (Kept defaults from original)
+  default_branch: main
+  allow_squash_merge: true
+  allow_merge_commit: false
+  allow_rebase_merge: true
+  delete_branch_on_merge: true
+
+  # Repository Features (Kept defaults from original)
+  has_projects: true
+  has_wiki: false
+  has_discussions: true
+
+  # Security Enhancements (Kept defaults from original)
+  enable_vulnerability_alerts: true
+  enable_automated_security_fixes: true
+
+  # Team Access (Kept defaults - ADJUST IF NEEDED)
+  teams:
+    - name: maintainers
+      permission: admin
+    - name: contributors
+      permission: push
+    # - name: template-users # Removed template-specific team
+    #   permission: pull
+
+# Updated Label Strategy (Removed template labels, added project-specific)
+labels:
+  - name: bug
+    color: '#CC0000'
+    description: Something is not working fine 🐛
+  - name: feature
+    color: '#336699'
+    description: New functionality or enhancement 🚀
+  - name: documentation
+    color: '#0075ca'
+    description: Improvements or additions to documentation 📚
+  - name: help-wanted
+    color: '#008672'
+    description: Community contributions welcome 🤝
+  - name: mcp
+    color: '#5DADE2' # Example color
+    description: Related to the Model Context Protocol
+  - name: typescript
+    color: '#3178C6' # Official TS color
+    description: Related to TypeScript code
+  - name: deno
+    color: '#000000' # Deno logo color
+    description: Related to the Deno runtime or configuration
+  # Add other relevant labels as needed, e.g., 'terragrunt', 'refactor', 'testing'
+
+# Branch Protection (Updated status checks - PLACEHOLDERS, ADJUST TO ACTUAL CI JOB NAMES)
+branches:
+  - name: main
+    protection:
+      required_pull_request_reviews:
+        required_approving_review_count: 1
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: true # Requires CODEOWNERS file
+        dismissal_restrictions: {}
+        # code_owner_approval: true # Note: require_code_owner_reviews implies this
+        required_conversation_resolution: true
+
+      required_status_checks:
+        strict: true # Require branches to be up to date before merging
+        contexts: # ADJUST THESE TO MATCH YOUR ACTUAL GITHUB ACTIONS JOB NAMES
+          - "Lint"
+          - "Test"
+          # - "Format Check" # Often done locally or via pre-commit, but can be added
+          # Add other required checks like build steps if applicable
+
+      enforce_admins: false # Admins are not exempt from protection rules
+      required_linear_history: true # Enforce linear history
+      restrictions: # Restrict who can push to main (ADJUST AS NEEDED)
+        users: [Excoriate]
+        teams: [maintainers]
+
+# Removed Template-Specific Repository Metadata
+# repository_config:
+#   template_generation_date: 2024-01-15
+#   template_version: "1.0.0"
+#   recommended_terraform_version: ">= 1.5.0"
