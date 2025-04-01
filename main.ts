@@ -105,6 +105,31 @@ server.tool(
   }
 );
 
+server.tool(
+  "tg-get-all-docs-by-category",
+  "Get all documents from a category of documentation that Terragrunt has documented on their official website https://terragrunt.gruntwork.io/docs/. Returns all documents merged into a single text.",
+  {
+    category: z.string().describe("The category of documentation to get all documents from"),
+    githubToken: z.string().describe("The GitHub token to use to fetch the documentation")
+  },
+  async ({ category, githubToken }) => {
+    const tgServer = new TerragruntRepo({
+      token: githubToken
+    });
+
+    const allDocsContent = await tgServer.getAllDocumentsByCategory(category);
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: allDocsContent
+        }
+      ]
+    };
+  }
+);
+
 const transport = new StdioServerTransport();
 
 try {

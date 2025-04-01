@@ -293,3 +293,71 @@ Deno.test("TerragruntRepo - getDocumentFromCategory and listDocumentsInCategory 
   
   console.log(`Successfully fetched document "${document.name}" with ${document.content.length} characters of content`);
 });
+
+Deno.test("TerragruntRepo - getAllDocumentsByCategory", async () => {
+  const terragruntRepo = createTerragruntRepo();
+  
+  // Test with a known category that should contain documents
+  const categoryName = "getting-started";
+  console.log(`Fetching all documents from "${categoryName}" category`);
+  
+  const mergedContent = await terragruntRepo.getAllDocumentsByCategory(categoryName);
+  
+  // Verify we got content
+  assertExists(mergedContent);
+  assertEquals(typeof mergedContent, "string", 
+    "Merged content should be a string");
+  
+  // The content should be substantial if it contains multiple documents
+  assertEquals(mergedContent.length > 1000, true, 
+    "Merged content should contain substantial text (> 1000 chars)");
+  
+  // Verify content has expected structure
+  // - Should start with a category header
+  assertEquals(mergedContent.startsWith("# Getting Started Documentation"), true,
+    "Merged content should start with a category header");
+  
+  // - Should contain at least one document header
+  assertEquals(mergedContent.includes("## "), true,
+    "Merged content should contain at least one document header");
+  
+  // - Should contain separator lines between documents
+  assertEquals(mergedContent.includes("---"), true,
+    "Merged content should contain separators between documents");
+  
+  console.log(`Successfully fetched merged content from ${categoryName} with ${mergedContent.length} characters`);
+  
+  // Get the list of documents in the category for verification
+  const documents = await terragruntRepo.listDocumentsInCategory(categoryName);
+  
+  // Verify all document names appear in the merged content
+  for (const doc of documents) {
+    const docTitle = doc.name.replace('.md', '');
+    // Create a safer regex pattern that escapes special characters
+    const escapedTitle = docTitle.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const docHeaderPattern = new RegExp(`## ${escapedTitle}([\\s\\n]|$)`);
+    assertEquals(docHeaderPattern.test(mergedContent), true,
+      `Merged content should contain document: ${docTitle}`);
+  }
+  
+  console.log(`Verified all ${documents.length} documents appear in the merged content`);
+});
+
+// Test error handling for non-existent category
+Deno.test("TerragruntRepo - getAllDocumentsByCategory - invalid category", async () => {
+  const terragruntRepo = createTerragruntRepo();
+  
+  // Test with an invalid category name
+  let error: Error | undefined;
+  try {
+    await terragruntRepo.getAllDocumentsByCategory("nonexistent-category");
+  } catch (e) {
+    error = e as Error;
+  }
+  
+  // Verify we got an error
+  assertExists(error, "Should throw an error for invalid category");
+  assertEquals(error instanceof Error, true);
+  assertEquals(error.message.includes("category"), true,
+    "Error message should mention the category");
+});

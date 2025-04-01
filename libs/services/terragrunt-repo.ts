@@ -372,6 +372,52 @@ export class TerragruntRepo {
   }
 
   /**
+   * Get all markdown documents in a specific category and merge their content
+   * @param category The category name to get documents from
+   * @returns Promise with the merged content of all documents in the category
+   */
+  async getAllDocumentsByCategory(category: string): Promise<string> {
+    try {
+      // Get all documents in the category
+      const documents = await this.listDocumentsInCategory(category);
+      
+      if (documents.length === 0) {
+        return `No documents found in category "${category}"`;
+      }
+      
+      // Create an array to hold all the document contents
+      const contentPromises = documents.map(async (doc) => {
+        try {
+          const fullDoc = await this.getDocumentFromCategory({
+            category,
+            document: doc.name
+          });
+          
+          // Format each document with a clear header - ensure consistent newline formatting
+          // Use a consistent header pattern that our test can reliably match
+          return `\n\n## ${doc.name.replace('.md', '')}\n\n${fullDoc.content}`;
+        } catch (error) {
+          // If we can't fetch a specific document, include an error message instead
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          return `\n\n## ${doc.name.replace('.md', '')} (Error)\n\nFailed to fetch document: ${errorMessage}`;
+        }
+      });
+      
+      // Wait for all document fetches to complete
+      const contentArray = await Promise.all(contentPromises);
+      
+      // Create category header
+      const categoryHeader = `# ${this.formatCategoryName(category)} Documentation\n\n`;
+      
+      // Join all document contents with the category header
+      return categoryHeader + contentArray.join('\n\n---\n');
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to get all documents in category: ${errorMessage}`);
+    }
+  }
+
+  /**
    * Format a category folder name to a more readable format
    * Converts names like "01_getting-started" to "Getting Started"
    * @param folderName The raw folder name from GitHub
