@@ -17,6 +17,7 @@ default:
     @echo ""
     @echo "--- Development ---"
     @echo "  run / serve    Run the development server with watch mode (uses 'deno task dev')"
+    @echo "  inspect        Run the MCP server with the MCP Inspector attached via stdio" # Added inspect description
     @echo "  test           Run tests using 'deno test'"
     @echo "  lint           Run the Deno linter"
     @echo "  fmt            Run the Deno formatter"
@@ -33,6 +34,17 @@ run:
 
 # Alias for run
 serve: run
+
+# 🕵️ Run the MCP server with the MCP Inspector attached via stdio
+# Uses shell scripts to avoid argument parsing issues
+inspect:
+    @echo ">>> Starting MCP server with Inspector via stdio..."
+    @export DENO_ALLOW_ENV=true
+    @export DENO_ALLOW_NET=true
+    @export DENO_ALLOW_READ=true
+    @export MCP_INSPECTOR=true
+    @export MCP_DISABLE_CONSOLE=true
+    @npx -y @modelcontextprotocol/inspector deno run {{PERMISSIONS}} {{MAIN_FILE}}
 
 # 🧪 Run tests using deno test
 test:
