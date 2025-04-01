@@ -1,5 +1,5 @@
 import { assertEquals, assertExists } from "https://deno.land/std@0.177.0/testing/asserts.ts";
-import { TerragruntRepo } from "../libs/services/terragrunt-repo.ts";
+import { TerragruntDocs } from "../libs/services/terragrunt-docs.ts";
 
 /**
  * These integration tests require GitHub API access.
@@ -14,109 +14,21 @@ import { TerragruntRepo } from "../libs/services/terragrunt-repo.ts";
  * Without a token, the tests may fail due to GitHub API rate limits (403 Forbidden errors).
  */
 
-// Helper function to create a TerragruntRepo instance with auth token if available
-function createTerragruntRepo(): TerragruntRepo {
+// Helper function to create a TerragruntDocs instance with auth token if available
+function createTerragruntDocs(): TerragruntDocs {
   // Check for GitHub token in environment variables
   const token = Deno.env.get("GITHUB_TOKEN");
   if (!token) {
     console.warn("Warning: GITHUB_TOKEN not set. Tests may fail due to rate limiting.");
   }
-  return new TerragruntRepo({ token });
+  return new TerragruntDocs({ token });
 }
 
-Deno.test("TerragruntRepo - getOpenIssues - single page", async () => {
-  const terragruntRepo = createTerragruntRepo();
-  
-  // Get open issues (limit to 5 for testing)
-  const issues = await terragruntRepo.getOpenIssues({ perPage: 5 });
-  
-  // Check that we got an array of issues
-  assertExists(issues);
-  assertEquals(Array.isArray(issues), true);
-  
-  // If there are issues, check the structure of the first one
-  if (issues.length > 0) {
-    const issue = issues[0];
-    assertExists(issue.id);
-    assertExists(issue.number);
-    assertExists(issue.title);
-    assertEquals(issue.state, "open");
-    assertExists(issue.html_url);
-    assertExists(issue.user);
-    assertExists(issue.user.login);
-  }
-  
-  console.log(`Found ${issues.length} open issues in single page`);
-});
-
-Deno.test("TerragruntRepo - getAllOpenIssues - pagination", async () => {
-  const terragruntRepo = createTerragruntRepo();
-  
-  // We'll ask for 3 items per page and get up to 3 pages (9 items max)
-  const allIssues = await terragruntRepo.getAllOpenIssues({ 
-    perPage: 3,
-    maxPages: 3 
-  });
-  
-  // Verify we got a valid array of issues
-  assertExists(allIssues);
-  assertEquals(Array.isArray(allIssues), true);
-  
-  // Given the screenshot shows more than 5 open issues, we expect to get more 
-  // than just one page (3 items) when using pagination
-  console.log(`Found ${allIssues.length} total open issues with pagination`);
-  
-  // Check that pagination actually fetched more issues than a single page would
-  const singlePageIssues = await terragruntRepo.getOpenIssues({ perPage: 3 });
-  assertEquals(allIssues.length > singlePageIssues.length, true, 
-    "Pagination should retrieve more issues than a single page");
-  
-  // Verify all issues are unique (no duplicates from pagination)
-  const issueIds = new Set(allIssues.map(issue => issue.id));
-  assertEquals(issueIds.size, allIssues.length, "All issues should be unique");
-});
-
-Deno.test("TerragruntRepo - fetchAllOpenIssues - no page limit", async () => {
-  const terragruntRepo = createTerragruntRepo();
-  
-  // Test with a smaller page size to ensure multiple pages
-  // but still reasonable for testing (we don't want to hammer the API)
-  const allIssues = await terragruntRepo.fetchAllOpenIssues({ 
-    perPage: 10 
-  });
-  
-  // Verify we got a valid array of issues
-  assertExists(allIssues);
-  assertEquals(Array.isArray(allIssues), true);
-  
-  console.log(`Fetched ALL ${allIssues.length} open issues with no page limit`);
-  
-  // Compare with the limited pagination to ensure we're getting more results
-  const limitedIssues = await terragruntRepo.getAllOpenIssues({ 
-    perPage: 10,
-    maxPages: 1 
-  });
-  
-  // We should have more issues from unlimited fetching (unless there are very few open issues)
-  // We know from the screenshot there are more than 10 issues, so this should pass
-  assertEquals(allIssues.length >= limitedIssues.length, true, 
-    "Unlimited fetching should retrieve at least as many issues as limited fetching");
-  
-  // Verify all issues are open
-  for (const issue of allIssues) {
-    assertEquals(issue.state, "open", `Issue #${issue.number} should be open`);
-  }
-  
-  // Verify all issues are unique
-  const issueIds = new Set(allIssues.map(issue => issue.id));
-  assertEquals(issueIds.size, allIssues.length, "All fetched issues should be unique");
-});
-
-Deno.test("TerragruntRepo - getDocCategories", async () => {
-  const terragruntRepo = createTerragruntRepo();
+Deno.test("TerragruntDocs - getDocCategories", async () => {
+  const terragruntDocs = createTerragruntDocs();
   
   // Fetch all documentation categories
-  const categories = await terragruntRepo.getDocCategories();
+  const categories = await terragruntDocs.getDocCategories();
   
   // Verify we got a valid array of categories
   assertExists(categories);
@@ -173,11 +85,11 @@ Deno.test("TerragruntRepo - getDocCategories", async () => {
 }); 
 
 // Add tests for the new functions
-Deno.test("TerragruntRepo - listDocumentsInCategory", async () => {
-  const terragruntRepo = createTerragruntRepo();
+Deno.test("TerragruntDocs - listDocumentsInCategory", async () => {
+  const terragruntDocs = createTerragruntDocs();
   
   // Test with a known category
-  const documents = await terragruntRepo.listDocumentsInCategory("getting-started");
+  const documents = await terragruntDocs.listDocumentsInCategory("getting-started");
   
   // Verify we got a valid array of documents
   assertExists(documents);
@@ -210,13 +122,13 @@ Deno.test("TerragruntRepo - listDocumentsInCategory", async () => {
   }
 });
 
-Deno.test("TerragruntRepo - listDocumentsInCategory - invalid category", async () => {
-  const terragruntRepo = createTerragruntRepo();
+Deno.test("TerragruntDocs - listDocumentsInCategory - invalid category", async () => {
+  const terragruntDocs = createTerragruntDocs();
   
   // Test with an invalid category name
   let error: Error | undefined;
   try {
-    await terragruntRepo.listDocumentsInCategory("nonexistent-category");
+    await terragruntDocs.listDocumentsInCategory("nonexistent-category");
   } catch (e) {
     error = e as Error;
   }
@@ -228,11 +140,11 @@ Deno.test("TerragruntRepo - listDocumentsInCategory - invalid category", async (
     "Error message should mention the category");
 });
 
-Deno.test("TerragruntRepo - listDocumentsInCategory - features", async () => {
-  const terragruntRepo = createTerragruntRepo();
+Deno.test("TerragruntDocs - listDocumentsInCategory - features", async () => {
+  const terragruntDocs = createTerragruntDocs();
   
   // Test with the Features category
-  const documents = await terragruntRepo.listDocumentsInCategory("features");
+  const documents = await terragruntDocs.listDocumentsInCategory("features");
   
   // Verify we got documents
   assertExists(documents);
@@ -262,11 +174,11 @@ Deno.test("TerragruntRepo - listDocumentsInCategory - features", async () => {
     "Should find at least one of the expected feature documents");
 });
 
-Deno.test("TerragruntRepo - getDocumentFromCategory and listDocumentsInCategory integration", async () => {
-  const terragruntRepo = createTerragruntRepo();
+Deno.test("TerragruntDocs - getDocumentFromCategory and listDocumentsInCategory integration", async () => {
+  const terragruntDocs = createTerragruntDocs();
   
   // First, list all documents in the Getting Started category
-  const documents = await terragruntRepo.listDocumentsInCategory("getting-started");
+  const documents = await terragruntDocs.listDocumentsInCategory("getting-started");
   
   // Verify we got some documents
   assertExists(documents);
@@ -276,7 +188,7 @@ Deno.test("TerragruntRepo - getDocumentFromCategory and listDocumentsInCategory 
   const firstDocName = documents[0].name;
   console.log(`Fetching document "${firstDocName}" from Getting Started category`);
   
-  const document = await terragruntRepo.getDocumentFromCategory({
+  const document = await terragruntDocs.getDocumentFromCategory({
     category: "getting-started",
     document: firstDocName
   });
@@ -294,14 +206,14 @@ Deno.test("TerragruntRepo - getDocumentFromCategory and listDocumentsInCategory 
   console.log(`Successfully fetched document "${document.name}" with ${document.content.length} characters of content`);
 });
 
-Deno.test("TerragruntRepo - getAllDocumentsByCategory", async () => {
-  const terragruntRepo = createTerragruntRepo();
+Deno.test("TerragruntDocs - getAllDocumentsByCategory", async () => {
+  const terragruntDocs = createTerragruntDocs();
   
   // Test with a known category that should contain documents
   const categoryName = "getting-started";
   console.log(`Fetching all documents from "${categoryName}" category`);
   
-  const mergedContent = await terragruntRepo.getAllDocumentsByCategory(categoryName);
+  const mergedContent = await terragruntDocs.getAllDocumentsByCategory(categoryName);
   
   // Verify we got content
   assertExists(mergedContent);
@@ -328,7 +240,7 @@ Deno.test("TerragruntRepo - getAllDocumentsByCategory", async () => {
   console.log(`Successfully fetched merged content from ${categoryName} with ${mergedContent.length} characters`);
   
   // Get the list of documents in the category for verification
-  const documents = await terragruntRepo.listDocumentsInCategory(categoryName);
+  const documents = await terragruntDocs.listDocumentsInCategory(categoryName);
   
   // Verify all document names appear in the merged content
   for (const doc of documents) {
@@ -344,13 +256,13 @@ Deno.test("TerragruntRepo - getAllDocumentsByCategory", async () => {
 });
 
 // Test error handling for non-existent category
-Deno.test("TerragruntRepo - getAllDocumentsByCategory - invalid category", async () => {
-  const terragruntRepo = createTerragruntRepo();
+Deno.test("TerragruntDocs - getAllDocumentsByCategory - invalid category", async () => {
+  const terragruntDocs = createTerragruntDocs();
   
   // Test with an invalid category name
   let error: Error | undefined;
   try {
-    await terragruntRepo.getAllDocumentsByCategory("nonexistent-category");
+    await terragruntDocs.getAllDocumentsByCategory("nonexistent-category");
   } catch (e) {
     error = e as Error;
   }

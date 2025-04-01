@@ -3,7 +3,7 @@ import "jsr:@std/dotenv/load";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { McpNotificationLogger } from "./libs/utils/logger-events.ts";
-import { TerragruntRepo } from "./libs/services/terragrunt-repo.ts";
+import { TerragruntDocs } from "./libs/services/terragrunt-docs.ts";
 import { z } from "zod";
 
 const server = new McpServer(
@@ -24,7 +24,7 @@ const mcpLogger = new McpNotificationLogger(server);
 server.resource(
   "config",
   "config://token",
-  async () => {
+  () => {
     const token = Deno.env.get("GITHUB_TOKEN") || "";
     return {
       contents: [
@@ -41,7 +41,7 @@ server.resource(
 server.resource(
   "config",
   "config://repo",
-  async () => {
+  () => {
     return {
       contents: [
         {
@@ -61,7 +61,7 @@ server.tool(
     githubToken: z.string().describe("The GitHub token to use to fetch the documentation")
   },
   async ({ githubToken }) => {
-    const tgServer = new TerragruntRepo({
+    const tgServer = new TerragruntDocs({
       token: githubToken
     });
 
@@ -85,7 +85,7 @@ server.tool(
     githubToken: z.string().describe("The GitHub token to use to fetch the documentation")
   },
   async ({ category, document, githubToken }) => {
-    const tgServer = new TerragruntRepo({
+    const tgServer = new TerragruntDocs({
       token: githubToken
     });
 
@@ -113,7 +113,7 @@ server.tool(
     githubToken: z.string().describe("The GitHub token to use to fetch the documentation")
   },
   async ({ category, githubToken }) => {
-    const tgServer = new TerragruntRepo({
+    const tgServer = new TerragruntDocs({
       token: githubToken
     });
 
