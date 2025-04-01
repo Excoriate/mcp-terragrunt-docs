@@ -9,7 +9,8 @@
     "jsr:@std/internal@^1.0.6": "1.0.6",
     "jsr:@std/path@^1.0.8": "1.0.8",
     "npm:@modelcontextprotocol/sdk@^1.8.0": "1.8.0_express@5.1.0_zod@3.24.2",
-    "npm:@types/node@*": "22.12.0"
+    "npm:@types/node@*": "22.12.0",
+    "npm:zod@^3.24.2": "3.24.2"
   },
   "jsr": {
     "@std/assert@1.0.12": {
@@ -594,7 +595,8 @@
   "workspace": {
     "dependencies": [
       "jsr:@std/assert@1",
-      "npm:@modelcontextprotocol/sdk@^1.8.0"
+      "npm:@modelcontextprotocol/sdk@^1.8.0",
+      "npm:zod@^3.24.2"
     ]
   }
 }

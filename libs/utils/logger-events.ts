@@ -9,6 +9,13 @@ export class McpNotificationLogger {
     this.server = mcpServer.server;
   }
 
+  sendDebugLogMessage(data?: Record<string, unknown>): void {
+    this.server.sendLoggingMessage({
+      level: "debug",
+      data,
+    });
+  }
+
   sendInfoLogMessage(data?: Record<string, unknown>): void {
     this.server.sendLoggingMessage({
       level: "info",
@@ -16,9 +23,9 @@ export class McpNotificationLogger {
     });
   }
 
-  sendDebugLogMessage(data?: Record<string, unknown>): void {
+  sendNoticeLogMessage(data?: Record<string, unknown>): void {
     this.server.sendLoggingMessage({
-      level: "debug",
+      level: "notice",
       data,
     });
   }
@@ -33,6 +40,27 @@ export class McpNotificationLogger {
   sendErrorLogMessage(data?: Record<string, unknown>): void {
     this.server.sendLoggingMessage({
       level: "error",
+      data,
+    });
+  }
+
+  sendCriticalLogMessage(data?: Record<string, unknown>): void {
+    this.server.sendLoggingMessage({
+      level: "critical",
+      data,
+    });
+  }
+
+  sendAlertLogMessage(data?: Record<string, unknown>): void {
+    this.server.sendLoggingMessage({
+      level: "alert",
+      data,
+    });
+  }
+
+  sendEmergencyLogMessage(data?: Record<string, unknown>): void {
+    this.server.sendLoggingMessage({
+      level: "emergency",
       data,
     });
   }

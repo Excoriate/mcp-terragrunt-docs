@@ -3,40 +3,35 @@ import "jsr:@std/dotenv/load";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { McpNotificationLogger } from "./libs/utils/logger-events.ts";
-
-// import {
-//   ListPromptsRequestSchema,
-//   GetPromptRequestSchema
-// } from "@modelcontextprotocol/sdk/types.js";
-
+import { TerragruntRepo } from "./libs/services/terragrunt-repo.ts";
+import { z } from "zod";
 
 const server = new McpServer(
   {
     name: "mcp-terragrunt-docs",
     version: "0.0.1"
+  },
+  {
+    capabilities: {
+      logging: { enabled: true }
+    }
   }
 );
 
 const mcpLogger = new McpNotificationLogger(server);
 
-// Register the MCP logger first thing after creating the server
-mcpLogger.sendInfoLogMessage({
-  message: "Server initialized"
-});
-
 // Properly format resources to match MCP SDK requirements
 server.resource(
   "config",
   "config://token",
-  () => {
+  async () => {
+    const token = Deno.env.get("GITHUB_TOKEN") || "";
     return {
       contents: [
         {
           uri: "config://token",
-          text: JSON.stringify({
-            githubToken: Deno.env.get("GITHUB_TOKEN")
-          }),
-          mimeType: "application/json"
+          text: token,
+          mimeType: "text/plain"
         }
       ]
     };
@@ -46,15 +41,64 @@ server.resource(
 server.resource(
   "config",
   "config://repo",
-  () => {
+  async () => {
     return {
       contents: [
         {
           uri: "config://repo",
-          text: JSON.stringify({
-            repo: "https://github.com/gruntwork-io/terragrunt"
-          }),
-          mimeType: "application/json"
+          text: "https://github.com/gruntwork-io/terragrunt",
+          mimeType: "text/plain"
+        }
+      ]
+    };
+  }
+);
+
+server.tool(
+  "tg-docs-categories",
+  "Get all the categories of documentation that Terragrunt has documented on their official website https://terragrunt.gruntwork.io/docs/",
+  {
+    githubToken: z.string().describe("The GitHub token to use to fetch the documentation")
+  },
+  async ({ githubToken }) => {
+    const tgServer = new TerragruntRepo({
+      token: githubToken
+    });
+
+    const categories = await tgServer.getDocCategories();
+    
+    return {
+      content: categories.map(category => ({
+        type: "text" as const,
+        text: `${category.name}: ${category.html_url}`
+      }))
+    };
+  }
+);
+
+server.tool(
+  "tg-get-doc-by-category",
+  "Get a specific document from a category of documentation that Terragrunt has documented on their official website https://terragrunt.gruntwork.io/docs/",
+  {
+    category: z.string().describe("The category of documentation to get the document from"),
+    document: z.string().describe("The document to get from the category"),
+    githubToken: z.string().describe("The GitHub token to use to fetch the documentation")
+  },
+  async ({ category, document, githubToken }) => {
+    const tgServer = new TerragruntRepo({
+      token: githubToken
+    });
+
+    const doc = await tgServer.getDocumentFromCategory({
+      category,
+      document
+    });
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: doc.content
         }
       ]
     };
@@ -62,36 +106,32 @@ server.resource(
 );
 
 const transport = new StdioServerTransport();
-mcpLogger.sendDebugLogMessage({
-  message: "Created StdioServerTransport for server communication"
-});
 
 try {
-  mcpLogger.sendInfoLogMessage({
-    message: "Connecting server to transport"
-  });
-
+  // Connect the server to the transport before using the logger
   await server.connect(transport);
-
+  
+  // Now that the server is connected, we can use the logger
+  mcpLogger.sendInfoLogMessage({
+    message: "Server initialized"
+  });
+  
   mcpLogger.sendInfoLogMessage({
     message: "MCP server successfully connected and ready"
   });
+  
+  mcpLogger.sendInfoLogMessage({
+    message: "Server setup complete"
+  });
 } catch (error: unknown) {
   const errorMessage = error instanceof Error ? error.message : String(error);
-  mcpLogger.sendErrorLogMessage({
-    message: `Failed to connect server: ${errorMessage}`
-  });
+  console.error(`Failed to connect server: ${errorMessage}`);
 
   throw error;
 }
 
 // Log uncaught errors
 globalThis.addEventListener("error", (event) => {
-  mcpLogger.sendErrorLogMessage({
-    message: `Uncaught error: ${event.error?.message || event.message}`
-  });
-});
-
-mcpLogger.sendInfoLogMessage({
-  message: "Server setup complete"
+  // Only use the logger if the server is connected
+  console.error(`Uncaught error: ${event.error?.message || event.message}`);
 });
