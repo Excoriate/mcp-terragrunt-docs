@@ -65,6 +65,8 @@ When writing IaC configurations, mostly in terragrunt, the IDE support isn't tha
 ### Usage with Claude Desktop
 To use this Deno-based MCP server with Claude Desktop, add the following to your `claude_desktop_config.json`:
 
+#### Using Deno
+
 ```json
 {
   "mcpServers": {
@@ -83,11 +85,24 @@ To use this Deno-based MCP server with Claude Desktop, add the following to your
 }
 ```
 
-- Replace `<YOUR_TOKEN>` with your [GitHub Personal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with appropriate permissions.
+#### Using Docker
 
-## Docker
-
-You can also run the MCP Terragrunt Docs Provider in Docker using the provided Dockerfile.
+```json
+{
+  "mcpServers": {
+    "terragrunt": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-e", "GITHUB_TOKEN=<YOUR_TOKEN>", "mcp-terragrunt-docs"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "<YOUR_TOKEN>"
+      }
+    }
+  }
+}
+```
 
 ### Build the Docker image
 
