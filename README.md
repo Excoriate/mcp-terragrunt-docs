@@ -9,7 +9,11 @@ A [Model Context Protocol (MCP)](modelcontextprotocol.io) server built with Deno
 
 This server acts as an MCP provider, exposing tools and resources that allow AI agents or other MCP clients to query information about Terragrunt documentation and development information, such as GitHub issues.
 
-## Motivation
+- Watch a realistic demo 📺 on Claude Desktop [here](https://screen.studio/share/UKJNhBNq)
+
+---
+
+## Why?
 
 When writing IaC configurations, mostly in terragrunt, the IDE support isn't that good, in VSCode the terraform plugin is good, but not for terragrunt; it does not recognize the terragrunt blocks and does not provide any autocompletion. When interacting with AI autocompletion, it's common to get incorrect results, or false-positive linting errors. With this MCP server, you can provide to your LLM/AI assistant the latest documentation and issues from the Terragrunt GitHub repository, so it can use that to provide you with the most accurate information.
 
