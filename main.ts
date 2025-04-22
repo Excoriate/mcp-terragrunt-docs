@@ -1,4 +1,4 @@
-import "jsr:@std/dotenv/load";
+import "jsr:@std/dotenv@0.225.3/load";
 
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";

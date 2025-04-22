@@ -8,4 +8,4 @@ COPY . .
 # RUN deno cache deps.ts
 RUN deno cache main.ts
 
-CMD ["run", "--allow-net", "--allow-env", "--allow-read", "main.ts"] 
+CMD ["run", "--allow-net", "--allow-env", "--allow-read", "main.ts"]

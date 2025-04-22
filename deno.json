@@ -20,5 +20,13 @@
   "name": "@excoriate/mcp-terragrunt-docs",
   "version": "0.1.0",
   "license": "MIT",
-  "exports": "./mod.ts"
+  "exports": "./main.ts",
+  "publish": {
+    "exclude": [
+      "docs/mcp-debugging/Debugging - Model Context Protocol.md",
+      "docs/mcp-debugging/Inspector - Model Context Protocol.md",
+      "docs/spec/Completion – Model Context Protocol Specification.md",
+      "docs/spec/Logging – Model Context Protocol Specification.md"
+    ]
+  }
 }

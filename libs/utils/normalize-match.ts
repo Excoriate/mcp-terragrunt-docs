@@ -46,11 +46,11 @@ function levenshtein(a: string, b: string): number {
  */
 export function findBestMatch(input: string, candidates: string[], opts?: { threshold?: number, maxSuggestions?: number }): { match: string | null, score: number, suggestions: string[] } {
   const normInput = normalizeName(input);
-  
+
   // Create an array of candidates with both original and normalized forms
-  const normCandidates = candidates.map(c => ({ 
-    original: c, 
-    norm: normalizeName(c) 
+  const normCandidates = candidates.map(c => ({
+    original: c,
+    norm: normalizeName(c)
   }));
 
   // First try exact normalized match
@@ -67,25 +67,25 @@ export function findBestMatch(input: string, candidates: string[], opts?: { thre
 
   const best = scored[0];
   const threshold = opts?.threshold ?? 3; // Allow up to 3 edits for fuzzy match
-  
+
   if (best.distance <= threshold) {
     // Use slice(1) to exclude the best match from suggestions
     const suggestions = scored.slice(1)
       .filter(s => s.distance <= threshold)
       .map(s => s.original);
-      
-    return { 
-      match: best.original, 
-      score: 1 - best.distance / Math.max(normInput.length, best.norm.length), 
-      suggestions 
+
+    return {
+      match: best.original,
+      score: 1 - best.distance / Math.max(normInput.length, best.norm.length),
+      suggestions
     };
   }
-  
+
   // No good match, suggest top N
   const maxSuggestions = opts?.maxSuggestions ?? 3;
-  return { 
-    match: null, 
-    score: 0, 
-    suggestions: scored.slice(0, maxSuggestions).map(s => s.original) 
+  return {
+    match: null,
+    score: 0,
+    suggestions: scored.slice(0, maxSuggestions).map(s => s.original)
   };
-} 
+}

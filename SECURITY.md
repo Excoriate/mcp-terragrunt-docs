@@ -28,4 +28,4 @@ We will respond as quickly as possible and coordinate a fix and disclosure proce
 
 ---
 
-Thank you for helping keep this project and its users secure! 
+Thank you for helping keep this project and its users secure!

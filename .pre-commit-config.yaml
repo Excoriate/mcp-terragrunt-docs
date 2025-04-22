@@ -21,7 +21,8 @@ repos:
         exclude: &json_excludes >
           (?x)^(
             \.vscode/.*\.json|
-            deno\.json
+            deno\.json|
+            biome\.json
           )$
       - id: pretty-format-json
         exclude: *json_excludes

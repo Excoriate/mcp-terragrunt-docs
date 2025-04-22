@@ -59,4 +59,4 @@ Deno.test("findBestMatch no match returns suggestions", () => {
   const candidates = ["reference", "features", "community"];
   const result = findBestMatch("xyz", candidates);
   if (result.match !== null && result.suggestions.length === 0) throw new Error("No match should return suggestions");
-}); 
+});

@@ -59,7 +59,7 @@ export const TOOLS_GET_ALL_OPEN_ISSUES_ARGS_SCHEMA = z.object({
 export const TOOLS_LIST_DOC_CATEGORIES = {
   name: "list-doc-categories",
   description:
-    `Use this tool to retrieve a complete, up-to-date list of all documentation categories available in the official Terragrunt documentation. This is the FIRST STEP for any workflow where you do not already know the category name required by other tools. 
+    `Use this tool to retrieve a complete, up-to-date list of all documentation categories available in the official Terragrunt documentation. This is the FIRST STEP for any workflow where you do not already know the category name required by other tools.
 
 **When to use:**
 - When you need to discover what documentation categories exist before selecting or reading documents.
@@ -95,7 +95,7 @@ export const TOOLS_LIST_DOC_CATEGORIES = {
 export const TOOLS_LIST_ALL_DOCS_BY_CATEGORY = {
   name: "list-all-docs-by-category",
   description:
-    `Use this tool to retrieve a list of all documentation files within a specific category. This is the SECOND STEP after discovering categories with 'list-doc-categories' if you do not already know the document name. 
+    `Use this tool to retrieve a list of all documentation files within a specific category. This is the SECOND STEP after discovering categories with 'list-doc-categories' if you do not already know the document name.
 
 **When to use:**
 - When you know the category but not the document name, or need to present all available docs in a category.
@@ -136,7 +136,7 @@ export const TOOLS_LIST_ALL_DOCS_BY_CATEGORY = {
 export const TOOLS_READ_DOCUMENT_FROM_CATEGORY = {
   name: "read-document-from-category",
   description:
-    `Use this tool to retrieve and read a specific documentation file from a specific category. This is the FINAL STEP when you know both the category and document name. 
+    `Use this tool to retrieve and read a specific documentation file from a specific category. This is the FINAL STEP when you know both the category and document name.
 
 **When to use:**
 - When you know both the category and document name (from user input or previous tool calls).
@@ -178,9 +178,9 @@ export const TOOLS_READ_DOCUMENT_FROM_CATEGORY = {
   },
 };
 
-export const TOOLS_READ_ALL_DOCS_FROM_CATEGORY = {  
+export const TOOLS_READ_ALL_DOCS_FROM_CATEGORY = {
   name: "read-all-docs-from-category",
-  description: `Use this tool to retrieve and merge all documentation files from a specific category into a single, comprehensive response. This is ideal for overviews, summaries, or when the user requests "everything" in a category. 
+  description: `Use this tool to retrieve and merge all documentation files from a specific category into a single, comprehensive response. This is ideal for overviews, summaries, or when the user requests "everything" in a category.
 
 **When to use:**
 - When the user requests a full overview, merged summary, or all docs in a category.
@@ -219,7 +219,7 @@ export const TOOLS_READ_ALL_DOCS_FROM_CATEGORY = {
 
 export const TOOLS_GET_ALL_OPEN_ISSUES = {
   name: "get-all-open-issues",
-  description: `Use this tool to retrieve all open issues from the official Terragrunt GitHub repository. This tool is essential for tracking bugs, feature requests, and ongoing work. 
+  description: `Use this tool to retrieve all open issues from the official Terragrunt GitHub repository. This tool is essential for tracking bugs, feature requests, and ongoing work.
 
 **When to use:**
 - When you need to fetch the complete list of open issues for triage, reporting, or analysis.

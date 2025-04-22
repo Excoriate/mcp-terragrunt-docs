@@ -6,5 +6,6 @@
     "activityBar.background": "#292E35",
     "titleBar.activeBackground": "#39404A",
     "titleBar.activeForeground": "#F9FAFB"
-  }
+  },
+  "deno.enable": true
 }

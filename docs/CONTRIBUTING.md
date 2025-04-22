@@ -95,4 +95,4 @@ Thank you for your interest in contributing! This project is a Deno/TypeScript i
 
 ---
 
-Thank you for helping make this project better! 
+Thank you for helping make this project better!
