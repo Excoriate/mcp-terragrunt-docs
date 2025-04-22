@@ -61,6 +61,14 @@ When writing IaC configurations, mostly in terragrunt, the IDE support isn't tha
    # You can also debug it, and inspect it locally
    just inspect
    ```
+The most straightforward method is to use it directly from [JSR](https://jsr.io/) (Javascript Registry ❤️)
+```sh
+# export your github token
+export GITHUB_TOKEN=ghp_xxx...
+
+# run it
+deno run -A jsr:@excoriate/mcp-terragrunt-docs@0.1.0
+```
 
 ### Usage with Claude Desktop
 To use this Deno-based MCP server with Claude Desktop, add the following to your `claude_desktop_config.json`:
@@ -70,7 +78,7 @@ To use this Deno-based MCP server with Claude Desktop, add the following to your
 ```json
 {
   "mcpServers": {
-    "terragrunt": {
+    "terragrunt_docs": {
       "command": "deno",
       "args": [
         "run",
@@ -90,11 +98,31 @@ To use this Deno-based MCP server with Claude Desktop, add the following to your
 ```json
 {
   "mcpServers": {
-    "terragrunt": {
+    "terragrunt_docs": {
       "command": "docker",
       "args": [
         "run",
         "-e", "GITHUB_TOKEN=<YOUR_TOKEN>", "mcp-terragrunt-docs"
+      ],
+      "env": {
+        "GITHUB_TOKEN": "<YOUR_TOKEN>"
+      }
+    }
+  }
+}
+```
+
+#### Using JSR
+
+```json
+{
+  "mcpServers": {
+    "terragrunt_docs": {
+      "command": "deno",
+      "args": [
+        "run",
+        "-A",
+        "jsr:@excoriate/mcp-terragrunt-docs@0.1.0"
       ],
       "env": {
         "GITHUB_TOKEN": "<YOUR_TOKEN>"
