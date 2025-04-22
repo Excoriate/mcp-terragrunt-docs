@@ -1,12 +1,11 @@
 import type { Server } from "@modelcontextprotocol/sdk/server/index.js";
-import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 
 export class McpNotificationLogger {
   // The server instance
   private server: Server;
 
-  constructor(mcpServer: McpServer) {
-    this.server = mcpServer.server;
+  constructor(mcpServer: Server) {
+    this.server = mcpServer;
   }
 
   sendDebugLogMessage(data?: Record<string, unknown>): void {

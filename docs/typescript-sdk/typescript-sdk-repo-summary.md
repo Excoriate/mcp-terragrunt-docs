@@ -1,39 +1,49 @@
-This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+This file is a merged representation of the entire codebase, combined into a
+single document by Repomix.
 
 # File Summary
 
 ## Purpose
+
 This file contains a packed representation of the entire repository's contents.
 It is designed to be easily consumable by AI systems for analysis, code review,
 or other automated processes.
 
 ## File Format
+
 The content is organized as follows:
+
 1. This summary section
 2. Repository information
 3. Directory structure
-4. Multiple file entries, each consisting of:
-  a. A header with the file path (## File: path/to/file)
-  b. The full contents of the file in a code block
+4. Multiple file entries, each consisting of: a. A header with the file path (##
+   File: path/to/file) b. The full contents of the file in a code block
 
 ## Usage Guidelines
+
 - This file should be treated as read-only. Any changes should be made to the
   original repository files, not this packed version.
-- When processing this file, use the file path to distinguish
-  between different files in the repository.
-- Be aware that this file may contain sensitive information. Handle it with
-  the same level of security as you would the original repository.
+- When processing this file, use the file path to distinguish between different
+  files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with the
+  same level of security as you would the original repository.
 
 ## Notes
-- Some files may have been excluded based on .gitignore rules and Repomix's configuration
-- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+
+- Some files may have been excluded based on .gitignore rules and Repomix's
+  configuration
+- Binary files are not included in this packed representation. Please refer to
+  the Repository Structure section for a complete list of file paths, including
+  binary files
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
-- Files are sorted by Git change count (files with more changes are at the bottom)
+- Files are sorted by Git change count (files with more changes are at the
+  bottom)
 
 ## Additional Info
 
 # Directory Structure
+
 ```
 .github/
   workflows/
@@ -122,7 +132,8 @@ tsconfig.prod.json
 # Files
 
 ## File: .github/workflows/main.yml
-````yaml
+
+```yaml
 on:
   push:
     branches:
@@ -167,7 +178,7 @@ jobs:
         with:
           node-version: 18
           cache: npm
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
 
       - run: npm ci
 
@@ -175,27 +186,28 @@ jobs:
       - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-````
+```
 
 ## File: src/client/index.test.ts
-````typescript
+
+```typescript
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { Client } from "./index.js";
 import { z } from "zod";
 import {
-  RequestSchema,
-  NotificationSchema,
-  ResultSchema,
-  LATEST_PROTOCOL_VERSION,
-  SUPPORTED_PROTOCOL_VERSIONS,
-  InitializeRequestSchema,
-  ListResourcesRequestSchema,
-  ListToolsRequestSchema,
   CreateMessageRequestSchema,
-  ListRootsRequestSchema,
   ErrorCode,
+  InitializeRequestSchema,
+  LATEST_PROTOCOL_VERSION,
+  ListResourcesRequestSchema,
+  ListRootsRequestSchema,
+  ListToolsRequestSchema,
+  NotificationSchema,
+  RequestSchema,
+  ResultSchema,
+  SUPPORTED_PROTOCOL_VERSIONS,
 } from "../types.js";
 import { Transport } from "../shared/transport.js";
 import { Server } from "../server/index.js";
@@ -377,8 +389,8 @@ test("should respect server capabilities", async () => {
     tools: [],
   }));
 
-  const [clientTransport, serverTransport] =
-    InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] = InMemoryTransport
+    .createLinkedPair();
 
   const client = new Client(
     {
@@ -439,8 +451,8 @@ test("should respect client notification capabilities", async () => {
     },
   );
 
-  const [clientTransport, serverTransport] =
-    InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] = InMemoryTransport
+    .createLinkedPair();
 
   await Promise.all([
     client.connect(clientTransport),
@@ -496,8 +508,8 @@ test("should respect server notification capabilities", async () => {
     },
   );
 
-  const [clientTransport, serverTransport] =
-    InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] = InMemoryTransport
+    .createLinkedPair();
 
   await Promise.all([
     client.connect(clientTransport),
@@ -650,8 +662,8 @@ test("should handle client cancelling a request", async () => {
     },
   );
 
-  const [clientTransport, serverTransport] =
-    InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] = InMemoryTransport
+    .createLinkedPair();
 
   const client = new Client(
     {
@@ -710,8 +722,8 @@ test("should handle request timeout", async () => {
     },
   );
 
-  const [clientTransport, serverTransport] =
-    InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] = InMemoryTransport
+    .createLinkedPair();
 
   const client = new Client(
     {
@@ -735,9 +747,10 @@ test("should handle request timeout", async () => {
     code: ErrorCode.RequestTimeout,
   });
 });
-````
+```
 
 ## File: src/client/index.ts
+
 ````typescript
 import {
   mergeCapabilities,
@@ -1174,7 +1187,8 @@ export class Client<
 ````
 
 ## File: src/client/stdio.test.ts
-````typescript
+
+```typescript
 import { JSONRPCMessage } from "../types.js";
 import { StdioClientTransport, StdioServerParameters } from "./stdio.js";
 
@@ -1236,10 +1250,11 @@ test("should read messages", async () => {
 
   await client.close();
 });
-````
+```
 
 ## File: src/client/websocket.ts
-````typescript
+
+```typescript
 import { Transport } from "../shared/transport.js";
 import { JSONRPCMessage, JSONRPCMessageSchema } from "../types.js";
 
@@ -1271,10 +1286,9 @@ export class WebSocketClientTransport implements Transport {
       this._socket = new WebSocket(this._url, SUBPROTOCOL);
 
       this._socket.onerror = (event) => {
-        const error =
-          "error" in event
-            ? (event.error as Error)
-            : new Error(`WebSocket error: ${JSON.stringify(event)}`);
+        const error = "error" in event
+          ? (event.error as Error)
+          : new Error(`WebSocket error: ${JSON.stringify(event)}`);
         reject(error);
         this.onerror?.(error);
       };
@@ -1317,10 +1331,11 @@ export class WebSocketClientTransport implements Transport {
     });
   }
 }
-````
+```
 
 ## File: src/integration-tests/process-cleanup.test.ts
-````typescript
+
+```typescript
 import { Server } from "../server/index.js";
 import { StdioServerTransport } from "../server/stdio.js";
 
@@ -1335,7 +1350,7 @@ describe("Process cleanup", () => {
       },
       {
         capabilities: {},
-      }
+      },
     );
 
     const transport = new StdioServerTransport();
@@ -1349,10 +1364,11 @@ describe("Process cleanup", () => {
     expect(true).toBe(true);
   });
 });
-````
+```
 
 ## File: src/server/completable.test.ts
-````typescript
+
+```typescript
 import { z } from "zod";
 import { completable } from "./completable.js";
 
@@ -1399,19 +1415,20 @@ describe("completable", () => {
     expect(schema.description).toBe(desc);
   });
 });
-````
+```
 
 ## File: src/server/completable.ts
-````typescript
+
+```typescript
 import {
-  ZodTypeAny,
-  ZodTypeDef,
-  ZodType,
   ParseInput,
   ParseReturnType,
+  ProcessedCreateParams,
   RawCreateParams,
   ZodErrorMap,
-  ProcessedCreateParams,
+  ZodType,
+  ZodTypeAny,
+  ZodTypeDef,
 } from "zod";
 
 export enum McpZodTypeKind {
@@ -1498,27 +1515,28 @@ function processCreateParams(params: RawCreateParams): ProcessedCreateParams {
   };
   return { errorMap: customMap, description };
 }
-````
+```
 
 ## File: src/server/index.test.ts
-````typescript
+
+```typescript
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-constant-binary-expression */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import { Server } from "./index.js";
 import { z } from "zod";
 import {
-  RequestSchema,
-  NotificationSchema,
-  ResultSchema,
-  LATEST_PROTOCOL_VERSION,
-  SUPPORTED_PROTOCOL_VERSIONS,
   CreateMessageRequestSchema,
+  ErrorCode,
+  LATEST_PROTOCOL_VERSION,
   ListPromptsRequestSchema,
   ListResourcesRequestSchema,
   ListToolsRequestSchema,
+  NotificationSchema,
+  RequestSchema,
+  ResultSchema,
   SetLevelRequestSchema,
-  ErrorCode,
+  SUPPORTED_PROTOCOL_VERSIONS,
 } from "../types.js";
 import { Transport } from "../shared/transport.js";
 import { InMemoryTransport } from "../inMemory.js";
@@ -1749,8 +1767,8 @@ test("should respect client capabilities", async () => {
     };
   });
 
-  const [clientTransport, serverTransport] =
-    InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] = InMemoryTransport
+    .createLinkedPair();
 
   await Promise.all([
     client.connect(clientTransport),
@@ -1785,8 +1803,8 @@ test("should respect server notification capabilities", async () => {
     },
   );
 
-  const [clientTransport, serverTransport] =
-    InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] = InMemoryTransport
+    .createLinkedPair();
 
   await server.connect(serverTransport);
 
@@ -1956,8 +1974,8 @@ test("should handle server cancelling a request", async () => {
     },
   );
 
-  const [clientTransport, serverTransport] =
-    InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] = InMemoryTransport
+    .createLinkedPair();
 
   await Promise.all([
     client.connect(clientTransport),
@@ -2031,8 +2049,8 @@ test("should handle request timeout", async () => {
     },
   );
 
-  const [clientTransport, serverTransport] =
-    InMemoryTransport.createLinkedPair();
+  const [clientTransport, serverTransport] = InMemoryTransport
+    .createLinkedPair();
 
   await Promise.all([
     client.connect(clientTransport),
@@ -2052,9 +2070,10 @@ test("should handle request timeout", async () => {
     code: ErrorCode.RequestTimeout,
   });
 });
-````
+```
 
 ## File: src/server/index.ts
+
 ````typescript
 import {
   mergeCapabilities,
@@ -2154,11 +2173,13 @@ export class Server<
     this._capabilities = options?.capabilities ?? {};
     this._instructions = options?.instructions;
 
-    this.setRequestHandler(InitializeRequestSchema, (request) =>
-      this._oninitialize(request),
+    this.setRequestHandler(
+      InitializeRequestSchema,
+      (request) => this._oninitialize(request),
     );
-    this.setNotificationHandler(InitializedNotificationSchema, () =>
-      this.oninitialized?.(),
+    this.setNotificationHandler(
+      InitializedNotificationSchema,
+      () => this.oninitialized?.(),
     );
   }
 
@@ -2391,7 +2412,8 @@ export class Server<
 ````
 
 ## File: src/server/stdio.test.ts
-````typescript
+
+```typescript
 import { Readable, Writable } from "node:stream";
 import { ReadBuffer, serializeMessage } from "../shared/stdio.js";
 import { JSONRPCMessage } from "../types.js";
@@ -2494,10 +2516,11 @@ test("should read multiple messages", async () => {
   await finished;
   expect(readMessages).toEqual(messages);
 });
-````
+```
 
 ## File: src/server/stdio.ts
-````typescript
+
+```typescript
 import process from "node:process";
 import { Readable, Writable } from "node:stream";
 import { ReadBuffer, serializeMessage } from "../shared/stdio.js";
@@ -2567,13 +2590,13 @@ export class StdioServerTransport implements Transport {
     this._stdin.off("error", this._onerror);
 
     // Check if we were the only data listener
-    const remainingDataListeners = this._stdin.listenerCount('data');
+    const remainingDataListeners = this._stdin.listenerCount("data");
     if (remainingDataListeners === 0) {
       // Only pause stdin if we were the only listener
       // This prevents interfering with other parts of the application that might be using stdin
       this._stdin.pause();
     }
-    
+
     // Clear the buffer and notify closure
     this._readBuffer.clear();
     this.onclose?.();
@@ -2590,10 +2613,11 @@ export class StdioServerTransport implements Transport {
     });
   }
 }
-````
+```
 
 ## File: src/shared/stdio.test.ts
-````typescript
+
+```typescript
 import { JSONRPCMessage } from "../types.js";
 import { ReadBuffer } from "./stdio.js";
 
@@ -2629,10 +2653,11 @@ test("should be reusable after clearing", () => {
   readBuffer.append(Buffer.from("\n"));
   expect(readBuffer.readMessage()).toEqual(testMessage);
 });
-````
+```
 
 ## File: src/shared/stdio.ts
-````typescript
+
+```typescript
 import { JSONRPCMessage, JSONRPCMessageSchema } from "../types.js";
 
 /**
@@ -2672,10 +2697,11 @@ export function deserializeMessage(line: string): JSONRPCMessage {
 export function serializeMessage(message: JSONRPCMessage): string {
   return JSON.stringify(message) + "\n";
 }
-````
+```
 
 ## File: src/shared/uriTemplate.test.ts
-````typescript
+
+```typescript
 import { UriTemplate } from "./uriTemplate.js";
 
 describe("UriTemplate", () => {
@@ -2683,7 +2709,9 @@ describe("UriTemplate", () => {
     it("should return true for strings containing template expressions", () => {
       expect(UriTemplate.isTemplate("{foo}")).toBe(true);
       expect(UriTemplate.isTemplate("/users/{id}")).toBe(true);
-      expect(UriTemplate.isTemplate("http://example.com/{path}/{file}")).toBe(true);
+      expect(UriTemplate.isTemplate("http://example.com/{path}/{file}")).toBe(
+        true,
+      );
       expect(UriTemplate.isTemplate("/search{?q,limit}")).toBe(true);
     });
 
@@ -2809,14 +2837,14 @@ describe("UriTemplate", () => {
       expect(template.expand({
         version: "v1",
         resource: "users",
-        id: "123"
+        id: "123",
       })).toBe("/api/v1/users/123");
     });
 
     it("should handle query parameters with arrays", () => {
       const template = new UriTemplate("/search{?tags*}");
       expect(template.expand({
-        tags: ["nodejs", "typescript", "testing"]
+        tags: ["nodejs", "typescript", "testing"],
       })).toBe("/search?tags=nodejs,typescript,testing");
     });
 
@@ -2825,7 +2853,7 @@ describe("UriTemplate", () => {
       expect(template.expand({
         q: "test",
         page: "1",
-        limit: "10"
+        limit: "10",
       })).toBe("/search?q=test&page=1&limit=10");
     });
   });
@@ -2837,7 +2865,7 @@ describe("UriTemplate", () => {
       expect(match).toEqual({
         version: "v1",
         resource: "users",
-        id: "123"
+        id: "123",
       });
     });
 
@@ -2865,15 +2893,29 @@ describe("UriTemplate", () => {
       const longString = "x".repeat(100000);
       const template = new UriTemplate(`/api/{param}`);
       expect(template.expand({ param: longString })).toBe(`/api/${longString}`);
-      expect(template.match(`/api/${longString}`)).toEqual({ param: longString });
+      expect(template.match(`/api/${longString}`)).toEqual({
+        param: longString,
+      });
     });
 
     it("should handle deeply nested template expressions", () => {
-      const template = new UriTemplate("{a}{b}{c}{d}{e}{f}{g}{h}{i}{j}".repeat(1000));
-      expect(() => template.expand({
-        a: "1", b: "2", c: "3", d: "4", e: "5",
-        f: "6", g: "7", h: "8", i: "9", j: "0"
-      })).not.toThrow();
+      const template = new UriTemplate(
+        "{a}{b}{c}{d}{e}{f}{g}{h}{i}{j}".repeat(1000),
+      );
+      expect(() =>
+        template.expand({
+          a: "1",
+          b: "2",
+          c: "3",
+          d: "4",
+          e: "5",
+          f: "6",
+          g: "7",
+          h: "8",
+          i: "9",
+          j: "0",
+        })
+      ).not.toThrow();
     });
 
     it("should handle malformed template expressions", () => {
@@ -2935,10 +2977,11 @@ describe("UriTemplate", () => {
     });
   });
 });
-````
+```
 
 ## File: src/shared/uriTemplate.ts
-````typescript
+
+```typescript
 // Claude-authored implementation of RFC 6570 URI Templates
 
 export type Variables = Record<string, string | string[]>;
@@ -3251,10 +3294,11 @@ export class UriTemplate {
     return result;
   }
 }
-````
+```
 
 ## File: src/cli.ts
-````typescript
+
+```typescript
 import WebSocket from "ws";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -3414,10 +3458,11 @@ switch (command) {
   default:
     console.error("Unrecognized command:", command);
 }
-````
+```
 
 ## File: src/inMemory.test.ts
-````typescript
+
+```typescript
 import { InMemoryTransport } from "./inMemory.js";
 import { JSONRPCMessage } from "./types.js";
 
@@ -3512,15 +3557,17 @@ describe("InMemoryTransport", () => {
     expect(receivedMessage).toEqual(message);
   });
 });
-````
+```
 
 ## File: .gitattributes
-````
+
+```
 package-lock.json linguist-generated=true
-````
+```
 
 ## File: .gitignore
-````
+
+```
 # Logs
 logs
 *.log
@@ -3653,15 +3700,17 @@ out
 
 .DS_Store
 dist/
-````
+```
 
 ## File: .npmrc
-````
+
+```
 registry = "https://registry.npmjs.org/"
-````
+```
 
 ## File: CODE_OF_CONDUCT.md
-````markdown
+
+```markdown
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge
@@ -3670,8 +3719,8 @@ We as members, contributors, and leaders pledge to make participation in our
 community a harassment-free experience for everyone, regardless of age, body
 size, visible or invisible disability, ethnicity, sex characteristics, gender
 identity and expression, level of experience, education, socio-economic status,
-nationality, personal appearance, race, religion, or sexual identity
-and orientation.
+nationality, personal appearance, race, religion, or sexual identity and
+orientation.
 
 We pledge to act and interact in ways that contribute to an open, welcoming,
 diverse, inclusive, and healthy community.
@@ -3681,23 +3730,23 @@ diverse, inclusive, and healthy community.
 Examples of behavior that contributes to a positive environment for our
 community include:
 
-* Demonstrating empathy and kindness toward other people
-* Being respectful of differing opinions, viewpoints, and experiences
-* Giving and gracefully accepting constructive feedback
-* Accepting responsibility and apologizing to those affected by our mistakes,
+- Demonstrating empathy and kindness toward other people
+- Being respectful of differing opinions, viewpoints, and experiences
+- Giving and gracefully accepting constructive feedback
+- Accepting responsibility and apologizing to those affected by our mistakes,
   and learning from the experience
-* Focusing on what is best not just for us as individuals, but for the
-  overall community
+- Focusing on what is best not just for us as individuals, but for the overall
+  community
 
 Examples of unacceptable behavior include:
 
-* The use of sexualized language or imagery, and sexual attention or
-  advances of any kind
-* Trolling, insulting or derogatory comments, and personal or political attacks
-* Public or private harassment
-* Publishing others' private information, such as a physical or email
-  address, without their explicit permission
-* Other conduct which could reasonably be considered inappropriate in a
+- The use of sexualized language or imagery, and sexual attention or advances of
+  any kind
+- Trolling, insulting or derogatory comments, and personal or political attacks
+- Public or private harassment
+- Publishing others' private information, such as a physical or email address,
+  without their explicit permission
+- Other conduct which could reasonably be considered inappropriate in a
   professional setting
 
 ## Enforcement Responsibilities
@@ -3724,8 +3773,8 @@ representative at an online or offline event.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at
-mcp-coc@anthropic.com.
-All complaints will be reviewed and investigated promptly and fairly.
+mcp-coc@anthropic.com. All complaints will be reviewed and investigated promptly
+and fairly.
 
 All community leaders are obligated to respect the privacy and security of the
 reporter of any incident.
@@ -3746,15 +3795,15 @@ behavior was inappropriate. A public apology may be requested.
 
 ### 2. Warning
 
-**Community Impact**: A violation through a single incident or series
-of actions.
+**Community Impact**: A violation through a single incident or series of
+actions.
 
 **Consequence**: A warning with consequences for continued behavior. No
 interaction with the people involved, including unsolicited interaction with
 those enforcing the Code of Conduct, for a specified period of time. This
 includes avoiding interactions in community spaces as well as external channels
-like social media. Violating these terms may lead to a temporary or
-permanent ban.
+like social media. Violating these terms may lead to a temporary or permanent
+ban.
 
 ### 3. Temporary Ban
 
@@ -3770,11 +3819,11 @@ Violating these terms may lead to a permanent ban.
 ### 4. Permanent Ban
 
 **Community Impact**: Demonstrating a pattern of violation of community
-standards, including sustained inappropriate behavior,  harassment of an
+standards, including sustained inappropriate behavior, harassment of an
 individual, or aggression toward or disparagement of classes of individuals.
 
-**Consequence**: A permanent ban from any sort of public interaction within
-the community.
+**Consequence**: A permanent ban from any sort of public interaction within the
+community.
 
 ## Attribution
 
@@ -3782,7 +3831,8 @@ This Code of Conduct is adapted from the [Contributor Covenant][homepage],
 version 2.0, available at
 https://www.contributor-covenant.org/version/2/0/code_of_conduct.html.
 
-Community Impact Guidelines were inspired by [Mozilla's code of conduct
+Community Impact Guidelines were inspired by
+[Mozilla's code of conduct
 enforcement ladder](https://github.com/mozilla/diversity).
 
 [homepage]: https://www.contributor-covenant.org
@@ -3790,18 +3840,21 @@ enforcement ladder](https://github.com/mozilla/diversity).
 For answers to common questions about this code of conduct, see the FAQ at
 https://www.contributor-covenant.org/faq. Translations are available at
 https://www.contributor-covenant.org/translations.
-````
+```
 
 ## File: CONTRIBUTING.md
-````markdown
+
+```markdown
 # Contributing to MCP TypeScript SDK
 
-We welcome contributions to the Model Context Protocol TypeScript SDK! This document outlines the process for contributing to the project.
+We welcome contributions to the Model Context Protocol TypeScript SDK! This
+document outlines the process for contributing to the project.
 
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR-USERNAME/typescript-sdk.git`
+2. Clone your fork:
+   `git clone https://github.com/YOUR-USERNAME/typescript-sdk.git`
 3. Install dependencies: `npm install`
 4. Build the project: `npm run build`
 5. Run tests: `npm test`
@@ -3829,25 +3882,30 @@ We welcome contributions to the Model Context Protocol TypeScript SDK! This docu
 
 ## Code of Conduct
 
-This project follows our [Code of Conduct](CODE_OF_CONDUCT.md). Please review it before contributing.
+This project follows our [Code of Conduct](CODE_OF_CONDUCT.md). Please review it
+before contributing.
 
 ## Reporting Issues
 
-- Use the [GitHub issue tracker](https://github.com/modelcontextprotocol/typescript-sdk/issues)
+- Use the
+  [GitHub issue tracker](https://github.com/modelcontextprotocol/typescript-sdk/issues)
 - Search existing issues before creating a new one
 - Provide clear reproduction steps
 
 ## Security Issues
 
-Please review our [Security Policy](SECURITY.md) for reporting security vulnerabilities.
+Please review our [Security Policy](SECURITY.md) for reporting security
+vulnerabilities.
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the MIT License.
-````
+By contributing, you agree that your contributions will be licensed under the
+MIT License.
+```
 
 ## File: eslint.config.mjs
-````
+
+```
 // @ts-check
 
 import eslint from '@eslint/js';
@@ -3867,10 +3925,11 @@ export default tseslint.config(
         }
     }
 );
-````
+```
 
 ## File: LICENSE
-````
+
+```
 MIT License
 
 Copyright (c) 2024 Anthropic, PBC
@@ -3892,28 +3951,37 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-````
+```
 
 ## File: SECURITY.md
-````markdown
+
+```markdown
 # Security Policy
+
 Thank you for helping us keep the SDKs and systems they interact with secure.
 
 ## Reporting Security Issues
 
-This SDK is maintained by [Anthropic](https://www.anthropic.com/) as part of the Model Context Protocol project.
+This SDK is maintained by [Anthropic](https://www.anthropic.com/) as part of the
+Model Context Protocol project.
 
-The security of our systems and user data is Anthropic’s top priority. We appreciate the work of security researchers acting in good faith in identifying and reporting potential vulnerabilities.
+The security of our systems and user data is Anthropic’s top priority. We
+appreciate the work of security researchers acting in good faith in identifying
+and reporting potential vulnerabilities.
 
-Our security program is managed on HackerOne and we ask that any validated vulnerability in this functionality be reported through their [submission form](https://hackerone.com/anthropic-vdp/reports/new?type=team&report_type=vulnerability).
+Our security program is managed on HackerOne and we ask that any validated
+vulnerability in this functionality be reported through their
+[submission form](https://hackerone.com/anthropic-vdp/reports/new?type=team&report_type=vulnerability).
 
 ## Vulnerability Disclosure Program
 
-Our Vulnerability Program Guidelines are defined on our [HackerOne program page](https://hackerone.com/anthropic-vdp).
-````
+Our Vulnerability Program Guidelines are defined on our
+[HackerOne program page](https://hackerone.com/anthropic-vdp).
+```
 
 ## File: tsconfig.json
-````json
+
+```json
 {
   "compilerOptions": {
     "target": "es2018",
@@ -3933,20 +4001,22 @@ Our Vulnerability Program Guidelines are defined on our [HackerOne program page]
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
-````
+```
 
-## File: src/__mocks__/pkce-challenge.ts
-````typescript
+## File: src/**mocks**/pkce-challenge.ts
+
+```typescript
 export default function pkceChallenge() {
   return {
     code_verifier: "test_verifier",
     code_challenge: "test_challenge",
   };
 }
-````
+```
 
 ## File: src/client/stdio.ts
-````typescript
+
+```typescript
 import { ChildProcess, IOType } from "node:child_process";
 import spawn from "cross-spawn";
 import process from "node:process";
@@ -3991,23 +4061,22 @@ export type StdioServerParameters = {
 /**
  * Environment variables to inherit by default, if an environment is not explicitly given.
  */
-export const DEFAULT_INHERITED_ENV_VARS =
-  process.platform === "win32"
-    ? [
-        "APPDATA",
-        "HOMEDRIVE",
-        "HOMEPATH",
-        "LOCALAPPDATA",
-        "PATH",
-        "PROCESSOR_ARCHITECTURE",
-        "SYSTEMDRIVE",
-        "SYSTEMROOT",
-        "TEMP",
-        "USERNAME",
-        "USERPROFILE",
-      ]
-    : /* list inspired by the default env inheritance of sudo */
-      ["HOME", "LOGNAME", "PATH", "SHELL", "TERM", "USER"];
+export const DEFAULT_INHERITED_ENV_VARS = process.platform === "win32"
+  ? [
+    "APPDATA",
+    "HOMEDRIVE",
+    "HOMEPATH",
+    "LOCALAPPDATA",
+    "PATH",
+    "PROCESSOR_ARCHITECTURE",
+    "SYSTEMDRIVE",
+    "SYSTEMROOT",
+    "TEMP",
+    "USERNAME",
+    "USERPROFILE",
+  ]
+  /* list inspired by the default env inheritance of sudo */
+  : ["HOME", "LOGNAME", "PATH", "SHELL", "TERM", "USER"];
 
 /**
  * Returns a default environment object including only environment variables deemed safe to inherit.
@@ -4057,7 +4126,7 @@ export class StdioClientTransport implements Transport {
   async start(): Promise<void> {
     if (this._process) {
       throw new Error(
-        "StdioClientTransport already started! If using Client class, note that connect() calls start() automatically."
+        "StdioClientTransport already started! If using Client class, note that connect() calls start() automatically.",
       );
     }
 
@@ -4072,7 +4141,7 @@ export class StdioClientTransport implements Transport {
           signal: this._abortController.signal,
           windowsHide: process.platform === "win32" && isElectron(),
           cwd: this._serverParams.cwd,
-        }
+        },
       );
 
       this._process.on("error", (error) => {
@@ -4159,10 +4228,11 @@ export class StdioClientTransport implements Transport {
 function isElectron() {
   return "type" in process;
 }
-````
+```
 
 ## File: src/server/auth/middleware/allowedMethods.test.ts
-````typescript
+
+```typescript
 import { allowedMethods } from "./allowedMethods.js";
 import express, { Request, Response } from "express";
 import request from "supertest";
@@ -4201,7 +4271,8 @@ describe("allowedMethods", () => {
       expect(response.status).toBe(405);
       expect(response.body).toEqual({
         error: "method_not_allowed",
-        error_description: `The method ${method.toUpperCase()} is not allowed for this endpoint`
+        error_description:
+          `The method ${method.toUpperCase()} is not allowed for this endpoint`,
       });
     }
   });
@@ -4238,10 +4309,11 @@ describe("allowedMethods", () => {
     expect(putResponse.headers.allow).toBe("GET, POST");
   });
 });
-````
+```
 
 ## File: src/server/auth/types.ts
-````typescript
+
+```typescript
 /**
  * Information about a validated access token, provided to request handlers.
  */
@@ -4266,23 +4338,24 @@ export interface AuthInfo {
    */
   expiresAt?: number;
 }
-````
+```
 
 ## File: src/server/mcp.test.ts
-````typescript
+
+```typescript
 import { McpServer } from "./mcp.js";
 import { Client } from "../client/index.js";
 import { InMemoryTransport } from "../inMemory.js";
 import { z } from "zod";
 import {
-  ListToolsResultSchema,
   CallToolResultSchema,
+  CompleteResultSchema,
+  GetPromptResultSchema,
+  ListPromptsResultSchema,
   ListResourcesResultSchema,
   ListResourceTemplatesResultSchema,
+  ListToolsResultSchema,
   ReadResourceResultSchema,
-  ListPromptsResultSchema,
-  GetPromptResultSchema,
-  CompleteResultSchema,
 } from "../types.js";
 import { ResourceTemplate } from "./mcp.js";
 import { completable } from "./completable.js";
@@ -4312,8 +4385,8 @@ describe("McpServer", () => {
       version: "1.0",
     });
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4383,8 +4456,8 @@ describe("tool()", () => {
       ],
     }));
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4431,8 +4504,8 @@ describe("tool()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4476,8 +4549,8 @@ describe("tool()", () => {
       ],
     }));
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4530,8 +4603,8 @@ describe("tool()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4590,7 +4663,7 @@ describe("tool()", () => {
 
     // This should succeed
     mcpServer.tool("tool1", () => ({ content: [] }));
-    
+
     // This should also succeed and not throw about request handlers
     mcpServer.tool("tool2", () => ({ content: [] }));
   });
@@ -4626,7 +4699,8 @@ describe("tool()", () => {
       };
     });
 
-    const [clientTransport, serverTransport] = InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
     // Set a test sessionId on the server transport
     serverTransport.sessionId = "test-session-123";
 
@@ -4682,8 +4756,8 @@ describe("tool()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4733,8 +4807,8 @@ describe("tool()", () => {
       throw new Error("Tool execution failed");
     });
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4787,8 +4861,8 @@ describe("tool()", () => {
       ],
     }));
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4829,8 +4903,8 @@ describe("resource()", () => {
       ],
     }));
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4876,8 +4950,8 @@ describe("resource()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4919,8 +4993,8 @@ describe("resource()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -4977,8 +5051,8 @@ describe("resource()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5024,8 +5098,8 @@ describe("resource()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5087,7 +5161,7 @@ describe("resource()", () => {
         },
       ],
     }));
-    
+
     // This should also succeed and not throw about request handlers
     mcpServer.resource("resource2", "test://resource2", async () => ({
       contents: [
@@ -5148,8 +5222,8 @@ describe("resource()", () => {
       throw new Error("Resource read failed");
     });
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5188,8 +5262,8 @@ describe("resource()", () => {
       ],
     }));
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5245,8 +5319,8 @@ describe("resource()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5299,7 +5373,7 @@ describe("resource()", () => {
         complete: {
           category: (test: string) =>
             ["books", "movies", "music"].filter((value) =>
-              value.startsWith(test),
+              value.startsWith(test)
             ),
         },
       }),
@@ -5313,8 +5387,8 @@ describe("resource()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5366,8 +5440,8 @@ describe("prompt()", () => {
       ],
     }));
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5415,8 +5489,8 @@ describe("prompt()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5460,8 +5534,8 @@ describe("prompt()", () => {
       ],
     }));
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5517,8 +5591,8 @@ describe("prompt()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5593,7 +5667,7 @@ describe("prompt()", () => {
         },
       ],
     }));
-    
+
     // This should also succeed and not throw about request handlers
     mcpServer.prompt("prompt2", async () => ({
       messages: [
@@ -5623,10 +5697,10 @@ describe("prompt()", () => {
           role: "user",
           content: {
             type: "text",
-            text: `Please process this message: ${message}`
-          }
-        }]
-      })
+            text: `Please process this message: ${message}`,
+          },
+        }],
+      }),
     );
   });
 
@@ -5664,10 +5738,10 @@ describe("prompt()", () => {
           role: "user",
           content: {
             type: "text",
-            text: `Please process this message: ${message}`
-          }
-        }]
-      })
+            text: `Please process this message: ${message}`,
+          },
+        }],
+      }),
     );
   });
 
@@ -5701,8 +5775,8 @@ describe("prompt()", () => {
       ],
     }));
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5758,8 +5832,8 @@ describe("prompt()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5808,8 +5882,12 @@ describe("prompt()", () => {
     mcpServer.prompt(
       "test-prompt",
       {
-        name: completable(z.string(), (test) =>
-          ["Alice", "Bob", "Charlie"].filter((value) => value.startsWith(test)),
+        name: completable(
+          z.string(),
+          (test) =>
+            ["Alice", "Bob", "Charlie"].filter((value) =>
+              value.startsWith(test)
+            ),
         ),
       },
       async ({ name }) => ({
@@ -5825,8 +5903,8 @@ describe("prompt()", () => {
       }),
     );
 
-    const [clientTransport, serverTransport] =
-      InMemoryTransport.createLinkedPair();
+    const [clientTransport, serverTransport] = InMemoryTransport
+      .createLinkedPair();
 
     await Promise.all([
       client.connect(clientTransport),
@@ -5854,49 +5932,50 @@ describe("prompt()", () => {
     expect(result.completion.total).toBe(1);
   });
 });
-````
+```
 
 ## File: src/server/mcp.ts
-````typescript
+
+```typescript
 import { Server, ServerOptions } from "./index.js";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import {
-  z,
-  ZodRawShape,
-  ZodObject,
-  ZodString,
   AnyZodObject,
-  ZodTypeAny,
-  ZodType,
-  ZodTypeDef,
+  z,
+  ZodObject,
   ZodOptional,
+  ZodRawShape,
+  ZodString,
+  ZodType,
+  ZodTypeAny,
+  ZodTypeDef,
 } from "zod";
 import {
-  Implementation,
-  Tool,
-  ListToolsResult,
+  CallToolRequestSchema,
   CallToolResult,
-  McpError,
-  ErrorCode,
   CompleteRequest,
+  CompleteRequestSchema,
   CompleteResult,
-  PromptReference,
-  ResourceReference,
-  Resource,
+  ErrorCode,
+  GetPromptRequestSchema,
+  GetPromptResult,
+  Implementation,
+  ListPromptsRequestSchema,
+  ListPromptsResult,
+  ListResourcesRequestSchema,
   ListResourcesResult,
   ListResourceTemplatesRequestSchema,
-  ReadResourceRequestSchema,
   ListToolsRequestSchema,
-  CallToolRequestSchema,
-  ListResourcesRequestSchema,
-  ListPromptsRequestSchema,
-  GetPromptRequestSchema,
-  CompleteRequestSchema,
-  ListPromptsResult,
+  ListToolsResult,
+  McpError,
   Prompt,
   PromptArgument,
-  GetPromptResult,
+  PromptReference,
+  ReadResourceRequestSchema,
   ReadResourceResult,
+  Resource,
+  ResourceReference,
+  Tool,
 } from "../types.js";
 import { Completable, CompletableDef } from "./completable.js";
 import { UriTemplate, Variables } from "../shared/uriTemplate.js";
@@ -5947,7 +6026,7 @@ export class McpServer {
     if (this._toolHandlersInitialized) {
       return;
     }
-    
+
     this.server.assertCanSetRequestHandler(
       ListToolsRequestSchema.shape.method.value,
     );
@@ -5969,8 +6048,8 @@ export class McpServer {
               description: tool.description,
               inputSchema: tool.inputSchema
                 ? (zodToJsonSchema(tool.inputSchema, {
-                    strictUnions: true,
-                  }) as Tool["inputSchema"])
+                  strictUnions: true,
+                }) as Tool["inputSchema"])
                 : EMPTY_OBJECT_JSON_SCHEMA,
             };
           },
@@ -6160,9 +6239,11 @@ export class McpServer {
         );
 
         const templateResources: Resource[] = [];
-        for (const template of Object.values(
-          this._registeredResourceTemplates,
-        )) {
+        for (
+          const template of Object.values(
+            this._registeredResourceTemplates,
+          )
+        ) {
           if (!template.resourceTemplate.listCallback) {
             continue;
           }
@@ -6207,9 +6288,11 @@ export class McpServer {
         }
 
         // Then check templates
-        for (const template of Object.values(
-          this._registeredResourceTemplates,
-        )) {
+        for (
+          const template of Object.values(
+            this._registeredResourceTemplates,
+          )
+        ) {
           const variables = template.resourceTemplate.uriTemplate.match(
             uri.toString(),
           );
@@ -6226,7 +6309,7 @@ export class McpServer {
     );
 
     this.setCompletionRequestHandler();
-    
+
     this._resourceHandlersInitialized = true;
   }
 
@@ -6298,7 +6381,7 @@ export class McpServer {
     );
 
     this.setCompletionRequestHandler();
-    
+
     this._promptHandlersInitialized = true;
   }
 
@@ -6422,8 +6505,9 @@ export class McpServer {
     const cb = rest[0] as ToolCallback<ZodRawShape | undefined>;
     this._registeredTools[name] = {
       description,
-      inputSchema:
-        paramsSchema === undefined ? undefined : z.object(paramsSchema),
+      inputSchema: paramsSchema === undefined
+        ? undefined
+        : z.object(paramsSchema),
       callback: cb,
     };
 
@@ -6515,10 +6599,9 @@ export class ResourceTemplate {
       };
     },
   ) {
-    this._uriTemplate =
-      typeof uriTemplate === "string"
-        ? new UriTemplate(uriTemplate)
-        : uriTemplate;
+    this._uriTemplate = typeof uriTemplate === "string"
+      ? new UriTemplate(uriTemplate)
+      : uriTemplate;
   }
 
   /**
@@ -6551,11 +6634,10 @@ export class ResourceTemplate {
  * Parameters will include tool arguments, if applicable, as well as other request handler context.
  */
 export type ToolCallback<Args extends undefined | ZodRawShape = undefined> =
-  Args extends ZodRawShape
-    ? (
-        args: z.objectOutputType<Args, ZodTypeAny>,
-        extra: RequestHandlerExtra,
-      ) => CallToolResult | Promise<CallToolResult>
+  Args extends ZodRawShape ? (
+      args: z.objectOutputType<Args, ZodTypeAny>,
+      extra: RequestHandlerExtra,
+    ) => CallToolResult | Promise<CallToolResult>
     : (extra: RequestHandlerExtra) => CallToolResult | Promise<CallToolResult>;
 
 type RegisteredTool = {
@@ -6617,11 +6699,10 @@ type PromptArgsRawShape = {
 
 export type PromptCallback<
   Args extends undefined | PromptArgsRawShape = undefined,
-> = Args extends PromptArgsRawShape
-  ? (
-      args: z.objectOutputType<Args, ZodTypeAny>,
-      extra: RequestHandlerExtra,
-    ) => GetPromptResult | Promise<GetPromptResult>
+> = Args extends PromptArgsRawShape ? (
+    args: z.objectOutputType<Args, ZodTypeAny>,
+    extra: RequestHandlerExtra,
+  ) => GetPromptResult | Promise<GetPromptResult>
   : (extra: RequestHandlerExtra) => GetPromptResult | Promise<GetPromptResult>;
 
 type RegisteredPrompt = {
@@ -6658,10 +6739,11 @@ const EMPTY_COMPLETION_RESULT: CompleteResult = {
     hasMore: false,
   },
 };
-````
+```
 
 ## File: src/inMemory.ts
-````typescript
+
+```typescript
 import { Transport } from "./shared/transport.js";
 import { JSONRPCMessage } from "./types.js";
 
@@ -6717,10 +6799,11 @@ export class InMemoryTransport implements Transport {
     }
   }
 }
-````
+```
 
 ## File: src/types.ts
-````typescript
+
+```typescript
 import { z, ZodTypeAny } from "zod";
 
 export const LATEST_PROTOCOL_VERSION = "2024-11-05";
@@ -7841,16 +7924,11 @@ export class McpError extends Error {
 }
 
 type Primitive = string | number | boolean | bigint | null | undefined;
-type Flatten<T> = T extends Primitive
-  ? T
-  : T extends Array<infer U>
-  ? Array<Flatten<U>>
-  : T extends Set<infer U>
-  ? Set<Flatten<U>>
-  : T extends Map<infer K, infer V>
-  ? Map<Flatten<K>, Flatten<V>>
-  : T extends object
-  ? { [K in keyof T]: Flatten<T[K]> }
+type Flatten<T> = T extends Primitive ? T
+  : T extends Array<infer U> ? Array<Flatten<U>>
+  : T extends Set<infer U> ? Set<Flatten<U>>
+  : T extends Map<infer K, infer V> ? Map<Flatten<K>, Flatten<V>>
+  : T extends object ? { [K in keyof T]: Flatten<T[K]> }
   : T;
 
 type Infer<Schema extends ZodTypeAny> = Flatten<z.infer<Schema>>;
@@ -7880,7 +7958,9 @@ export type ClientCapabilities = Infer<typeof ClientCapabilitiesSchema>;
 export type InitializeRequest = Infer<typeof InitializeRequestSchema>;
 export type ServerCapabilities = Infer<typeof ServerCapabilitiesSchema>;
 export type InitializeResult = Infer<typeof InitializeResultSchema>;
-export type InitializedNotification = Infer<typeof InitializedNotificationSchema>;
+export type InitializedNotification = Infer<
+  typeof InitializedNotificationSchema
+>;
 
 /* Ping */
 export type PingRequest = Infer<typeof PingRequestSchema>;
@@ -7901,14 +7981,22 @@ export type Resource = Infer<typeof ResourceSchema>;
 export type ResourceTemplate = Infer<typeof ResourceTemplateSchema>;
 export type ListResourcesRequest = Infer<typeof ListResourcesRequestSchema>;
 export type ListResourcesResult = Infer<typeof ListResourcesResultSchema>;
-export type ListResourceTemplatesRequest = Infer<typeof ListResourceTemplatesRequestSchema>;
-export type ListResourceTemplatesResult = Infer<typeof ListResourceTemplatesResultSchema>;
+export type ListResourceTemplatesRequest = Infer<
+  typeof ListResourceTemplatesRequestSchema
+>;
+export type ListResourceTemplatesResult = Infer<
+  typeof ListResourceTemplatesResultSchema
+>;
 export type ReadResourceRequest = Infer<typeof ReadResourceRequestSchema>;
 export type ReadResourceResult = Infer<typeof ReadResourceResultSchema>;
-export type ResourceListChangedNotification = Infer<typeof ResourceListChangedNotificationSchema>;
+export type ResourceListChangedNotification = Infer<
+  typeof ResourceListChangedNotificationSchema
+>;
 export type SubscribeRequest = Infer<typeof SubscribeRequestSchema>;
 export type UnsubscribeRequest = Infer<typeof UnsubscribeRequestSchema>;
-export type ResourceUpdatedNotification = Infer<typeof ResourceUpdatedNotificationSchema>;
+export type ResourceUpdatedNotification = Infer<
+  typeof ResourceUpdatedNotificationSchema
+>;
 
 /* Prompts */
 export type PromptArgument = Infer<typeof PromptArgumentSchema>;
@@ -7921,21 +8009,29 @@ export type ImageContent = Infer<typeof ImageContentSchema>;
 export type EmbeddedResource = Infer<typeof EmbeddedResourceSchema>;
 export type PromptMessage = Infer<typeof PromptMessageSchema>;
 export type GetPromptResult = Infer<typeof GetPromptResultSchema>;
-export type PromptListChangedNotification = Infer<typeof PromptListChangedNotificationSchema>;
+export type PromptListChangedNotification = Infer<
+  typeof PromptListChangedNotificationSchema
+>;
 
 /* Tools */
 export type Tool = Infer<typeof ToolSchema>;
 export type ListToolsRequest = Infer<typeof ListToolsRequestSchema>;
 export type ListToolsResult = Infer<typeof ListToolsResultSchema>;
 export type CallToolResult = Infer<typeof CallToolResultSchema>;
-export type CompatibilityCallToolResult = Infer<typeof CompatibilityCallToolResultSchema>;
+export type CompatibilityCallToolResult = Infer<
+  typeof CompatibilityCallToolResultSchema
+>;
 export type CallToolRequest = Infer<typeof CallToolRequestSchema>;
-export type ToolListChangedNotification = Infer<typeof ToolListChangedNotificationSchema>;
+export type ToolListChangedNotification = Infer<
+  typeof ToolListChangedNotificationSchema
+>;
 
 /* Logging */
 export type LoggingLevel = Infer<typeof LoggingLevelSchema>;
 export type SetLevelRequest = Infer<typeof SetLevelRequestSchema>;
-export type LoggingMessageNotification = Infer<typeof LoggingMessageNotificationSchema>;
+export type LoggingMessageNotification = Infer<
+  typeof LoggingMessageNotificationSchema
+>;
 
 /* Sampling */
 export type SamplingMessage = Infer<typeof SamplingMessageSchema>;
@@ -7952,7 +8048,9 @@ export type CompleteResult = Infer<typeof CompleteResultSchema>;
 export type Root = Infer<typeof RootSchema>;
 export type ListRootsRequest = Infer<typeof ListRootsRequestSchema>;
 export type ListRootsResult = Infer<typeof ListRootsResultSchema>;
-export type RootsListChangedNotification = Infer<typeof RootsListChangedNotificationSchema>;
+export type RootsListChangedNotification = Infer<
+  typeof RootsListChangedNotificationSchema
+>;
 
 /* Client messages */
 export type ClientRequest = Infer<typeof ClientRequestSchema>;
@@ -7963,13 +8061,15 @@ export type ClientResult = Infer<typeof ClientResultSchema>;
 export type ServerRequest = Infer<typeof ServerRequestSchema>;
 export type ServerNotification = Infer<typeof ServerNotificationSchema>;
 export type ServerResult = Infer<typeof ServerResultSchema>;
-````
+```
 
 ## File: CLAUDE.md
+
 ````markdown
 # MCP TypeScript SDK Guide
 
 ## Build & Test Commands
+
 ```
 npm run build        # Build ESM and CJS versions
 npm run lint         # Run ESLint
@@ -7979,23 +8079,28 @@ npx jest -t "test name"        # Run tests matching pattern
 ```
 
 ## Code Style Guidelines
+
 - **TypeScript**: Strict type checking, ES modules, explicit return types
 - **Naming**: PascalCase for classes/types, camelCase for functions/variables
 - **Files**: Lowercase with hyphens, test files with `.test.ts` suffix
 - **Imports**: ES module style, include `.js` extension, group imports logically
-- **Error Handling**: Use TypeScript's strict mode, explicit error checking in tests
-- **Formatting**: 2-space indentation, semicolons required, single quotes preferred
+- **Error Handling**: Use TypeScript's strict mode, explicit error checking in
+  tests
+- **Formatting**: 2-space indentation, semicolons required, single quotes
+  preferred
 - **Testing**: Co-locate tests with source files, use descriptive test names
 - **Comments**: JSDoc for public APIs, inline comments for complex logic
 
 ## Project Structure
+
 - `/src`: Source code with client, server, and shared modules
 - Tests alongside source files with `.test.ts` suffix
 - Node.js >= 18 required
 ````
 
 ## File: jest.config.js
-````javascript
+
+```javascript
 import { createDefaultEsmPreset } from "ts-jest";
 
 const defaultEsmPreset = createDefaultEsmPreset();
@@ -8005,20 +8110,22 @@ export default {
   ...defaultEsmPreset,
   moduleNameMapper: {
     "^(\\.{1,2}/.*)\\.js$": "$1",
-    "^pkce-challenge$": "<rootDir>/src/__mocks__/pkce-challenge.ts"
+    "^pkce-challenge$": "<rootDir>/src/__mocks__/pkce-challenge.ts",
   },
   transformIgnorePatterns: [
-    "/node_modules/(?!eventsource)/"
+    "/node_modules/(?!eventsource)/",
   ],
   testPathIgnorePatterns: ["/node_modules/", "/dist/"],
 };
-````
+```
 
 ## File: README.md
+
 ````markdown
 # MCP TypeScript SDK ![NPM Version](https://img.shields.io/npm/v/%40modelcontextprotocol%2Fsdk) ![MIT licensed](https://img.shields.io/npm/l/%40modelcontextprotocol%2Fsdk)
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [Installation](#installation)
 - [Quickstart](#quickstart)
@@ -8042,7 +8149,10 @@ export default {
 
 ## Overview
 
-The Model Context Protocol allows applications to provide context for LLMs in a standardized way, separating the concerns of providing context from the actual LLM interaction. This TypeScript SDK implements the full MCP specification, making it easy to:
+The Model Context Protocol allows applications to provide context for LLMs in a
+standardized way, separating the concerns of providing context from the actual
+LLM interaction. This TypeScript SDK implements the full MCP specification,
+making it easy to:
 
 - Build MCP clients that can connect to any MCP server
 - Create MCP servers that expose resources, prompts and tools
@@ -8060,23 +8170,23 @@ npm install @modelcontextprotocol/sdk
 Let's create a simple MCP server that exposes a calculator tool and some data:
 
 ```typescript
-import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
+import {
+  McpServer,
+  ResourceTemplate,
+} from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 
 // Create an MCP server
 const server = new McpServer({
   name: "Demo",
-  version: "1.0.0"
+  version: "1.0.0",
 });
 
 // Add an addition tool
-server.tool("add",
-  { a: z.number(), b: z.number() },
-  async ({ a, b }) => ({
-    content: [{ type: "text", text: String(a + b) }]
-  })
-);
+server.tool("add", { a: z.number(), b: z.number() }, async ({ a, b }) => ({
+  content: [{ type: "text", text: String(a + b) }],
+}));
 
 // Add a dynamic greeting resource
 server.resource(
@@ -8085,9 +8195,9 @@ server.resource(
   async (uri, { name }) => ({
     contents: [{
       uri: uri.href,
-      text: `Hello, ${name}!`
-    }]
-  })
+      text: `Hello, ${name}!`,
+    }],
+  }),
 );
 
 // Start receiving messages on stdin and sending messages on stdout
@@ -8097,29 +8207,38 @@ await server.connect(transport);
 
 ## What is MCP?
 
-The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) lets you build servers that expose data and functionality to LLM applications in a secure, standardized way. Think of it like a web API, but specifically designed for LLM interactions. MCP servers can:
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) lets you
+build servers that expose data and functionality to LLM applications in a
+secure, standardized way. Think of it like a web API, but specifically designed
+for LLM interactions. MCP servers can:
 
-- Expose data through **Resources** (think of these sort of like GET endpoints; they are used to load information into the LLM's context)
-- Provide functionality through **Tools** (sort of like POST endpoints; they are used to execute code or otherwise produce a side effect)
-- Define interaction patterns through **Prompts** (reusable templates for LLM interactions)
+- Expose data through **Resources** (think of these sort of like GET endpoints;
+  they are used to load information into the LLM's context)
+- Provide functionality through **Tools** (sort of like POST endpoints; they are
+  used to execute code or otherwise produce a side effect)
+- Define interaction patterns through **Prompts** (reusable templates for LLM
+  interactions)
 - And more!
 
 ## Core Concepts
 
 ### Server
 
-The McpServer is your core interface to the MCP protocol. It handles connection management, protocol compliance, and message routing:
+The McpServer is your core interface to the MCP protocol. It handles connection
+management, protocol compliance, and message routing:
 
 ```typescript
 const server = new McpServer({
   name: "My App",
-  version: "1.0.0"
+  version: "1.0.0",
 });
 ```
 
 ### Resources
 
-Resources are how you expose data to LLMs. They're similar to GET endpoints in a REST API - they provide data but shouldn't perform significant computation or have side effects:
+Resources are how you expose data to LLMs. They're similar to GET endpoints in a
+REST API - they provide data but shouldn't perform significant computation or
+have side effects:
 
 ```typescript
 // Static resource
@@ -8129,9 +8248,9 @@ server.resource(
   async (uri) => ({
     contents: [{
       uri: uri.href,
-      text: "App configuration here"
-    }]
-  })
+      text: "App configuration here",
+    }],
+  }),
 );
 
 // Dynamic resource with parameters
@@ -8141,15 +8260,16 @@ server.resource(
   async (uri, { userId }) => ({
     contents: [{
       uri: uri.href,
-      text: `Profile data for user ${userId}`
-    }]
-  })
+      text: `Profile data for user ${userId}`,
+    }],
+  }),
 );
 ```
 
 ### Tools
 
-Tools let LLMs take actions through your server. Unlike resources, tools are expected to perform computation and have side effects:
+Tools let LLMs take actions through your server. Unlike resources, tools are
+expected to perform computation and have side effects:
 
 ```typescript
 // Simple tool with parameters
@@ -8157,14 +8277,14 @@ server.tool(
   "calculate-bmi",
   {
     weightKg: z.number(),
-    heightM: z.number()
+    heightM: z.number(),
   },
   async ({ weightKg, heightM }) => ({
     content: [{
       type: "text",
-      text: String(weightKg / (heightM * heightM))
-    }]
-  })
+      text: String(weightKg / (heightM * heightM)),
+    }],
+  }),
 );
 
 // Async tool with external API call
@@ -8175,15 +8295,16 @@ server.tool(
     const response = await fetch(`https://api.weather.com/${city}`);
     const data = await response.text();
     return {
-      content: [{ type: "text", text: data }]
+      content: [{ type: "text", text: data }],
     };
-  }
+  },
 );
 ```
 
 ### Prompts
 
-Prompts are reusable templates that help LLMs interact with your server effectively:
+Prompts are reusable templates that help LLMs interact with your server
+effectively:
 
 ```typescript
 server.prompt(
@@ -8194,16 +8315,17 @@ server.prompt(
       role: "user",
       content: {
         type: "text",
-        text: `Please review this code:\n\n${code}`
-      }
-    }]
-  })
+        text: `Please review this code:\n\n${code}`,
+      },
+    }],
+  }),
 );
 ```
 
 ## Running Your Server
 
-MCP servers in TypeScript need to be connected to a transport to communicate with clients. How you start the server depends on the choice of transport:
+MCP servers in TypeScript need to be connected to a transport to communicate
+with clients. How you start the server depends on the choice of transport:
 
 ### stdio
 
@@ -8215,7 +8337,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 
 const server = new McpServer({
   name: "example-server",
-  version: "1.0.0"
+  version: "1.0.0",
 });
 
 // ... set up server resources, tools, and prompts ...
@@ -8226,7 +8348,8 @@ await server.connect(transport);
 
 ### HTTP with SSE
 
-For remote servers, start a web server with a Server-Sent Events (SSE) endpoint, and a separate endpoint for the client to send its messages to:
+For remote servers, start a web server with a Server-Sent Events (SSE) endpoint,
+and a separate endpoint for the client to send its messages to:
 
 ```typescript
 import express, { Request, Response } from "express";
@@ -8235,7 +8358,7 @@ import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 
 const server = new McpServer({
   name: "example-server",
-  version: "1.0.0"
+  version: "1.0.0",
 });
 
 // ... set up server resources, tools, and prompts ...
@@ -8244,10 +8367,10 @@ const app = express();
 
 // to support multiple simultaneous connections we have a lookup object from
 // sessionId to transport
-const transports: {[sessionId: string]: SSEServerTransport} = {};
+const transports: { [sessionId: string]: SSEServerTransport } = {};
 
 app.get("/sse", async (_: Request, res: Response) => {
-  const transport = new SSEServerTransport('/messages', res);
+  const transport = new SSEServerTransport("/messages", res);
   transports[transport.sessionId] = transport;
   res.on("close", () => {
     delete transports[transport.sessionId];
@@ -8261,7 +8384,7 @@ app.post("/messages", async (req: Request, res: Response) => {
   if (transport) {
     await transport.handlePostMessage(req, res);
   } else {
-    res.status(400).send('No transport found for sessionId');
+    res.status(400).send("No transport found for sessionId");
   }
 });
 
@@ -8270,7 +8393,9 @@ app.listen(3001);
 
 ### Testing and Debugging
 
-To test your server, you can use the [MCP Inspector](https://github.com/modelcontextprotocol/inspector). See its README for more information.
+To test your server, you can use the
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector). See its
+README for more information.
 
 ## Examples
 
@@ -8279,12 +8404,15 @@ To test your server, you can use the [MCP Inspector](https://github.com/modelcon
 A simple server demonstrating resources, tools, and prompts:
 
 ```typescript
-import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
+import {
+  McpServer,
+  ResourceTemplate,
+} from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 
 const server = new McpServer({
   name: "Echo",
-  version: "1.0.0"
+  version: "1.0.0",
 });
 
 server.resource(
@@ -8293,17 +8421,17 @@ server.resource(
   async (uri, { message }) => ({
     contents: [{
       uri: uri.href,
-      text: `Resource echo: ${message}`
-    }]
-  })
+      text: `Resource echo: ${message}`,
+    }],
+  }),
 );
 
 server.tool(
   "echo",
   { message: z.string() },
   async ({ message }) => ({
-    content: [{ type: "text", text: `Tool echo: ${message}` }]
-  })
+    content: [{ type: "text", text: `Tool echo: ${message}` }],
+  }),
 );
 
 server.prompt(
@@ -8314,10 +8442,10 @@ server.prompt(
       role: "user",
       content: {
         type: "text",
-        text: `Please process this message: ${message}`
-      }
-    }]
-  })
+        text: `Please process this message: ${message}`,
+      },
+    }],
+  }),
 );
 ```
 
@@ -8333,7 +8461,7 @@ import { z } from "zod";
 
 const server = new McpServer({
   name: "SQLite Explorer",
-  version: "1.0.0"
+  version: "1.0.0",
 });
 
 // Helper to create DB connection
@@ -8341,7 +8469,7 @@ const getDb = () => {
   const db = new sqlite3.Database("database.db");
   return {
     all: promisify<string, any[]>(db.all.bind(db)),
-    close: promisify(db.close.bind(db))
+    close: promisify(db.close.bind(db)),
   };
 };
 
@@ -8352,18 +8480,18 @@ server.resource(
     const db = getDb();
     try {
       const tables = await db.all(
-        "SELECT sql FROM sqlite_master WHERE type='table'"
+        "SELECT sql FROM sqlite_master WHERE type='table'",
       );
       return {
         contents: [{
           uri: uri.href,
-          text: tables.map((t: {sql: string}) => t.sql).join("\n")
-        }]
+          text: tables.map((t: { sql: string }) => t.sql).join("\n"),
+        }],
       };
     } finally {
       await db.close();
     }
-  }
+  },
 );
 
 server.tool(
@@ -8376,22 +8504,22 @@ server.tool(
       return {
         content: [{
           type: "text",
-          text: JSON.stringify(results, null, 2)
-        }]
+          text: JSON.stringify(results, null, 2),
+        }],
       };
     } catch (err: unknown) {
       const error = err as Error;
       return {
         content: [{
           type: "text",
-          text: `Error: ${error.message}`
+          text: `Error: ${error.message}`,
         }],
-        isError: true
+        isError: true,
       };
     } finally {
       await db.close();
     }
-  }
+  },
 );
 ```
 
@@ -8405,20 +8533,20 @@ For more control, you can use the low-level Server class directly:
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
+  GetPromptRequestSchema,
   ListPromptsRequestSchema,
-  GetPromptRequestSchema
 } from "@modelcontextprotocol/sdk/types.js";
 
 const server = new Server(
   {
     name: "example-server",
-    version: "1.0.0"
+    version: "1.0.0",
   },
   {
     capabilities: {
-      prompts: {}
-    }
-  }
+      prompts: {},
+    },
+  },
 );
 
 server.setRequestHandler(ListPromptsRequestSchema, async () => {
@@ -8429,9 +8557,9 @@ server.setRequestHandler(ListPromptsRequestSchema, async () => {
       arguments: [{
         name: "arg1",
         description: "Example argument",
-        required: true
-      }]
-    }]
+        required: true,
+      }],
+    }],
   };
 });
 
@@ -8445,9 +8573,9 @@ server.setRequestHandler(GetPromptRequestSchema, async (request) => {
       role: "user",
       content: {
         type: "text",
-        text: "Example prompt text"
-      }
-    }]
+        text: "Example prompt text",
+      },
+    }],
   };
 });
 
@@ -8465,21 +8593,21 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 
 const transport = new StdioClientTransport({
   command: "node",
-  args: ["server.js"]
+  args: ["server.js"],
 });
 
 const client = new Client(
   {
     name: "example-client",
-    version: "1.0.0"
+    version: "1.0.0",
   },
   {
     capabilities: {
       prompts: {},
       resources: {},
-      tools: {}
-    }
-  }
+      tools: {},
+    },
+  },
 );
 
 await client.connect(transport);
@@ -8489,7 +8617,7 @@ const prompts = await client.listPrompts();
 
 // Get a prompt
 const prompt = await client.getPrompt("example-prompt", {
-  arg1: "value"
+  arg1: "value",
 });
 
 // List resources
@@ -8502,8 +8630,8 @@ const resource = await client.readResource("file:///example.txt");
 const result = await client.callTool({
   name: "example-tool",
   arguments: {
-    arg1: "value"
-  }
+    arg1: "value",
+  },
 });
 ```
 
@@ -8515,15 +8643,18 @@ const result = await client.callTool({
 
 ## Contributing
 
-Issues and pull requests are welcome on GitHub at https://github.com/modelcontextprotocol/typescript-sdk.
+Issues and pull requests are welcome on GitHub at
+https://github.com/modelcontextprotocol/typescript-sdk.
 
 ## License
 
-This project is licensed under the MIT License—see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License—see the [LICENSE](LICENSE) file
+for details.
 ````
 
 ## File: tsconfig.cjs.json
-````json
+
+```json
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -8533,10 +8664,11 @@ This project is licensed under the MIT License—see the [LICENSE](LICENSE) file
   },
   "exclude": ["**/*.test.ts", "src/__mocks__/**/*"]
 }
-````
+```
 
 ## File: tsconfig.prod.json
-````json
+
+```json
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
@@ -8544,27 +8676,28 @@ This project is licensed under the MIT License—see the [LICENSE](LICENSE) file
   },
   "exclude": ["**/*.test.ts", "src/__mocks__/**/*"]
 }
-````
+```
 
 ## File: src/server/auth/handlers/metadata.test.ts
-````typescript
-import { metadataHandler } from './metadata.js';
-import { OAuthMetadata } from '../../../shared/auth.js';
-import express from 'express';
-import supertest from 'supertest';
 
-describe('Metadata Handler', () => {
+```typescript
+import { metadataHandler } from "./metadata.js";
+import { OAuthMetadata } from "../../../shared/auth.js";
+import express from "express";
+import supertest from "supertest";
+
+describe("Metadata Handler", () => {
   const exampleMetadata: OAuthMetadata = {
-    issuer: 'https://auth.example.com',
-    authorization_endpoint: 'https://auth.example.com/authorize',
-    token_endpoint: 'https://auth.example.com/token',
-    registration_endpoint: 'https://auth.example.com/register',
-    revocation_endpoint: 'https://auth.example.com/revoke',
-    scopes_supported: ['profile', 'email'],
-    response_types_supported: ['code'],
-    grant_types_supported: ['authorization_code', 'refresh_token'],
-    token_endpoint_auth_methods_supported: ['client_secret_basic'],
-    code_challenge_methods_supported: ['S256']
+    issuer: "https://auth.example.com",
+    authorization_endpoint: "https://auth.example.com/authorize",
+    token_endpoint: "https://auth.example.com/token",
+    registration_endpoint: "https://auth.example.com/register",
+    revocation_endpoint: "https://auth.example.com/revoke",
+    scopes_supported: ["profile", "email"],
+    response_types_supported: ["code"],
+    grant_types_supported: ["authorization_code", "refresh_token"],
+    token_endpoint_auth_methods_supported: ["client_secret_basic"],
+    code_challenge_methods_supported: ["S256"],
   };
 
   let app: express.Express;
@@ -8572,73 +8705,80 @@ describe('Metadata Handler', () => {
   beforeEach(() => {
     // Setup express app with metadata handler
     app = express();
-    app.use('/.well-known/oauth-authorization-server', metadataHandler(exampleMetadata));
+    app.use(
+      "/.well-known/oauth-authorization-server",
+      metadataHandler(exampleMetadata),
+    );
   });
 
-  it('requires GET method', async () => {
+  it("requires GET method", async () => {
     const response = await supertest(app)
-      .post('/.well-known/oauth-authorization-server')
+      .post("/.well-known/oauth-authorization-server")
       .send({});
 
     expect(response.status).toBe(405);
-    expect(response.headers.allow).toBe('GET');
+    expect(response.headers.allow).toBe("GET");
     expect(response.body).toEqual({
       error: "method_not_allowed",
-      error_description: "The method POST is not allowed for this endpoint"
+      error_description: "The method POST is not allowed for this endpoint",
     });
   });
 
-  it('returns the metadata object', async () => {
+  it("returns the metadata object", async () => {
     const response = await supertest(app)
-      .get('/.well-known/oauth-authorization-server');
+      .get("/.well-known/oauth-authorization-server");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(exampleMetadata);
   });
 
-  it('includes CORS headers in response', async () => {
+  it("includes CORS headers in response", async () => {
     const response = await supertest(app)
-      .get('/.well-known/oauth-authorization-server')
-      .set('Origin', 'https://example.com');
+      .get("/.well-known/oauth-authorization-server")
+      .set("Origin", "https://example.com");
 
-    expect(response.header['access-control-allow-origin']).toBe('*');
+    expect(response.header["access-control-allow-origin"]).toBe("*");
   });
 
-  it('supports OPTIONS preflight requests', async () => {
+  it("supports OPTIONS preflight requests", async () => {
     const response = await supertest(app)
-      .options('/.well-known/oauth-authorization-server')
-      .set('Origin', 'https://example.com')
-      .set('Access-Control-Request-Method', 'GET');
+      .options("/.well-known/oauth-authorization-server")
+      .set("Origin", "https://example.com")
+      .set("Access-Control-Request-Method", "GET");
 
     expect(response.status).toBe(204);
-    expect(response.header['access-control-allow-origin']).toBe('*');
+    expect(response.header["access-control-allow-origin"]).toBe("*");
   });
 
-  it('works with minimal metadata', async () => {
+  it("works with minimal metadata", async () => {
     // Setup a new express app with minimal metadata
     const minimalApp = express();
     const minimalMetadata: OAuthMetadata = {
-      issuer: 'https://auth.example.com',
-      authorization_endpoint: 'https://auth.example.com/authorize',
-      token_endpoint: 'https://auth.example.com/token',
-      response_types_supported: ['code']
+      issuer: "https://auth.example.com",
+      authorization_endpoint: "https://auth.example.com/authorize",
+      token_endpoint: "https://auth.example.com/token",
+      response_types_supported: ["code"],
     };
-    minimalApp.use('/.well-known/oauth-authorization-server', metadataHandler(minimalMetadata));
+    minimalApp.use(
+      "/.well-known/oauth-authorization-server",
+      metadataHandler(minimalMetadata),
+    );
 
     const response = await supertest(minimalApp)
-      .get('/.well-known/oauth-authorization-server');
+      .get("/.well-known/oauth-authorization-server");
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(minimalMetadata);
   });
 });
-````
+```
 
 ## File: src/server/auth/handlers/metadata.ts
-````typescript
+
+```typescript
 import express, { RequestHandler } from "express";
 import { OAuthMetadata } from "../../../shared/auth.js";
-import cors from 'cors';
+import cors from "cors";
 import { allowedMethods } from "../middleware/allowedMethods.js";
 
 export function metadataHandler(metadata: OAuthMetadata): RequestHandler {
@@ -8648,23 +8788,24 @@ export function metadataHandler(metadata: OAuthMetadata): RequestHandler {
   // Configure CORS to allow any origin, to make accessible to web-based MCP clients
   router.use(cors());
 
-  router.use(allowedMethods(['GET']));
+  router.use(allowedMethods(["GET"]));
   router.get("/", (req, res) => {
     res.status(200).json(metadata);
   });
 
   return router;
 }
-````
+```
 
 ## File: src/server/auth/middleware/allowedMethods.ts
-````typescript
+
+```typescript
 import { RequestHandler } from "express";
 import { MethodNotAllowedError } from "../errors.js";
 
 /**
  * Middleware to handle unsupported HTTP methods with a 405 Method Not Allowed response.
- * 
+ *
  * @param allowedMethods Array of allowed HTTP methods for this endpoint (e.g., ['GET', 'POST'])
  * @returns Express middleware that returns a 405 error if method not in allowed list
  */
@@ -8675,20 +8816,28 @@ export function allowedMethods(allowedMethods: string[]): RequestHandler {
       return;
     }
 
-    const error = new MethodNotAllowedError(`The method ${req.method} is not allowed for this endpoint`);
+    const error = new MethodNotAllowedError(
+      `The method ${req.method} is not allowed for this endpoint`,
+    );
     res.status(405)
-      .set('Allow', allowedMethods.join(', '))
+      .set("Allow", allowedMethods.join(", "))
       .json(error.toResponseObject());
   };
 }
-````
+```
 
 ## File: src/server/auth/middleware/bearerAuth.test.ts
-````typescript
+
+```typescript
 import { Request, Response } from "express";
 import { requireBearerAuth } from "./bearerAuth.js";
 import { AuthInfo } from "../types.js";
-import { InsufficientScopeError, InvalidTokenError, OAuthError, ServerError } from "../errors.js";
+import {
+  InsufficientScopeError,
+  InvalidTokenError,
+  OAuthError,
+  ServerError,
+} from "../errors.js";
 import { OAuthServerProvider } from "../provider.js";
 import { OAuthRegisteredClientsStore } from "../clients.js";
 
@@ -8734,7 +8883,11 @@ describe("requireBearerAuth middleware", () => {
     };
 
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("valid-token");
     expect(mockRequest.auth).toEqual(validAuthInfo);
@@ -8742,7 +8895,7 @@ describe("requireBearerAuth middleware", () => {
     expect(mockResponse.status).not.toHaveBeenCalled();
     expect(mockResponse.json).not.toHaveBeenCalled();
   });
-  
+
   it("should reject expired tokens", async () => {
     const expiredAuthInfo: AuthInfo = {
       token: "expired-token",
@@ -8757,20 +8910,27 @@ describe("requireBearerAuth middleware", () => {
     };
 
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("expired-token");
     expect(mockResponse.status).toHaveBeenCalledWith(401);
     expect(mockResponse.set).toHaveBeenCalledWith(
       "WWW-Authenticate",
-      expect.stringContaining('Bearer error="invalid_token"')
+      expect.stringContaining('Bearer error="invalid_token"'),
     );
     expect(mockResponse.json).toHaveBeenCalledWith(
-      expect.objectContaining({ error: "invalid_token", error_description: "Token has expired" })
+      expect.objectContaining({
+        error: "invalid_token",
+        error_description: "Token has expired",
+      }),
     );
     expect(nextFunction).not.toHaveBeenCalled();
   });
-  
+
   it("should accept non-expired tokens", async () => {
     const nonExpiredAuthInfo: AuthInfo = {
       token: "valid-token",
@@ -8785,7 +8945,11 @@ describe("requireBearerAuth middleware", () => {
     };
 
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("valid-token");
     expect(mockRequest.auth).toEqual(nonExpiredAuthInfo);
@@ -8808,19 +8972,26 @@ describe("requireBearerAuth middleware", () => {
 
     const middleware = requireBearerAuth({
       provider: mockProvider,
-      requiredScopes: ["read", "write"]
+      requiredScopes: ["read", "write"],
     });
 
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("valid-token");
     expect(mockResponse.status).toHaveBeenCalledWith(403);
     expect(mockResponse.set).toHaveBeenCalledWith(
       "WWW-Authenticate",
-      expect.stringContaining('Bearer error="insufficient_scope"')
+      expect.stringContaining('Bearer error="insufficient_scope"'),
     );
     expect(mockResponse.json).toHaveBeenCalledWith(
-      expect.objectContaining({ error: "insufficient_scope", error_description: "Insufficient scope" })
+      expect.objectContaining({
+        error: "insufficient_scope",
+        error_description: "Insufficient scope",
+      }),
     );
     expect(nextFunction).not.toHaveBeenCalled();
   });
@@ -8839,10 +9010,14 @@ describe("requireBearerAuth middleware", () => {
 
     const middleware = requireBearerAuth({
       provider: mockProvider,
-      requiredScopes: ["read", "write"]
+      requiredScopes: ["read", "write"],
     });
 
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("valid-token");
     expect(mockRequest.auth).toEqual(authInfo);
@@ -8853,16 +9028,23 @@ describe("requireBearerAuth middleware", () => {
 
   it("should return 401 when no Authorization header is present", async () => {
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).not.toHaveBeenCalled();
     expect(mockResponse.status).toHaveBeenCalledWith(401);
     expect(mockResponse.set).toHaveBeenCalledWith(
       "WWW-Authenticate",
-      expect.stringContaining('Bearer error="invalid_token"')
+      expect.stringContaining('Bearer error="invalid_token"'),
     );
     expect(mockResponse.json).toHaveBeenCalledWith(
-      expect.objectContaining({ error: "invalid_token", error_description: "Missing Authorization header" })
+      expect.objectContaining({
+        error: "invalid_token",
+        error_description: "Missing Authorization header",
+      }),
     );
     expect(nextFunction).not.toHaveBeenCalled();
   });
@@ -8873,19 +9055,24 @@ describe("requireBearerAuth middleware", () => {
     };
 
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).not.toHaveBeenCalled();
     expect(mockResponse.status).toHaveBeenCalledWith(401);
     expect(mockResponse.set).toHaveBeenCalledWith(
       "WWW-Authenticate",
-      expect.stringContaining('Bearer error="invalid_token"')
+      expect.stringContaining('Bearer error="invalid_token"'),
     );
     expect(mockResponse.json).toHaveBeenCalledWith(
       expect.objectContaining({
         error: "invalid_token",
-        error_description: "Invalid Authorization header format, expected 'Bearer TOKEN'"
-      })
+        error_description:
+          "Invalid Authorization header format, expected 'Bearer TOKEN'",
+      }),
     );
     expect(nextFunction).not.toHaveBeenCalled();
   });
@@ -8895,19 +9082,28 @@ describe("requireBearerAuth middleware", () => {
       authorization: "Bearer invalid-token",
     };
 
-    mockVerifyAccessToken.mockRejectedValue(new InvalidTokenError("Token expired"));
+    mockVerifyAccessToken.mockRejectedValue(
+      new InvalidTokenError("Token expired"),
+    );
 
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("invalid-token");
     expect(mockResponse.status).toHaveBeenCalledWith(401);
     expect(mockResponse.set).toHaveBeenCalledWith(
       "WWW-Authenticate",
-      expect.stringContaining('Bearer error="invalid_token"')
+      expect.stringContaining('Bearer error="invalid_token"'),
     );
     expect(mockResponse.json).toHaveBeenCalledWith(
-      expect.objectContaining({ error: "invalid_token", error_description: "Token expired" })
+      expect.objectContaining({
+        error: "invalid_token",
+        error_description: "Token expired",
+      }),
     );
     expect(nextFunction).not.toHaveBeenCalled();
   });
@@ -8917,19 +9113,28 @@ describe("requireBearerAuth middleware", () => {
       authorization: "Bearer valid-token",
     };
 
-    mockVerifyAccessToken.mockRejectedValue(new InsufficientScopeError("Required scopes: read, write"));
+    mockVerifyAccessToken.mockRejectedValue(
+      new InsufficientScopeError("Required scopes: read, write"),
+    );
 
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("valid-token");
     expect(mockResponse.status).toHaveBeenCalledWith(403);
     expect(mockResponse.set).toHaveBeenCalledWith(
       "WWW-Authenticate",
-      expect.stringContaining('Bearer error="insufficient_scope"')
+      expect.stringContaining('Bearer error="insufficient_scope"'),
     );
     expect(mockResponse.json).toHaveBeenCalledWith(
-      expect.objectContaining({ error: "insufficient_scope", error_description: "Required scopes: read, write" })
+      expect.objectContaining({
+        error: "insufficient_scope",
+        error_description: "Required scopes: read, write",
+      }),
     );
     expect(nextFunction).not.toHaveBeenCalled();
   });
@@ -8939,15 +9144,24 @@ describe("requireBearerAuth middleware", () => {
       authorization: "Bearer valid-token",
     };
 
-    mockVerifyAccessToken.mockRejectedValue(new ServerError("Internal server issue"));
+    mockVerifyAccessToken.mockRejectedValue(
+      new ServerError("Internal server issue"),
+    );
 
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("valid-token");
     expect(mockResponse.status).toHaveBeenCalledWith(500);
     expect(mockResponse.json).toHaveBeenCalledWith(
-      expect.objectContaining({ error: "server_error", error_description: "Internal server issue" })
+      expect.objectContaining({
+        error: "server_error",
+        error_description: "Internal server issue",
+      }),
     );
     expect(nextFunction).not.toHaveBeenCalled();
   });
@@ -8957,15 +9171,24 @@ describe("requireBearerAuth middleware", () => {
       authorization: "Bearer valid-token",
     };
 
-    mockVerifyAccessToken.mockRejectedValue(new OAuthError("custom_error", "Some OAuth error"));
+    mockVerifyAccessToken.mockRejectedValue(
+      new OAuthError("custom_error", "Some OAuth error"),
+    );
 
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("valid-token");
     expect(mockResponse.status).toHaveBeenCalledWith(400);
     expect(mockResponse.json).toHaveBeenCalledWith(
-      expect.objectContaining({ error: "custom_error", error_description: "Some OAuth error" })
+      expect.objectContaining({
+        error: "custom_error",
+        error_description: "Some OAuth error",
+      }),
     );
     expect(nextFunction).not.toHaveBeenCalled();
   });
@@ -8978,22 +9201,35 @@ describe("requireBearerAuth middleware", () => {
     mockVerifyAccessToken.mockRejectedValue(new Error("Unexpected error"));
 
     const middleware = requireBearerAuth({ provider: mockProvider });
-    await middleware(mockRequest as Request, mockResponse as Response, nextFunction);
+    await middleware(
+      mockRequest as Request,
+      mockResponse as Response,
+      nextFunction,
+    );
 
     expect(mockVerifyAccessToken).toHaveBeenCalledWith("valid-token");
     expect(mockResponse.status).toHaveBeenCalledWith(500);
     expect(mockResponse.json).toHaveBeenCalledWith(
-      expect.objectContaining({ error: "server_error", error_description: "Internal Server Error" })
+      expect.objectContaining({
+        error: "server_error",
+        error_description: "Internal Server Error",
+      }),
     );
     expect(nextFunction).not.toHaveBeenCalled();
   });
 });
-````
+```
 
 ## File: src/server/auth/middleware/bearerAuth.ts
-````typescript
+
+```typescript
 import { RequestHandler } from "express";
-import { InsufficientScopeError, InvalidTokenError, OAuthError, ServerError } from "../errors.js";
+import {
+  InsufficientScopeError,
+  InvalidTokenError,
+  OAuthError,
+  ServerError,
+} from "../errors.js";
 import { OAuthServerProvider } from "../provider.js";
 import { AuthInfo } from "../types.js";
 
@@ -9020,10 +9256,12 @@ declare module "express-serve-static-core" {
 
 /**
  * Middleware that requires a valid Bearer token in the Authorization header.
- * 
+ *
  * This will validate the token with the auth provider and add the resulting auth info to the request object.
  */
-export function requireBearerAuth({ provider, requiredScopes = [] }: BearerAuthMiddlewareOptions): RequestHandler {
+export function requireBearerAuth(
+  { provider, requiredScopes = [] }: BearerAuthMiddlewareOptions,
+): RequestHandler {
   return async (req, res, next) => {
     try {
       const authHeader = req.headers.authorization;
@@ -9031,16 +9269,18 @@ export function requireBearerAuth({ provider, requiredScopes = [] }: BearerAuthM
         throw new InvalidTokenError("Missing Authorization header");
       }
 
-      const [type, token] = authHeader.split(' ');
-      if (type.toLowerCase() !== 'bearer' || !token) {
-        throw new InvalidTokenError("Invalid Authorization header format, expected 'Bearer TOKEN'");
+      const [type, token] = authHeader.split(" ");
+      if (type.toLowerCase() !== "bearer" || !token) {
+        throw new InvalidTokenError(
+          "Invalid Authorization header format, expected 'Bearer TOKEN'",
+        );
       }
 
       const authInfo = await provider.verifyAccessToken(token);
 
       // Check if token has the required scopes (if any)
       if (requiredScopes.length > 0) {
-        const hasAllScopes = requiredScopes.every(scope =>
+        const hasAllScopes = requiredScopes.every((scope) =>
           authInfo.scopes.includes(scope)
         );
 
@@ -9058,10 +9298,16 @@ export function requireBearerAuth({ provider, requiredScopes = [] }: BearerAuthM
       next();
     } catch (error) {
       if (error instanceof InvalidTokenError) {
-        res.set("WWW-Authenticate", `Bearer error="${error.errorCode}", error_description="${error.message}"`);
+        res.set(
+          "WWW-Authenticate",
+          `Bearer error="${error.errorCode}", error_description="${error.message}"`,
+        );
         res.status(401).json(error.toResponseObject());
       } else if (error instanceof InsufficientScopeError) {
-        res.set("WWW-Authenticate", `Bearer error="${error.errorCode}", error_description="${error.message}"`);
+        res.set(
+          "WWW-Authenticate",
+          `Bearer error="${error.errorCode}", error_description="${error.message}"`,
+        );
         res.status(403).json(error.toResponseObject());
       } else if (error instanceof ServerError) {
         res.status(500).json(error.toResponseObject());
@@ -9075,43 +9321,49 @@ export function requireBearerAuth({ provider, requiredScopes = [] }: BearerAuthM
     }
   };
 }
-````
+```
 
 ## File: src/server/auth/middleware/clientAuth.test.ts
-````typescript
-import { authenticateClient, ClientAuthenticationMiddlewareOptions } from './clientAuth.js';
-import { OAuthRegisteredClientsStore } from '../clients.js';
-import { OAuthClientInformationFull } from '../../../shared/auth.js';
-import express from 'express';
-import supertest from 'supertest';
 
-describe('clientAuth middleware', () => {
+```typescript
+import {
+  authenticateClient,
+  ClientAuthenticationMiddlewareOptions,
+} from "./clientAuth.js";
+import { OAuthRegisteredClientsStore } from "../clients.js";
+import { OAuthClientInformationFull } from "../../../shared/auth.js";
+import express from "express";
+import supertest from "supertest";
+
+describe("clientAuth middleware", () => {
   // Mock client store
   const mockClientStore: OAuthRegisteredClientsStore = {
-    async getClient(clientId: string): Promise<OAuthClientInformationFull | undefined> {
-      if (clientId === 'valid-client') {
+    async getClient(
+      clientId: string,
+    ): Promise<OAuthClientInformationFull | undefined> {
+      if (clientId === "valid-client") {
         return {
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          redirect_uris: ['https://example.com/callback']
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          redirect_uris: ["https://example.com/callback"],
         };
-      } else if (clientId === 'expired-client') {
+      } else if (clientId === "expired-client") {
         // Client with no secret
         return {
-          client_id: 'expired-client',
-          redirect_uris: ['https://example.com/callback']
+          client_id: "expired-client",
+          redirect_uris: ["https://example.com/callback"],
         };
-      } else if (clientId === 'client-with-expired-secret') {
+      } else if (clientId === "client-with-expired-secret") {
         // Client with an expired secret
         return {
-          client_id: 'client-with-expired-secret',
-          client_secret: 'expired-secret',
+          client_id: "client-with-expired-secret",
+          client_secret: "expired-secret",
           client_secret_expires_at: Math.floor(Date.now() / 1000) - 3600, // Expired 1 hour ago
-          redirect_uris: ['https://example.com/callback']
+          redirect_uris: ["https://example.com/callback"],
         };
       }
       return undefined;
-    }
+    },
   };
 
   // Setup Express app with middleware
@@ -9121,121 +9373,131 @@ describe('clientAuth middleware', () => {
   beforeEach(() => {
     app = express();
     app.use(express.json());
-    
+
     options = {
-      clientsStore: mockClientStore
+      clientsStore: mockClientStore,
     };
 
     // Setup route with client auth
-    app.post('/protected', authenticateClient(options), (req, res) => {
+    app.post("/protected", authenticateClient(options), (req, res) => {
       res.status(200).json({ success: true, client: req.client });
     });
   });
 
-  it('authenticates valid client credentials', async () => {
+  it("authenticates valid client credentials", async () => {
     const response = await supertest(app)
-      .post('/protected')
+      .post("/protected")
       .send({
-        client_id: 'valid-client',
-        client_secret: 'valid-secret'
+        client_id: "valid-client",
+        client_secret: "valid-secret",
       });
 
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
-    expect(response.body.client.client_id).toBe('valid-client');
+    expect(response.body.client.client_id).toBe("valid-client");
   });
 
-  it('rejects invalid client_id', async () => {
+  it("rejects invalid client_id", async () => {
     const response = await supertest(app)
-      .post('/protected')
+      .post("/protected")
       .send({
-        client_id: 'non-existent-client',
-        client_secret: 'some-secret'
+        client_id: "non-existent-client",
+        client_secret: "some-secret",
       });
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe('invalid_client');
-    expect(response.body.error_description).toBe('Invalid client_id');
+    expect(response.body.error).toBe("invalid_client");
+    expect(response.body.error_description).toBe("Invalid client_id");
   });
 
-  it('rejects invalid client_secret', async () => {
+  it("rejects invalid client_secret", async () => {
     const response = await supertest(app)
-      .post('/protected')
+      .post("/protected")
       .send({
-        client_id: 'valid-client',
-        client_secret: 'wrong-secret'
+        client_id: "valid-client",
+        client_secret: "wrong-secret",
       });
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe('invalid_client');
-    expect(response.body.error_description).toBe('Invalid client_secret');
+    expect(response.body.error).toBe("invalid_client");
+    expect(response.body.error_description).toBe("Invalid client_secret");
   });
 
-  it('rejects missing client_id', async () => {
+  it("rejects missing client_id", async () => {
     const response = await supertest(app)
-      .post('/protected')
+      .post("/protected")
       .send({
-        client_secret: 'valid-secret'
+        client_secret: "valid-secret",
       });
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe('invalid_request');
+    expect(response.body.error).toBe("invalid_request");
   });
 
-  it('allows missing client_secret if client has none', async () => {
+  it("allows missing client_secret if client has none", async () => {
     const response = await supertest(app)
-      .post('/protected')
+      .post("/protected")
       .send({
-        client_id: 'expired-client'
+        client_id: "expired-client",
       });
 
     // Since the client has no secret, this should pass without providing one
     expect(response.status).toBe(200);
   });
-  
-  it('rejects request when client secret has expired', async () => {
+
+  it("rejects request when client secret has expired", async () => {
     const response = await supertest(app)
-      .post('/protected')
+      .post("/protected")
       .send({
-        client_id: 'client-with-expired-secret',
-        client_secret: 'expired-secret'
+        client_id: "client-with-expired-secret",
+        client_secret: "expired-secret",
       });
 
     expect(response.status).toBe(400);
-    expect(response.body.error).toBe('invalid_client');
-    expect(response.body.error_description).toBe('Client secret has expired');
+    expect(response.body.error).toBe("invalid_client");
+    expect(response.body.error_description).toBe("Client secret has expired");
   });
 
-  it('handles malformed request body', async () => {
+  it("handles malformed request body", async () => {
     const response = await supertest(app)
-      .post('/protected')
-      .send('not-json-format');
+      .post("/protected")
+      .send("not-json-format");
 
     expect(response.status).toBe(400);
   });
 
   // Testing request with extra fields to ensure they're ignored
-  it('ignores extra fields in request', async () => {
+  it("ignores extra fields in request", async () => {
     const response = await supertest(app)
-      .post('/protected')
+      .post("/protected")
       .send({
-        client_id: 'valid-client',
-        client_secret: 'valid-secret',
-        extra_field: 'should be ignored'
+        client_id: "valid-client",
+        client_secret: "valid-secret",
+        extra_field: "should be ignored",
       });
 
     expect(response.status).toBe(200);
   });
 });
-````
+```
 
 ## File: src/server/auth/router.ts
-````typescript
+
+```typescript
 import express, { RequestHandler } from "express";
-import { clientRegistrationHandler, ClientRegistrationHandlerOptions } from "./handlers/register.js";
+import {
+  clientRegistrationHandler,
+  ClientRegistrationHandlerOptions,
+} from "./handlers/register.js";
 import { tokenHandler, TokenHandlerOptions } from "./handlers/token.js";
-import { authorizationHandler, AuthorizationHandlerOptions } from "./handlers/authorize.js";
-import { revocationHandler, RevocationHandlerOptions } from "./handlers/revoke.js";
+import {
+  authorizationHandler,
+  AuthorizationHandlerOptions,
+} from "./handlers/authorize.js";
+import {
+  revocationHandler,
+  RevocationHandlerOptions,
+} from "./handlers/revoke.js";
 import { metadataHandler } from "./handlers/metadata.js";
 import { OAuthServerProvider } from "./provider.js";
 
@@ -9257,18 +9519,21 @@ export type AuthRouterOptions = {
 
   // Individual options per route
   authorizationOptions?: Omit<AuthorizationHandlerOptions, "provider">;
-  clientRegistrationOptions?: Omit<ClientRegistrationHandlerOptions, "clientsStore">;
+  clientRegistrationOptions?: Omit<
+    ClientRegistrationHandlerOptions,
+    "clientsStore"
+  >;
   revocationOptions?: Omit<RevocationHandlerOptions, "provider">;
   tokenOptions?: Omit<TokenHandlerOptions, "provider">;
 };
 
 /**
  * Installs standard MCP authorization endpoints, including dynamic client registration and token revocation (if supported). Also advertises standard authorization server metadata, for easier discovery of supported configurations by clients.
- * 
+ *
  * By default, rate limiting is applied to all endpoints to prevent abuse.
- * 
+ *
  * This router MUST be installed at the application root, like so:
- * 
+ *
  *  const app = express();
  *  app.use(mcpAuthRouter(...));
  */
@@ -9276,7 +9541,10 @@ export function mcpAuthRouter(options: AuthRouterOptions): RequestHandler {
   const issuer = options.issuerUrl;
 
   // Technically RFC 8414 does not permit a localhost HTTPS exemption, but this will be necessary for ease of testing
-  if (issuer.protocol !== "https:" && issuer.hostname !== "localhost" && issuer.hostname !== "127.0.0.1") {
+  if (
+    issuer.protocol !== "https:" && issuer.hostname !== "localhost" &&
+    issuer.hostname !== "127.0.0.1"
+  ) {
     throw new Error("Issuer URL must be HTTPS");
   }
   if (issuer.hash) {
@@ -9288,8 +9556,12 @@ export function mcpAuthRouter(options: AuthRouterOptions): RequestHandler {
 
   const authorization_endpoint = "/authorize";
   const token_endpoint = "/token";
-  const registration_endpoint = options.provider.clientsStore.registerClient ? "/register" : undefined;
-  const revocation_endpoint = options.provider.revokeToken ? "/revoke" : undefined;
+  const registration_endpoint = options.provider.clientsStore.registerClient
+    ? "/register"
+    : undefined;
+  const revocation_endpoint = options.provider.revokeToken
+    ? "/revoke"
+    : undefined;
 
   const metadata = {
     issuer: issuer.href,
@@ -9303,25 +9575,37 @@ export function mcpAuthRouter(options: AuthRouterOptions): RequestHandler {
     token_endpoint_auth_methods_supported: ["client_secret_post"],
     grant_types_supported: ["authorization_code", "refresh_token"],
 
-    revocation_endpoint: revocation_endpoint ? new URL(revocation_endpoint, issuer).href : undefined,
-    revocation_endpoint_auth_methods_supported: revocation_endpoint ? ["client_secret_post"] : undefined,
+    revocation_endpoint: revocation_endpoint
+      ? new URL(revocation_endpoint, issuer).href
+      : undefined,
+    revocation_endpoint_auth_methods_supported: revocation_endpoint
+      ? ["client_secret_post"]
+      : undefined,
 
-    registration_endpoint: registration_endpoint ? new URL(registration_endpoint, issuer).href : undefined,
+    registration_endpoint: registration_endpoint
+      ? new URL(registration_endpoint, issuer).href
+      : undefined,
   };
 
   const router = express.Router();
 
   router.use(
     authorization_endpoint,
-    authorizationHandler({ provider: options.provider, ...options.authorizationOptions })
+    authorizationHandler({
+      provider: options.provider,
+      ...options.authorizationOptions,
+    }),
   );
 
   router.use(
     token_endpoint,
-    tokenHandler({ provider: options.provider, ...options.tokenOptions })
+    tokenHandler({ provider: options.provider, ...options.tokenOptions }),
   );
 
-  router.use("/.well-known/oauth-authorization-server", metadataHandler(metadata));
+  router.use(
+    "/.well-known/oauth-authorization-server",
+    metadataHandler(metadata),
+  );
 
   if (registration_endpoint) {
     router.use(
@@ -9329,23 +9613,27 @@ export function mcpAuthRouter(options: AuthRouterOptions): RequestHandler {
       clientRegistrationHandler({
         clientsStore: options.provider.clientsStore,
         ...options,
-      })
+      }),
     );
   }
 
   if (revocation_endpoint) {
     router.use(
       revocation_endpoint,
-      revocationHandler({ provider: options.provider, ...options.revocationOptions })
+      revocationHandler({
+        provider: options.provider,
+        ...options.revocationOptions,
+      }),
     );
   }
 
   return router;
 }
-````
+```
 
 ## File: src/server/sse.ts
-````typescript
+
+```typescript
 import { randomUUID } from "node:crypto";
 import { IncomingMessage, ServerResponse } from "node:http";
 import { Transport } from "../shared/transport.js";
@@ -9398,7 +9686,9 @@ export class SSEServerTransport implements Transport {
 
     // Send the endpoint event
     this.res.write(
-      `event: endpoint\ndata: ${encodeURI(this._endpoint)}?sessionId=${this._sessionId}\n\n`,
+      `event: endpoint\ndata: ${
+        encodeURI(this._endpoint)
+      }?sessionId=${this._sessionId}\n\n`,
     );
 
     this._sseResponse = this.res;
@@ -9442,7 +9732,9 @@ export class SSEServerTransport implements Transport {
     }
 
     try {
-      await this.handleMessage(typeof body === 'string' ? JSON.parse(body) : body);
+      await this.handleMessage(
+        typeof body === "string" ? JSON.parse(body) : body,
+      );
     } catch {
       res.writeHead(400).end(`Invalid message: ${body}`);
       return;
@@ -9491,11 +9783,12 @@ export class SSEServerTransport implements Transport {
     return this._sessionId;
   }
 }
-````
+```
 
 ## File: src/shared/protocol.test.ts
-````typescript
-import { ZodType, z } from "zod";
+
+```typescript
+import { z, ZodType } from "zod";
 import {
   ClientCapabilities,
   ErrorCode,
@@ -9505,7 +9798,7 @@ import {
   Result,
   ServerCapabilities,
 } from "../types.js";
-import { Protocol, mergeCapabilities } from "./protocol.js";
+import { mergeCapabilities, Protocol } from "./protocol.js";
 import { Transport } from "./transport.js";
 
 // Mock Transport class
@@ -9653,7 +9946,9 @@ describe("protocol tests", () => {
           },
         });
       }
-      await expect(requestPromise).rejects.toThrow("Maximum total timeout exceeded");
+      await expect(requestPromise).rejects.toThrow(
+        "Maximum total timeout exceeded",
+      );
       expect(onProgressMock).toHaveBeenCalledTimes(1);
     });
 
@@ -9802,10 +10097,11 @@ describe("mergeCapabilities", () => {
     expect(merged).toEqual({});
   });
 });
-````
+```
 
 ## File: src/shared/transport.ts
-````typescript
+
+```typescript
 import { JSONRPCMessage } from "../types.js";
 
 /**
@@ -9855,10 +10151,11 @@ export interface Transport {
    */
   sessionId?: string;
 }
-````
+```
 
 ## File: src/client/cross-spawn.test.ts
-````typescript
+
+```typescript
 import { StdioClientTransport } from "./stdio.js";
 import spawn from "cross-spawn";
 import { JSONRPCMessage } from "../types.js";
@@ -9886,12 +10183,12 @@ describe("StdioClientTransport using cross-spawn", () => {
         }),
         stdin: {
           on: jest.fn(),
-          write: jest.fn().mockReturnValue(true)
+          write: jest.fn().mockReturnValue(true),
         },
         stdout: {
-          on: jest.fn()
+          on: jest.fn(),
         },
-        stderr: null
+        stderr: null,
       };
       return mockProcess as unknown as ChildProcess;
     });
@@ -9904,7 +10201,7 @@ describe("StdioClientTransport using cross-spawn", () => {
   test("should call cross-spawn correctly", async () => {
     const transport = new StdioClientTransport({
       command: "test-command",
-      args: ["arg1", "arg2"]
+      args: ["arg1", "arg2"],
     });
 
     await transport.start();
@@ -9914,8 +10211,8 @@ describe("StdioClientTransport using cross-spawn", () => {
       "test-command",
       ["arg1", "arg2"],
       expect.objectContaining({
-        shell: false
-      })
+        shell: false,
+      }),
     );
   });
 
@@ -9923,7 +10220,7 @@ describe("StdioClientTransport using cross-spawn", () => {
     const customEnv = { TEST_VAR: "test-value" };
     const transport = new StdioClientTransport({
       command: "test-command",
-      env: customEnv
+      env: customEnv,
     });
 
     await transport.start();
@@ -9933,14 +10230,14 @@ describe("StdioClientTransport using cross-spawn", () => {
       "test-command",
       [],
       expect.objectContaining({
-        env: customEnv
-      })
+        env: customEnv,
+      }),
     );
   });
 
   test("should send messages correctly", async () => {
     const transport = new StdioClientTransport({
-      command: "test-command"
+      command: "test-command",
     });
 
     // get the mock process object
@@ -9965,12 +10262,12 @@ describe("StdioClientTransport using cross-spawn", () => {
       stdin: {
         on: jest.fn(),
         write: jest.fn().mockReturnValue(true),
-        once: jest.fn()
+        once: jest.fn(),
       },
       stdout: {
-        on: jest.fn()
+        on: jest.fn(),
       },
-      stderr: null
+      stderr: null,
     };
 
     mockSpawn.mockReturnValue(mockProcess as unknown as ChildProcess);
@@ -9981,7 +10278,7 @@ describe("StdioClientTransport using cross-spawn", () => {
     const message: JSONRPCMessage = {
       jsonrpc: "2.0",
       id: "test-id",
-      method: "test-method"
+      method: "test-method",
     };
 
     await transport.send(message);
@@ -9990,56 +10287,71 @@ describe("StdioClientTransport using cross-spawn", () => {
     expect(mockProcess.stdin.write).toHaveBeenCalled();
   });
 });
-````
+```
 
 ## File: src/server/auth/handlers/register.test.ts
-````typescript
-import { clientRegistrationHandler, ClientRegistrationHandlerOptions } from './register.js';
-import { OAuthRegisteredClientsStore } from '../clients.js';
-import { OAuthClientInformationFull, OAuthClientMetadata } from '../../../shared/auth.js';
-import express from 'express';
-import supertest from 'supertest';
 
-describe('Client Registration Handler', () => {
+```typescript
+import {
+  clientRegistrationHandler,
+  ClientRegistrationHandlerOptions,
+} from "./register.js";
+import { OAuthRegisteredClientsStore } from "../clients.js";
+import {
+  OAuthClientInformationFull,
+  OAuthClientMetadata,
+} from "../../../shared/auth.js";
+import express from "express";
+import supertest from "supertest";
+
+describe("Client Registration Handler", () => {
   // Mock client store with registration support
   const mockClientStoreWithRegistration: OAuthRegisteredClientsStore = {
-    async getClient(_clientId: string): Promise<OAuthClientInformationFull | undefined> {
+    async getClient(
+      _clientId: string,
+    ): Promise<OAuthClientInformationFull | undefined> {
       return undefined;
     },
 
-    async registerClient(client: OAuthClientInformationFull): Promise<OAuthClientInformationFull> {
+    async registerClient(
+      client: OAuthClientInformationFull,
+    ): Promise<OAuthClientInformationFull> {
       // Return the client info as-is in the mock
       return client;
-    }
+    },
   };
 
   // Mock client store without registration support
   const mockClientStoreWithoutRegistration: OAuthRegisteredClientsStore = {
-    async getClient(_clientId: string): Promise<OAuthClientInformationFull | undefined> {
+    async getClient(
+      _clientId: string,
+    ): Promise<OAuthClientInformationFull | undefined> {
       return undefined;
-    }
+    },
     // No registerClient method
   };
 
-  describe('Handler creation', () => {
-    it('throws error if client store does not support registration', () => {
+  describe("Handler creation", () => {
+    it("throws error if client store does not support registration", () => {
       const options: ClientRegistrationHandlerOptions = {
-        clientsStore: mockClientStoreWithoutRegistration
+        clientsStore: mockClientStoreWithoutRegistration,
       };
 
-      expect(() => clientRegistrationHandler(options)).toThrow('does not support registering clients');
+      expect(() => clientRegistrationHandler(options)).toThrow(
+        "does not support registering clients",
+      );
     });
 
-    it('creates handler if client store supports registration', () => {
+    it("creates handler if client store supports registration", () => {
       const options: ClientRegistrationHandlerOptions = {
-        clientsStore: mockClientStoreWithRegistration
+        clientsStore: mockClientStoreWithRegistration,
       };
 
       expect(() => clientRegistrationHandler(options)).not.toThrow();
     });
   });
 
-  describe('Request handling', () => {
+  describe("Request handling", () => {
     let app: express.Express;
     let spyRegisterClient: jest.SpyInstance;
 
@@ -10048,68 +10360,71 @@ describe('Client Registration Handler', () => {
       app = express();
       const options: ClientRegistrationHandlerOptions = {
         clientsStore: mockClientStoreWithRegistration,
-        clientSecretExpirySeconds: 86400 // 1 day for testing
+        clientSecretExpirySeconds: 86400, // 1 day for testing
       };
 
-      app.use('/register', clientRegistrationHandler(options));
+      app.use("/register", clientRegistrationHandler(options));
 
       // Spy on the registerClient method
-      spyRegisterClient = jest.spyOn(mockClientStoreWithRegistration, 'registerClient');
+      spyRegisterClient = jest.spyOn(
+        mockClientStoreWithRegistration,
+        "registerClient",
+      );
     });
 
     afterEach(() => {
       spyRegisterClient.mockRestore();
     });
 
-    it('requires POST method', async () => {
+    it("requires POST method", async () => {
       const response = await supertest(app)
-        .get('/register')
+        .get("/register")
         .send({
-          redirect_uris: ['https://example.com/callback']
+          redirect_uris: ["https://example.com/callback"],
         });
 
       expect(response.status).toBe(405);
-      expect(response.headers.allow).toBe('POST');
+      expect(response.headers.allow).toBe("POST");
       expect(response.body).toEqual({
         error: "method_not_allowed",
-        error_description: "The method GET is not allowed for this endpoint"
+        error_description: "The method GET is not allowed for this endpoint",
       });
       expect(spyRegisterClient).not.toHaveBeenCalled();
     });
 
-    it('validates required client metadata', async () => {
+    it("validates required client metadata", async () => {
       const response = await supertest(app)
-        .post('/register')
+        .post("/register")
         .send({
           // Missing redirect_uris (required)
-          client_name: 'Test Client'
+          client_name: "Test Client",
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_client_metadata');
+      expect(response.body.error).toBe("invalid_client_metadata");
       expect(spyRegisterClient).not.toHaveBeenCalled();
     });
 
-    it('validates redirect URIs format', async () => {
+    it("validates redirect URIs format", async () => {
       const response = await supertest(app)
-        .post('/register')
+        .post("/register")
         .send({
-          redirect_uris: ['invalid-url'] // Invalid URL format
+          redirect_uris: ["invalid-url"], // Invalid URL format
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_client_metadata');
-      expect(response.body.error_description).toContain('redirect_uris');
+      expect(response.body.error).toBe("invalid_client_metadata");
+      expect(response.body.error_description).toContain("redirect_uris");
       expect(spyRegisterClient).not.toHaveBeenCalled();
     });
 
-    it('successfully registers client with minimal metadata', async () => {
+    it("successfully registers client with minimal metadata", async () => {
       const clientMetadata: OAuthClientMetadata = {
-        redirect_uris: ['https://example.com/callback']
+        redirect_uris: ["https://example.com/callback"],
       };
 
       const response = await supertest(app)
-        .post('/register')
+        .post("/register")
         .send(clientMetadata);
 
       expect(response.status).toBe(201);
@@ -10119,50 +10434,52 @@ describe('Client Registration Handler', () => {
       expect(response.body.client_secret).toBeDefined();
       expect(response.body.client_id_issued_at).toBeDefined();
       expect(response.body.client_secret_expires_at).toBeDefined();
-      expect(response.body.redirect_uris).toEqual(['https://example.com/callback']);
+      expect(response.body.redirect_uris).toEqual([
+        "https://example.com/callback",
+      ]);
 
       // Verify client was registered
       expect(spyRegisterClient).toHaveBeenCalledTimes(1);
     });
 
-    it('sets client_secret to undefined for token_endpoint_auth_method=none', async () => {
+    it("sets client_secret to undefined for token_endpoint_auth_method=none", async () => {
       const clientMetadata: OAuthClientMetadata = {
-        redirect_uris: ['https://example.com/callback'],
-        token_endpoint_auth_method: 'none'
+        redirect_uris: ["https://example.com/callback"],
+        token_endpoint_auth_method: "none",
       };
 
       const response = await supertest(app)
-        .post('/register')
+        .post("/register")
         .send(clientMetadata);
 
       expect(response.status).toBe(201);
       expect(response.body.client_secret).toBeUndefined();
       expect(response.body.client_secret_expires_at).toBeUndefined();
     });
-    
-    it('sets client_secret_expires_at for public clients only', async () => {
+
+    it("sets client_secret_expires_at for public clients only", async () => {
       // Test for public client (token_endpoint_auth_method not 'none')
       const publicClientMetadata: OAuthClientMetadata = {
-        redirect_uris: ['https://example.com/callback'],
-        token_endpoint_auth_method: 'client_secret_basic'
+        redirect_uris: ["https://example.com/callback"],
+        token_endpoint_auth_method: "client_secret_basic",
       };
 
       const publicResponse = await supertest(app)
-        .post('/register')
+        .post("/register")
         .send(publicClientMetadata);
 
       expect(publicResponse.status).toBe(201);
       expect(publicResponse.body.client_secret).toBeDefined();
       expect(publicResponse.body.client_secret_expires_at).toBeDefined();
-      
+
       // Test for non-public client (token_endpoint_auth_method is 'none')
       const nonPublicClientMetadata: OAuthClientMetadata = {
-        redirect_uris: ['https://example.com/callback'],
-        token_endpoint_auth_method: 'none'
+        redirect_uris: ["https://example.com/callback"],
+        token_endpoint_auth_method: "none",
       };
 
       const nonPublicResponse = await supertest(app)
-        .post('/register')
+        .post("/register")
         .send(nonPublicClientMetadata);
 
       expect(nonPublicResponse.status).toBe(201);
@@ -10170,20 +10487,20 @@ describe('Client Registration Handler', () => {
       expect(nonPublicResponse.body.client_secret_expires_at).toBeUndefined();
     });
 
-    it('sets expiry based on clientSecretExpirySeconds', async () => {
+    it("sets expiry based on clientSecretExpirySeconds", async () => {
       // Create handler with custom expiry time
       const customApp = express();
       const options: ClientRegistrationHandlerOptions = {
         clientsStore: mockClientStoreWithRegistration,
-        clientSecretExpirySeconds: 3600 // 1 hour
+        clientSecretExpirySeconds: 3600, // 1 hour
       };
 
-      customApp.use('/register', clientRegistrationHandler(options));
+      customApp.use("/register", clientRegistrationHandler(options));
 
       const response = await supertest(customApp)
-        .post('/register')
+        .post("/register")
         .send({
-          redirect_uris: ['https://example.com/callback']
+          redirect_uris: ["https://example.com/callback"],
         });
 
       expect(response.status).toBe(201);
@@ -10194,46 +10511,46 @@ describe('Client Registration Handler', () => {
       expect(expiresAt - issuedAt).toBe(3600);
     });
 
-    it('sets no expiry when clientSecretExpirySeconds=0', async () => {
+    it("sets no expiry when clientSecretExpirySeconds=0", async () => {
       // Create handler with no expiry
       const customApp = express();
       const options: ClientRegistrationHandlerOptions = {
         clientsStore: mockClientStoreWithRegistration,
-        clientSecretExpirySeconds: 0 // No expiry
+        clientSecretExpirySeconds: 0, // No expiry
       };
 
-      customApp.use('/register', clientRegistrationHandler(options));
+      customApp.use("/register", clientRegistrationHandler(options));
 
       const response = await supertest(customApp)
-        .post('/register')
+        .post("/register")
         .send({
-          redirect_uris: ['https://example.com/callback']
+          redirect_uris: ["https://example.com/callback"],
         });
 
       expect(response.status).toBe(201);
       expect(response.body.client_secret_expires_at).toBe(0);
     });
 
-    it('handles client with all metadata fields', async () => {
+    it("handles client with all metadata fields", async () => {
       const fullClientMetadata: OAuthClientMetadata = {
-        redirect_uris: ['https://example.com/callback'],
-        token_endpoint_auth_method: 'client_secret_basic',
-        grant_types: ['authorization_code', 'refresh_token'],
-        response_types: ['code'],
-        client_name: 'Test Client',
-        client_uri: 'https://example.com',
-        logo_uri: 'https://example.com/logo.png',
-        scope: 'profile email',
-        contacts: ['dev@example.com'],
-        tos_uri: 'https://example.com/tos',
-        policy_uri: 'https://example.com/privacy',
-        jwks_uri: 'https://example.com/jwks',
-        software_id: 'test-software',
-        software_version: '1.0.0'
+        redirect_uris: ["https://example.com/callback"],
+        token_endpoint_auth_method: "client_secret_basic",
+        grant_types: ["authorization_code", "refresh_token"],
+        response_types: ["code"],
+        client_name: "Test Client",
+        client_uri: "https://example.com",
+        logo_uri: "https://example.com/logo.png",
+        scope: "profile email",
+        contacts: ["dev@example.com"],
+        tos_uri: "https://example.com/tos",
+        policy_uri: "https://example.com/privacy",
+        jwks_uri: "https://example.com/jwks",
+        software_id: "test-software",
+        software_version: "1.0.0",
       };
 
       const response = await supertest(app)
-        .post('/register')
+        .post("/register")
         .send(fullClientMetadata);
 
       expect(response.status).toBe(201);
@@ -10244,22 +10561,23 @@ describe('Client Registration Handler', () => {
       });
     });
 
-    it('includes CORS headers in response', async () => {
+    it("includes CORS headers in response", async () => {
       const response = await supertest(app)
-        .post('/register')
-        .set('Origin', 'https://example.com')
+        .post("/register")
+        .set("Origin", "https://example.com")
         .send({
-          redirect_uris: ['https://example.com/callback']
+          redirect_uris: ["https://example.com/callback"],
         });
 
-      expect(response.header['access-control-allow-origin']).toBe('*');
+      expect(response.header["access-control-allow-origin"]).toBe("*");
     });
   });
 });
-````
+```
 
 ## File: src/server/auth/clients.ts
-````typescript
+
+```typescript
 import { OAuthClientInformationFull } from "../../shared/auth.js";
 
 /**
@@ -10269,21 +10587,29 @@ export interface OAuthRegisteredClientsStore {
   /**
    * Returns information about a registered client, based on its ID.
    */
-  getClient(clientId: string): OAuthClientInformationFull | undefined | Promise<OAuthClientInformationFull | undefined>;
+  getClient(
+    clientId: string,
+  ):
+    | OAuthClientInformationFull
+    | undefined
+    | Promise<OAuthClientInformationFull | undefined>;
 
   /**
    * Registers a new client with the server. The client ID and secret will be automatically generated by the library. A modified version of the client information can be returned to reflect specific values enforced by the server.
-   * 
+   *
    * NOTE: Implementations should NOT delete expired client secrets in-place. Auth middleware provided by this library will automatically check the `client_secret_expires_at` field and reject requests with expired secrets. Any custom logic for authenticating clients should check the `client_secret_expires_at` field as well.
-   * 
+   *
    * If unimplemented, dynamic client registration is unsupported.
    */
-  registerClient?(client: OAuthClientInformationFull): OAuthClientInformationFull | Promise<OAuthClientInformationFull>;
+  registerClient?(
+    client: OAuthClientInformationFull,
+  ): OAuthClientInformationFull | Promise<OAuthClientInformationFull>;
 }
-````
+```
 
 ## File: src/server/auth/errors.ts
-````typescript
+
+```typescript
 import { OAuthErrorResponse } from "../../shared/auth.js";
 
 /**
@@ -10293,7 +10619,7 @@ export class OAuthError extends Error {
   constructor(
     public readonly errorCode: string,
     message: string,
-    public readonly errorUri?: string
+    public readonly errorUri?: string,
   ) {
     super(message);
     this.name = this.constructor.name;
@@ -10305,7 +10631,7 @@ export class OAuthError extends Error {
   toResponseObject(): OAuthErrorResponse {
     const response: OAuthErrorResponse = {
       error: this.errorCode,
-      error_description: this.message
+      error_description: this.message,
     };
 
     if (this.errorUri) {
@@ -10475,196 +10801,222 @@ export class InsufficientScopeError extends OAuthError {
     super("insufficient_scope", message, errorUri);
   }
 }
-````
+```
 
 ## File: src/server/auth/router.test.ts
-````typescript
-import { mcpAuthRouter, AuthRouterOptions } from './router.js';
-import { OAuthServerProvider, AuthorizationParams } from './provider.js';
-import { OAuthRegisteredClientsStore } from './clients.js';
-import { OAuthClientInformationFull, OAuthTokenRevocationRequest, OAuthTokens } from '../../shared/auth.js';
-import express, { Response } from 'express';
-import supertest from 'supertest';
-import { AuthInfo } from './types.js';
-import { InvalidTokenError } from './errors.js';
 
-describe('MCP Auth Router', () => {
+```typescript
+import { AuthRouterOptions, mcpAuthRouter } from "./router.js";
+import { AuthorizationParams, OAuthServerProvider } from "./provider.js";
+import { OAuthRegisteredClientsStore } from "./clients.js";
+import {
+  OAuthClientInformationFull,
+  OAuthTokenRevocationRequest,
+  OAuthTokens,
+} from "../../shared/auth.js";
+import express, { Response } from "express";
+import supertest from "supertest";
+import { AuthInfo } from "./types.js";
+import { InvalidTokenError } from "./errors.js";
+
+describe("MCP Auth Router", () => {
   // Setup mock provider with full capabilities
   const mockClientStore: OAuthRegisteredClientsStore = {
-    async getClient(clientId: string): Promise<OAuthClientInformationFull | undefined> {
-      if (clientId === 'valid-client') {
+    async getClient(
+      clientId: string,
+    ): Promise<OAuthClientInformationFull | undefined> {
+      if (clientId === "valid-client") {
         return {
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          redirect_uris: ['https://example.com/callback']
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          redirect_uris: ["https://example.com/callback"],
         };
       }
       return undefined;
     },
 
-    async registerClient(client: OAuthClientInformationFull): Promise<OAuthClientInformationFull> {
+    async registerClient(
+      client: OAuthClientInformationFull,
+    ): Promise<OAuthClientInformationFull> {
       return client;
-    }
+    },
   };
 
   const mockProvider: OAuthServerProvider = {
     clientsStore: mockClientStore,
 
-    async authorize(client: OAuthClientInformationFull, params: AuthorizationParams, res: Response): Promise<void> {
+    async authorize(
+      client: OAuthClientInformationFull,
+      params: AuthorizationParams,
+      res: Response,
+    ): Promise<void> {
       const redirectUrl = new URL(params.redirectUri);
-      redirectUrl.searchParams.set('code', 'mock_auth_code');
+      redirectUrl.searchParams.set("code", "mock_auth_code");
       if (params.state) {
-        redirectUrl.searchParams.set('state', params.state);
+        redirectUrl.searchParams.set("state", params.state);
       }
       res.redirect(302, redirectUrl.toString());
     },
 
     async challengeForAuthorizationCode(): Promise<string> {
-      return 'mock_challenge';
+      return "mock_challenge";
     },
 
     async exchangeAuthorizationCode(): Promise<OAuthTokens> {
       return {
-        access_token: 'mock_access_token',
-        token_type: 'bearer',
+        access_token: "mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'mock_refresh_token'
+        refresh_token: "mock_refresh_token",
       };
     },
 
     async exchangeRefreshToken(): Promise<OAuthTokens> {
       return {
-        access_token: 'new_mock_access_token',
-        token_type: 'bearer',
+        access_token: "new_mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'new_mock_refresh_token'
+        refresh_token: "new_mock_refresh_token",
       };
     },
 
     async verifyAccessToken(token: string): Promise<AuthInfo> {
-      if (token === 'valid_token') {
+      if (token === "valid_token") {
         return {
           token,
-          clientId: 'valid-client',
-          scopes: ['read', 'write'],
-          expiresAt: Date.now() / 1000 + 3600
+          clientId: "valid-client",
+          scopes: ["read", "write"],
+          expiresAt: Date.now() / 1000 + 3600,
         };
       }
-      throw new InvalidTokenError('Token is invalid or expired');
+      throw new InvalidTokenError("Token is invalid or expired");
     },
 
-    async revokeToken(_client: OAuthClientInformationFull, _request: OAuthTokenRevocationRequest): Promise<void> {
+    async revokeToken(
+      _client: OAuthClientInformationFull,
+      _request: OAuthTokenRevocationRequest,
+    ): Promise<void> {
       // Success - do nothing in mock
-    }
+    },
   };
 
   // Provider without registration and revocation
   const mockProviderMinimal: OAuthServerProvider = {
     clientsStore: {
-      async getClient(clientId: string): Promise<OAuthClientInformationFull | undefined> {
-        if (clientId === 'valid-client') {
+      async getClient(
+        clientId: string,
+      ): Promise<OAuthClientInformationFull | undefined> {
+        if (clientId === "valid-client") {
           return {
-            client_id: 'valid-client',
-            client_secret: 'valid-secret',
-            redirect_uris: ['https://example.com/callback']
+            client_id: "valid-client",
+            client_secret: "valid-secret",
+            redirect_uris: ["https://example.com/callback"],
           };
         }
         return undefined;
-      }
+      },
     },
 
-    async authorize(client: OAuthClientInformationFull, params: AuthorizationParams, res: Response): Promise<void> {
+    async authorize(
+      client: OAuthClientInformationFull,
+      params: AuthorizationParams,
+      res: Response,
+    ): Promise<void> {
       const redirectUrl = new URL(params.redirectUri);
-      redirectUrl.searchParams.set('code', 'mock_auth_code');
+      redirectUrl.searchParams.set("code", "mock_auth_code");
       if (params.state) {
-        redirectUrl.searchParams.set('state', params.state);
+        redirectUrl.searchParams.set("state", params.state);
       }
       res.redirect(302, redirectUrl.toString());
     },
 
     async challengeForAuthorizationCode(): Promise<string> {
-      return 'mock_challenge';
+      return "mock_challenge";
     },
 
     async exchangeAuthorizationCode(): Promise<OAuthTokens> {
       return {
-        access_token: 'mock_access_token',
-        token_type: 'bearer',
+        access_token: "mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'mock_refresh_token'
+        refresh_token: "mock_refresh_token",
       };
     },
 
     async exchangeRefreshToken(): Promise<OAuthTokens> {
       return {
-        access_token: 'new_mock_access_token',
-        token_type: 'bearer',
+        access_token: "new_mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'new_mock_refresh_token'
+        refresh_token: "new_mock_refresh_token",
       };
     },
 
     async verifyAccessToken(token: string): Promise<AuthInfo> {
-      if (token === 'valid_token') {
+      if (token === "valid_token") {
         return {
           token,
-          clientId: 'valid-client',
-          scopes: ['read'],
-          expiresAt: Date.now() / 1000 + 3600
+          clientId: "valid-client",
+          scopes: ["read"],
+          expiresAt: Date.now() / 1000 + 3600,
         };
       }
-      throw new InvalidTokenError('Token is invalid or expired');
-    }
+      throw new InvalidTokenError("Token is invalid or expired");
+    },
   };
 
-  describe('Router creation', () => {
-    it('throws error for non-HTTPS issuer URL', () => {
+  describe("Router creation", () => {
+    it("throws error for non-HTTPS issuer URL", () => {
       const options: AuthRouterOptions = {
         provider: mockProvider,
-        issuerUrl: new URL('http://auth.example.com')
+        issuerUrl: new URL("http://auth.example.com"),
       };
 
-      expect(() => mcpAuthRouter(options)).toThrow('Issuer URL must be HTTPS');
+      expect(() => mcpAuthRouter(options)).toThrow("Issuer URL must be HTTPS");
     });
 
-    it('allows localhost HTTP for development', () => {
+    it("allows localhost HTTP for development", () => {
       const options: AuthRouterOptions = {
         provider: mockProvider,
-        issuerUrl: new URL('http://localhost:3000')
+        issuerUrl: new URL("http://localhost:3000"),
       };
 
       expect(() => mcpAuthRouter(options)).not.toThrow();
     });
 
-    it('throws error for issuer URL with fragment', () => {
+    it("throws error for issuer URL with fragment", () => {
       const options: AuthRouterOptions = {
         provider: mockProvider,
-        issuerUrl: new URL('https://auth.example.com#fragment')
+        issuerUrl: new URL("https://auth.example.com#fragment"),
       };
 
-      expect(() => mcpAuthRouter(options)).toThrow('Issuer URL must not have a fragment');
+      expect(() => mcpAuthRouter(options)).toThrow(
+        "Issuer URL must not have a fragment",
+      );
     });
 
-    it('throws error for issuer URL with query string', () => {
+    it("throws error for issuer URL with query string", () => {
       const options: AuthRouterOptions = {
         provider: mockProvider,
-        issuerUrl: new URL('https://auth.example.com?param=value')
+        issuerUrl: new URL("https://auth.example.com?param=value"),
       };
 
-      expect(() => mcpAuthRouter(options)).toThrow('Issuer URL must not have a query string');
+      expect(() => mcpAuthRouter(options)).toThrow(
+        "Issuer URL must not have a query string",
+      );
     });
 
-    it('successfully creates router with valid options', () => {
+    it("successfully creates router with valid options", () => {
       const options: AuthRouterOptions = {
         provider: mockProvider,
-        issuerUrl: new URL('https://auth.example.com')
+        issuerUrl: new URL("https://auth.example.com"),
       };
 
       expect(() => mcpAuthRouter(options)).not.toThrow();
     });
   });
 
-  describe('Metadata endpoint', () => {
+  describe("Metadata endpoint", () => {
     let app: express.Express;
 
     beforeEach(() => {
@@ -10672,64 +11024,86 @@ describe('MCP Auth Router', () => {
       app = express();
       const options: AuthRouterOptions = {
         provider: mockProvider,
-        issuerUrl: new URL('https://auth.example.com'),
-        serviceDocumentationUrl: new URL('https://docs.example.com')
+        issuerUrl: new URL("https://auth.example.com"),
+        serviceDocumentationUrl: new URL("https://docs.example.com"),
       };
       app.use(mcpAuthRouter(options));
     });
 
-    it('returns complete metadata for full-featured router', async () => {
+    it("returns complete metadata for full-featured router", async () => {
       const response = await supertest(app)
-        .get('/.well-known/oauth-authorization-server');
+        .get("/.well-known/oauth-authorization-server");
 
       expect(response.status).toBe(200);
 
       // Verify essential fields
-      expect(response.body.issuer).toBe('https://auth.example.com/');
-      expect(response.body.authorization_endpoint).toBe('https://auth.example.com/authorize');
-      expect(response.body.token_endpoint).toBe('https://auth.example.com/token');
-      expect(response.body.registration_endpoint).toBe('https://auth.example.com/register');
-      expect(response.body.revocation_endpoint).toBe('https://auth.example.com/revoke');
+      expect(response.body.issuer).toBe("https://auth.example.com/");
+      expect(response.body.authorization_endpoint).toBe(
+        "https://auth.example.com/authorize",
+      );
+      expect(response.body.token_endpoint).toBe(
+        "https://auth.example.com/token",
+      );
+      expect(response.body.registration_endpoint).toBe(
+        "https://auth.example.com/register",
+      );
+      expect(response.body.revocation_endpoint).toBe(
+        "https://auth.example.com/revoke",
+      );
 
       // Verify supported features
-      expect(response.body.response_types_supported).toEqual(['code']);
-      expect(response.body.grant_types_supported).toEqual(['authorization_code', 'refresh_token']);
-      expect(response.body.code_challenge_methods_supported).toEqual(['S256']);
-      expect(response.body.token_endpoint_auth_methods_supported).toEqual(['client_secret_post']);
-      expect(response.body.revocation_endpoint_auth_methods_supported).toEqual(['client_secret_post']);
+      expect(response.body.response_types_supported).toEqual(["code"]);
+      expect(response.body.grant_types_supported).toEqual([
+        "authorization_code",
+        "refresh_token",
+      ]);
+      expect(response.body.code_challenge_methods_supported).toEqual(["S256"]);
+      expect(response.body.token_endpoint_auth_methods_supported).toEqual([
+        "client_secret_post",
+      ]);
+      expect(response.body.revocation_endpoint_auth_methods_supported).toEqual([
+        "client_secret_post",
+      ]);
 
       // Verify optional fields
-      expect(response.body.service_documentation).toBe('https://docs.example.com/');
+      expect(response.body.service_documentation).toBe(
+        "https://docs.example.com/",
+      );
     });
 
-    it('returns minimal metadata for minimal router', async () => {
+    it("returns minimal metadata for minimal router", async () => {
       // Setup minimal router
       const minimalApp = express();
       const options: AuthRouterOptions = {
         provider: mockProviderMinimal,
-        issuerUrl: new URL('https://auth.example.com')
+        issuerUrl: new URL("https://auth.example.com"),
       };
       minimalApp.use(mcpAuthRouter(options));
 
       const response = await supertest(minimalApp)
-        .get('/.well-known/oauth-authorization-server');
+        .get("/.well-known/oauth-authorization-server");
 
       expect(response.status).toBe(200);
 
       // Verify essential endpoints
-      expect(response.body.issuer).toBe('https://auth.example.com/');
-      expect(response.body.authorization_endpoint).toBe('https://auth.example.com/authorize');
-      expect(response.body.token_endpoint).toBe('https://auth.example.com/token');
+      expect(response.body.issuer).toBe("https://auth.example.com/");
+      expect(response.body.authorization_endpoint).toBe(
+        "https://auth.example.com/authorize",
+      );
+      expect(response.body.token_endpoint).toBe(
+        "https://auth.example.com/token",
+      );
 
       // Verify missing optional endpoints
       expect(response.body.registration_endpoint).toBeUndefined();
       expect(response.body.revocation_endpoint).toBeUndefined();
-      expect(response.body.revocation_endpoint_auth_methods_supported).toBeUndefined();
+      expect(response.body.revocation_endpoint_auth_methods_supported)
+        .toBeUndefined();
       expect(response.body.service_documentation).toBeUndefined();
     });
   });
 
-  describe('Endpoint routing', () => {
+  describe("Endpoint routing", () => {
     let app: express.Express;
 
     beforeEach(() => {
@@ -10737,41 +11111,41 @@ describe('MCP Auth Router', () => {
       app = express();
       const options: AuthRouterOptions = {
         provider: mockProvider,
-        issuerUrl: new URL('https://auth.example.com')
+        issuerUrl: new URL("https://auth.example.com"),
       };
       app.use(mcpAuthRouter(options));
     });
 
-    it('routes to authorization endpoint', async () => {
+    it("routes to authorization endpoint", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256'
+          client_id: "valid-client",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.searchParams.has('code')).toBe(true);
+      expect(location.searchParams.has("code")).toBe(true);
     });
 
-    it('routes to token endpoint', async () => {
+    it("routes to token endpoint", async () => {
       // Setup verifyChallenge mock for token handler
-      jest.mock('pkce-challenge', () => ({
-        verifyChallenge: jest.fn().mockResolvedValue(true)
+      jest.mock("pkce-challenge", () => ({
+        verifyChallenge: jest.fn().mockResolvedValue(true),
       }));
 
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'authorization_code',
-          code: 'valid_code',
-          code_verifier: 'valid_verifier'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "authorization_code",
+          code: "valid_code",
+          code_verifier: "valid_verifier",
         });
 
       // The request will fail in testing due to mocking limitations,
@@ -10779,11 +11153,11 @@ describe('MCP Auth Router', () => {
       expect(response.status).not.toBe(404);
     });
 
-    it('routes to registration endpoint', async () => {
+    it("routes to registration endpoint", async () => {
       const response = await supertest(app)
-        .post('/register')
+        .post("/register")
         .send({
-          redirect_uris: ['https://example.com/callback']
+          redirect_uris: ["https://example.com/callback"],
         });
 
       // The request will fail in testing due to mocking limitations,
@@ -10791,14 +11165,14 @@ describe('MCP Auth Router', () => {
       expect(response.status).not.toBe(404);
     });
 
-    it('routes to revocation endpoint', async () => {
+    it("routes to revocation endpoint", async () => {
       const response = await supertest(app)
-        .post('/revoke')
-        .type('form')
+        .post("/revoke")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          token: 'token_to_revoke'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          token: "token_to_revoke",
         });
 
       // The request will fail in testing due to mocking limitations,
@@ -10806,43 +11180,53 @@ describe('MCP Auth Router', () => {
       expect(response.status).not.toBe(404);
     });
 
-    it('excludes endpoints for unsupported features', async () => {
+    it("excludes endpoints for unsupported features", async () => {
       // Setup minimal router
       const minimalApp = express();
       const options: AuthRouterOptions = {
         provider: mockProviderMinimal,
-        issuerUrl: new URL('https://auth.example.com')
+        issuerUrl: new URL("https://auth.example.com"),
       };
       minimalApp.use(mcpAuthRouter(options));
 
       // Registration should not be available
       const regResponse = await supertest(minimalApp)
-        .post('/register')
+        .post("/register")
         .send({
-          redirect_uris: ['https://example.com/callback']
+          redirect_uris: ["https://example.com/callback"],
         });
       expect(regResponse.status).toBe(404);
 
       // Revocation should not be available
       const revokeResponse = await supertest(minimalApp)
-        .post('/revoke')
+        .post("/revoke")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          token: 'token_to_revoke'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          token: "token_to_revoke",
         });
       expect(revokeResponse.status).toBe(404);
     });
   });
 });
-````
+```
 
 ## File: src/client/sse.ts
-````typescript
-import { EventSource, type ErrorEvent, type EventSourceInit } from "eventsource";
+
+```typescript
+import {
+  type ErrorEvent,
+  EventSource,
+  type EventSourceInit,
+} from "eventsource";
 import { Transport } from "../shared/transport.js";
 import { JSONRPCMessage, JSONRPCMessageSchema } from "../types.js";
-import { auth, AuthResult, OAuthClientProvider, UnauthorizedError } from "./auth.js";
+import {
+  auth,
+  AuthResult,
+  OAuthClientProvider,
+  UnauthorizedError,
+} from "./auth.js";
 
 export class SseError extends Error {
   constructor(
@@ -10860,23 +11244,23 @@ export class SseError extends Error {
 export type SSEClientTransportOptions = {
   /**
    * An OAuth client provider to use for authentication.
-   * 
+   *
    * When an `authProvider` is specified and the SSE connection is started:
    * 1. The connection is attempted with any existing access token from the `authProvider`.
    * 2. If the access token has expired, the `authProvider` is used to refresh the token.
    * 3. If token refresh fails or no access token exists, and auth is required, `OAuthClientProvider.redirectToAuthorization` is called, and an `UnauthorizedError` will be thrown from `connect`/`start`.
-   * 
+   *
    * After the user has finished authorizing via their user agent, and is redirected back to the MCP client application, call `SSEClientTransport.finishAuth` with the authorization code before retrying the connection.
-   * 
+   *
    * If an `authProvider` is not provided, and auth is required, an `UnauthorizedError` will be thrown.
-   * 
+   *
    * `UnauthorizedError` might also be thrown when sending any message over the SSE transport, indicating that the session has expired, and needs to be re-authed and reconnected.
    */
   authProvider?: OAuthClientProvider;
 
   /**
    * Customizes the initial SSE request to the server (the request that begins the stream).
-   * 
+   *
    * NOTE: Setting this property will prevent an `Authorization` header from
    * being automatically attached to the SSE request, if an `authProvider` is
    * also given. This can be worked around by setting the `Authorization` header
@@ -10954,13 +11338,16 @@ export class SSEClientTransport implements Transport {
       this._eventSource = new EventSource(
         this._url.href,
         this._eventSourceInit ?? {
-          fetch: (url, init) => this._commonHeaders().then((headers) => fetch(url, {
-            ...init,
-            headers: {
-              ...headers,
-              Accept: "text/event-stream"
-            }
-          })),
+          fetch: (url, init) =>
+            this._commonHeaders().then((headers) =>
+              fetch(url, {
+                ...init,
+                headers: {
+                  ...headers,
+                  Accept: "text/event-stream",
+                },
+              })
+            ),
         },
       );
       this._abortController = new AbortController();
@@ -11034,7 +11421,10 @@ export class SSEClientTransport implements Transport {
       throw new UnauthorizedError("No auth provider");
     }
 
-    const result = await auth(this._authProvider, { serverUrl: this._url, authorizationCode });
+    const result = await auth(this._authProvider, {
+      serverUrl: this._url,
+      authorizationCode,
+    });
     if (result !== "AUTHORIZED") {
       throw new UnauthorizedError("Failed to authorize");
     }
@@ -11053,7 +11443,10 @@ export class SSEClientTransport implements Transport {
 
     try {
       const commonHeaders = await this._commonHeaders();
-      const headers = new Headers({ ...commonHeaders, ...this._requestInit?.headers });
+      const headers = new Headers({
+        ...commonHeaders,
+        ...this._requestInit?.headers,
+      });
       headers.set("content-type", "application/json");
       const init = {
         ...this._requestInit,
@@ -11066,7 +11459,9 @@ export class SSEClientTransport implements Transport {
       const response = await fetch(this._endpoint, init);
       if (!response.ok) {
         if (response.status === 401 && this._authProvider) {
-          const result = await auth(this._authProvider, { serverUrl: this._url });
+          const result = await auth(this._authProvider, {
+            serverUrl: this._url,
+          });
           if (result !== "AUTHORIZED") {
             throw new UnauthorizedError();
           }
@@ -11086,262 +11481,289 @@ export class SSEClientTransport implements Transport {
     }
   }
 }
-````
+```
 
 ## File: src/server/auth/handlers/revoke.test.ts
-````typescript
-import { revocationHandler, RevocationHandlerOptions } from './revoke.js';
-import { OAuthServerProvider, AuthorizationParams } from '../provider.js';
-import { OAuthRegisteredClientsStore } from '../clients.js';
-import { OAuthClientInformationFull, OAuthTokenRevocationRequest, OAuthTokens } from '../../../shared/auth.js';
-import express, { Response } from 'express';
-import supertest from 'supertest';
-import { AuthInfo } from '../types.js';
-import { InvalidTokenError } from '../errors.js';
 
-describe('Revocation Handler', () => {
+```typescript
+import { revocationHandler, RevocationHandlerOptions } from "./revoke.js";
+import { AuthorizationParams, OAuthServerProvider } from "../provider.js";
+import { OAuthRegisteredClientsStore } from "../clients.js";
+import {
+  OAuthClientInformationFull,
+  OAuthTokenRevocationRequest,
+  OAuthTokens,
+} from "../../../shared/auth.js";
+import express, { Response } from "express";
+import supertest from "supertest";
+import { AuthInfo } from "../types.js";
+import { InvalidTokenError } from "../errors.js";
+
+describe("Revocation Handler", () => {
   // Mock client data
   const validClient: OAuthClientInformationFull = {
-    client_id: 'valid-client',
-    client_secret: 'valid-secret',
-    redirect_uris: ['https://example.com/callback']
+    client_id: "valid-client",
+    client_secret: "valid-secret",
+    redirect_uris: ["https://example.com/callback"],
   };
 
   // Mock client store
   const mockClientStore: OAuthRegisteredClientsStore = {
-    async getClient(clientId: string): Promise<OAuthClientInformationFull | undefined> {
-      if (clientId === 'valid-client') {
+    async getClient(
+      clientId: string,
+    ): Promise<OAuthClientInformationFull | undefined> {
+      if (clientId === "valid-client") {
         return validClient;
       }
       return undefined;
-    }
+    },
   };
 
   // Mock provider with revocation capability
   const mockProviderWithRevocation: OAuthServerProvider = {
     clientsStore: mockClientStore,
 
-    async authorize(client: OAuthClientInformationFull, params: AuthorizationParams, res: Response): Promise<void> {
-      res.redirect('https://example.com/callback?code=mock_auth_code');
+    async authorize(
+      client: OAuthClientInformationFull,
+      params: AuthorizationParams,
+      res: Response,
+    ): Promise<void> {
+      res.redirect("https://example.com/callback?code=mock_auth_code");
     },
 
     async challengeForAuthorizationCode(): Promise<string> {
-      return 'mock_challenge';
+      return "mock_challenge";
     },
 
     async exchangeAuthorizationCode(): Promise<OAuthTokens> {
       return {
-        access_token: 'mock_access_token',
-        token_type: 'bearer',
+        access_token: "mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'mock_refresh_token'
+        refresh_token: "mock_refresh_token",
       };
     },
 
     async exchangeRefreshToken(): Promise<OAuthTokens> {
       return {
-        access_token: 'new_mock_access_token',
-        token_type: 'bearer',
+        access_token: "new_mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'new_mock_refresh_token'
+        refresh_token: "new_mock_refresh_token",
       };
     },
 
     async verifyAccessToken(token: string): Promise<AuthInfo> {
-      if (token === 'valid_token') {
+      if (token === "valid_token") {
         return {
           token,
-          clientId: 'valid-client',
-          scopes: ['read', 'write'],
-          expiresAt: Date.now() / 1000 + 3600
+          clientId: "valid-client",
+          scopes: ["read", "write"],
+          expiresAt: Date.now() / 1000 + 3600,
         };
       }
-      throw new InvalidTokenError('Token is invalid or expired');
+      throw new InvalidTokenError("Token is invalid or expired");
     },
 
-    async revokeToken(_client: OAuthClientInformationFull, _request: OAuthTokenRevocationRequest): Promise<void> {
+    async revokeToken(
+      _client: OAuthClientInformationFull,
+      _request: OAuthTokenRevocationRequest,
+    ): Promise<void> {
       // Success - do nothing in mock
-    }
+    },
   };
 
   // Mock provider without revocation capability
   const mockProviderWithoutRevocation: OAuthServerProvider = {
     clientsStore: mockClientStore,
 
-    async authorize(client: OAuthClientInformationFull, params: AuthorizationParams, res: Response): Promise<void> {
-      res.redirect('https://example.com/callback?code=mock_auth_code');
+    async authorize(
+      client: OAuthClientInformationFull,
+      params: AuthorizationParams,
+      res: Response,
+    ): Promise<void> {
+      res.redirect("https://example.com/callback?code=mock_auth_code");
     },
 
     async challengeForAuthorizationCode(): Promise<string> {
-      return 'mock_challenge';
+      return "mock_challenge";
     },
 
     async exchangeAuthorizationCode(): Promise<OAuthTokens> {
       return {
-        access_token: 'mock_access_token',
-        token_type: 'bearer',
+        access_token: "mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'mock_refresh_token'
+        refresh_token: "mock_refresh_token",
       };
     },
 
     async exchangeRefreshToken(): Promise<OAuthTokens> {
       return {
-        access_token: 'new_mock_access_token',
-        token_type: 'bearer',
+        access_token: "new_mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'new_mock_refresh_token'
+        refresh_token: "new_mock_refresh_token",
       };
     },
 
     async verifyAccessToken(token: string): Promise<AuthInfo> {
-      if (token === 'valid_token') {
+      if (token === "valid_token") {
         return {
           token,
-          clientId: 'valid-client',
-          scopes: ['read', 'write'],
-          expiresAt: Date.now() / 1000 + 3600
+          clientId: "valid-client",
+          scopes: ["read", "write"],
+          expiresAt: Date.now() / 1000 + 3600,
         };
       }
-      throw new InvalidTokenError('Token is invalid or expired');
-    }
+      throw new InvalidTokenError("Token is invalid or expired");
+    },
     // No revokeToken method
   };
 
-  describe('Handler creation', () => {
-    it('throws error if provider does not support token revocation', () => {
-      const options: RevocationHandlerOptions = { provider: mockProviderWithoutRevocation };
-      expect(() => revocationHandler(options)).toThrow('does not support revoking tokens');
+  describe("Handler creation", () => {
+    it("throws error if provider does not support token revocation", () => {
+      const options: RevocationHandlerOptions = {
+        provider: mockProviderWithoutRevocation,
+      };
+      expect(() => revocationHandler(options)).toThrow(
+        "does not support revoking tokens",
+      );
     });
 
-    it('creates handler if provider supports token revocation', () => {
-      const options: RevocationHandlerOptions = { provider: mockProviderWithRevocation };
+    it("creates handler if provider supports token revocation", () => {
+      const options: RevocationHandlerOptions = {
+        provider: mockProviderWithRevocation,
+      };
       expect(() => revocationHandler(options)).not.toThrow();
     });
   });
 
-  describe('Request handling', () => {
+  describe("Request handling", () => {
     let app: express.Express;
     let spyRevokeToken: jest.SpyInstance;
 
     beforeEach(() => {
       // Setup express app with revocation handler
       app = express();
-      const options: RevocationHandlerOptions = { provider: mockProviderWithRevocation };
-      app.use('/revoke', revocationHandler(options));
+      const options: RevocationHandlerOptions = {
+        provider: mockProviderWithRevocation,
+      };
+      app.use("/revoke", revocationHandler(options));
 
       // Spy on the revokeToken method
-      spyRevokeToken = jest.spyOn(mockProviderWithRevocation, 'revokeToken');
+      spyRevokeToken = jest.spyOn(mockProviderWithRevocation, "revokeToken");
     });
 
     afterEach(() => {
       spyRevokeToken.mockRestore();
     });
 
-    it('requires POST method', async () => {
+    it("requires POST method", async () => {
       const response = await supertest(app)
-        .get('/revoke')
+        .get("/revoke")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          token: 'token_to_revoke'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          token: "token_to_revoke",
         });
 
       expect(response.status).toBe(405);
-      expect(response.headers.allow).toBe('POST');
+      expect(response.headers.allow).toBe("POST");
       expect(response.body).toEqual({
         error: "method_not_allowed",
-        error_description: "The method GET is not allowed for this endpoint"
+        error_description: "The method GET is not allowed for this endpoint",
       });
       expect(spyRevokeToken).not.toHaveBeenCalled();
     });
 
-    it('requires token parameter', async () => {
+    it("requires token parameter", async () => {
       const response = await supertest(app)
-        .post('/revoke')
-        .type('form')
+        .post("/revoke")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
           // Missing token
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_request');
+      expect(response.body.error).toBe("invalid_request");
       expect(spyRevokeToken).not.toHaveBeenCalled();
     });
 
-    it('authenticates client before revoking token', async () => {
+    it("authenticates client before revoking token", async () => {
       const response = await supertest(app)
-        .post('/revoke')
-        .type('form')
+        .post("/revoke")
+        .type("form")
         .send({
-          client_id: 'invalid-client',
-          client_secret: 'wrong-secret',
-          token: 'token_to_revoke'
+          client_id: "invalid-client",
+          client_secret: "wrong-secret",
+          token: "token_to_revoke",
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_client');
+      expect(response.body.error).toBe("invalid_client");
       expect(spyRevokeToken).not.toHaveBeenCalled();
     });
 
-    it('successfully revokes token', async () => {
+    it("successfully revokes token", async () => {
       const response = await supertest(app)
-        .post('/revoke')
-        .type('form')
+        .post("/revoke")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          token: 'token_to_revoke'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          token: "token_to_revoke",
         });
 
       expect(response.status).toBe(200);
       expect(response.body).toEqual({}); // Empty response on success
       expect(spyRevokeToken).toHaveBeenCalledTimes(1);
       expect(spyRevokeToken).toHaveBeenCalledWith(validClient, {
-        token: 'token_to_revoke'
+        token: "token_to_revoke",
       });
     });
 
-    it('accepts optional token_type_hint', async () => {
+    it("accepts optional token_type_hint", async () => {
       const response = await supertest(app)
-        .post('/revoke')
-        .type('form')
+        .post("/revoke")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          token: 'token_to_revoke',
-          token_type_hint: 'refresh_token'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          token: "token_to_revoke",
+          token_type_hint: "refresh_token",
         });
 
       expect(response.status).toBe(200);
       expect(spyRevokeToken).toHaveBeenCalledWith(validClient, {
-        token: 'token_to_revoke',
-        token_type_hint: 'refresh_token'
+        token: "token_to_revoke",
+        token_type_hint: "refresh_token",
       });
     });
 
-    it('includes CORS headers in response', async () => {
+    it("includes CORS headers in response", async () => {
       const response = await supertest(app)
-        .post('/revoke')
-        .type('form')
-        .set('Origin', 'https://example.com')
+        .post("/revoke")
+        .type("form")
+        .set("Origin", "https://example.com")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          token: 'token_to_revoke'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          token: "token_to_revoke",
         });
 
-      expect(response.header['access-control-allow-origin']).toBe('*');
+      expect(response.header["access-control-allow-origin"]).toBe("*");
     });
   });
 });
-````
+```
 
 ## File: src/shared/protocol.ts
-````typescript
-import { ZodLiteral, ZodObject, ZodType, z } from "zod";
+
+```typescript
+import { z, ZodLiteral, ZodObject, ZodType } from "zod";
 import {
   CancelledNotificationSchema,
   ClientCapabilities,
@@ -11527,14 +11949,14 @@ export abstract class Protocol<
     messageId: number,
     timeout: number,
     maxTotalTimeout: number | undefined,
-    onTimeout: () => void
+    onTimeout: () => void,
   ) {
     this._timeoutInfo.set(messageId, {
       timeoutId: setTimeout(onTimeout, timeout),
       startTime: Date.now(),
       timeout,
       maxTotalTimeout,
-      onTimeout
+      onTimeout,
     });
   }
 
@@ -11548,7 +11970,7 @@ export abstract class Protocol<
       throw new McpError(
         ErrorCode.RequestTimeout,
         "Maximum total timeout exceeded",
-        { maxTotalTimeout: info.maxTotalTimeout, totalElapsed }
+        { maxTotalTimeout: info.maxTotalTimeout, totalElapsed },
       );
     }
 
@@ -11611,8 +12033,7 @@ export abstract class Protocol<
   }
 
   private _onnotification(notification: JSONRPCNotification): void {
-    const handler =
-      this._notificationHandlers.get(notification.method) ??
+    const handler = this._notificationHandlers.get(notification.method) ??
       this.fallbackNotificationHandler;
 
     // Ignore notifications not being subscribed to.
@@ -11626,13 +12047,13 @@ export abstract class Protocol<
       .catch((error) =>
         this._onerror(
           new Error(`Uncaught error in notification handler: ${error}`),
-        ),
+        )
       );
   }
 
   private _onrequest(request: JSONRPCRequest): void {
-    const handler =
-      this._requestHandlers.get(request.method) ?? this.fallbackRequestHandler;
+    const handler = this._requestHandlers.get(request.method) ??
+      this.fallbackRequestHandler;
 
     if (handler === undefined) {
       this._transport
@@ -11647,7 +12068,7 @@ export abstract class Protocol<
         .catch((error) =>
           this._onerror(
             new Error(`Failed to send an error response: ${error}`),
-          ),
+          )
         );
       return;
     }
@@ -11694,7 +12115,7 @@ export abstract class Protocol<
         },
       )
       .catch((error) =>
-        this._onerror(new Error(`Failed to send response: ${error}`)),
+        this._onerror(new Error(`Failed to send response: ${error}`))
       )
       .finally(() => {
         this._requestHandlerAbortControllers.delete(request.id);
@@ -11704,10 +12125,16 @@ export abstract class Protocol<
   private _onprogress(notification: ProgressNotification): void {
     const { progressToken, ...params } = notification.params;
     const messageId = Number(progressToken);
-    
+
     const handler = this._progressHandlers.get(messageId);
     if (!handler) {
-      this._onerror(new Error(`Received a progress notification for an unknown token: ${JSON.stringify(notification)}`));
+      this._onerror(
+        new Error(
+          `Received a progress notification for an unknown token: ${
+            JSON.stringify(notification)
+          }`,
+        ),
+      );
       return;
     }
 
@@ -11730,7 +12157,9 @@ export abstract class Protocol<
     if (handler === undefined) {
       this._onerror(
         new Error(
-          `Received a response for an unknown message ID: ${JSON.stringify(response)}`,
+          `Received a response for an unknown message ID: ${
+            JSON.stringify(response)
+          }`,
         ),
       );
       return;
@@ -11840,7 +12269,7 @@ export abstract class Protocol<
             },
           })
           .catch((error) =>
-            this._onerror(new Error(`Failed to send cancellation: ${error}`)),
+            this._onerror(new Error(`Failed to send cancellation: ${error}`))
           );
 
         reject(reason);
@@ -11868,13 +12297,21 @@ export abstract class Protocol<
       });
 
       const timeout = options?.timeout ?? DEFAULT_REQUEST_TIMEOUT_MSEC;
-      const timeoutHandler = () => cancel(new McpError(
-        ErrorCode.RequestTimeout,
-        "Request timed out",
-        { timeout }
-      ));
+      const timeoutHandler = () =>
+        cancel(
+          new McpError(
+            ErrorCode.RequestTimeout,
+            "Request timed out",
+            { timeout },
+          ),
+        );
 
-      this._setupTimeout(messageId, timeout, options?.maxTotalTimeout, timeoutHandler);
+      this._setupTimeout(
+        messageId,
+        timeout,
+        options?.maxTotalTimeout,
+        timeoutHandler,
+      );
 
       this._transport.send(jsonrpcRequest).catch((error) => {
         this._cleanupTimeout(messageId);
@@ -11919,8 +12356,10 @@ export abstract class Protocol<
   ): void {
     const method = requestSchema.shape.method.value;
     this.assertRequestHandlerCapability(method);
-    this._requestHandlers.set(method, (request, extra) =>
-      Promise.resolve(handler(requestSchema.parse(request), extra)),
+    this._requestHandlers.set(
+      method,
+      (request, extra) =>
+        Promise.resolve(handler(requestSchema.parse(request), extra)),
     );
   }
 
@@ -11985,43 +12424,50 @@ export function mergeCapabilities<
     { ...base },
   );
 }
-````
+```
 
 ## File: src/server/auth/handlers/token.test.ts
-````typescript
-import { tokenHandler, TokenHandlerOptions } from './token.js';
-import { OAuthServerProvider, AuthorizationParams } from '../provider.js';
-import { OAuthRegisteredClientsStore } from '../clients.js';
-import { OAuthClientInformationFull, OAuthTokenRevocationRequest, OAuthTokens } from '../../../shared/auth.js';
-import express, { Response } from 'express';
-import supertest from 'supertest';
-import * as pkceChallenge from 'pkce-challenge';
-import { InvalidGrantError, InvalidTokenError } from '../errors.js';
-import { AuthInfo } from '../types.js';
+
+```typescript
+import { tokenHandler, TokenHandlerOptions } from "./token.js";
+import { AuthorizationParams, OAuthServerProvider } from "../provider.js";
+import { OAuthRegisteredClientsStore } from "../clients.js";
+import {
+  OAuthClientInformationFull,
+  OAuthTokenRevocationRequest,
+  OAuthTokens,
+} from "../../../shared/auth.js";
+import express, { Response } from "express";
+import supertest from "supertest";
+import * as pkceChallenge from "pkce-challenge";
+import { InvalidGrantError, InvalidTokenError } from "../errors.js";
+import { AuthInfo } from "../types.js";
 
 // Mock pkce-challenge
-jest.mock('pkce-challenge', () => ({
+jest.mock("pkce-challenge", () => ({
   verifyChallenge: jest.fn().mockImplementation(async (verifier, challenge) => {
-    return verifier === 'valid_verifier' && challenge === 'mock_challenge';
-  })
+    return verifier === "valid_verifier" && challenge === "mock_challenge";
+  }),
 }));
 
-describe('Token Handler', () => {
+describe("Token Handler", () => {
   // Mock client data
   const validClient: OAuthClientInformationFull = {
-    client_id: 'valid-client',
-    client_secret: 'valid-secret',
-    redirect_uris: ['https://example.com/callback']
+    client_id: "valid-client",
+    client_secret: "valid-secret",
+    redirect_uris: ["https://example.com/callback"],
   };
 
   // Mock client store
   const mockClientStore: OAuthRegisteredClientsStore = {
-    async getClient(clientId: string): Promise<OAuthClientInformationFull | undefined> {
-      if (clientId === 'valid-client') {
+    async getClient(
+      clientId: string,
+    ): Promise<OAuthClientInformationFull | undefined> {
+      if (clientId === "valid-client") {
         return validClient;
       }
       return undefined;
-    }
+    },
   };
 
   // Mock provider
@@ -12033,346 +12479,373 @@ describe('Token Handler', () => {
     mockProvider = {
       clientsStore: mockClientStore,
 
-      async authorize(client: OAuthClientInformationFull, params: AuthorizationParams, res: Response): Promise<void> {
-        res.redirect('https://example.com/callback?code=mock_auth_code');
+      async authorize(
+        client: OAuthClientInformationFull,
+        params: AuthorizationParams,
+        res: Response,
+      ): Promise<void> {
+        res.redirect("https://example.com/callback?code=mock_auth_code");
       },
 
-      async challengeForAuthorizationCode(client: OAuthClientInformationFull, authorizationCode: string): Promise<string> {
-        if (authorizationCode === 'valid_code') {
-          return 'mock_challenge';
-        } else if (authorizationCode === 'expired_code') {
-          throw new InvalidGrantError('The authorization code has expired');
+      async challengeForAuthorizationCode(
+        client: OAuthClientInformationFull,
+        authorizationCode: string,
+      ): Promise<string> {
+        if (authorizationCode === "valid_code") {
+          return "mock_challenge";
+        } else if (authorizationCode === "expired_code") {
+          throw new InvalidGrantError("The authorization code has expired");
         }
-        throw new InvalidGrantError('The authorization code is invalid');
+        throw new InvalidGrantError("The authorization code is invalid");
       },
 
-      async exchangeAuthorizationCode(client: OAuthClientInformationFull, authorizationCode: string): Promise<OAuthTokens> {
-        if (authorizationCode === 'valid_code') {
+      async exchangeAuthorizationCode(
+        client: OAuthClientInformationFull,
+        authorizationCode: string,
+      ): Promise<OAuthTokens> {
+        if (authorizationCode === "valid_code") {
           return {
-            access_token: 'mock_access_token',
-            token_type: 'bearer',
+            access_token: "mock_access_token",
+            token_type: "bearer",
             expires_in: 3600,
-            refresh_token: 'mock_refresh_token'
+            refresh_token: "mock_refresh_token",
           };
         }
-        throw new InvalidGrantError('The authorization code is invalid or has expired');
+        throw new InvalidGrantError(
+          "The authorization code is invalid or has expired",
+        );
       },
 
-      async exchangeRefreshToken(client: OAuthClientInformationFull, refreshToken: string, scopes?: string[]): Promise<OAuthTokens> {
-        if (refreshToken === 'valid_refresh_token') {
+      async exchangeRefreshToken(
+        client: OAuthClientInformationFull,
+        refreshToken: string,
+        scopes?: string[],
+      ): Promise<OAuthTokens> {
+        if (refreshToken === "valid_refresh_token") {
           const response: OAuthTokens = {
-            access_token: 'new_mock_access_token',
-            token_type: 'bearer',
+            access_token: "new_mock_access_token",
+            token_type: "bearer",
             expires_in: 3600,
-            refresh_token: 'new_mock_refresh_token'
+            refresh_token: "new_mock_refresh_token",
           };
 
           if (scopes) {
-            response.scope = scopes.join(' ');
+            response.scope = scopes.join(" ");
           }
 
           return response;
         }
-        throw new InvalidGrantError('The refresh token is invalid or has expired');
+        throw new InvalidGrantError(
+          "The refresh token is invalid or has expired",
+        );
       },
 
       async verifyAccessToken(token: string): Promise<AuthInfo> {
-        if (token === 'valid_token') {
+        if (token === "valid_token") {
           return {
             token,
-            clientId: 'valid-client',
-            scopes: ['read', 'write'],
-            expiresAt: Date.now() / 1000 + 3600
+            clientId: "valid-client",
+            scopes: ["read", "write"],
+            expiresAt: Date.now() / 1000 + 3600,
           };
         }
-        throw new InvalidTokenError('Token is invalid or expired');
+        throw new InvalidTokenError("Token is invalid or expired");
       },
 
-      async revokeToken(_client: OAuthClientInformationFull, _request: OAuthTokenRevocationRequest): Promise<void> {
+      async revokeToken(
+        _client: OAuthClientInformationFull,
+        _request: OAuthTokenRevocationRequest,
+      ): Promise<void> {
         // Do nothing in mock
-      }
+      },
     };
 
     // Mock PKCE verification
     (pkceChallenge.verifyChallenge as jest.Mock).mockImplementation(
       async (verifier: string, challenge: string) => {
-        return verifier === 'valid_verifier' && challenge === 'mock_challenge';
-      }
+        return verifier === "valid_verifier" && challenge === "mock_challenge";
+      },
     );
 
     // Setup express app with token handler
     app = express();
     const options: TokenHandlerOptions = { provider: mockProvider };
-    app.use('/token', tokenHandler(options));
+    app.use("/token", tokenHandler(options));
   });
 
-  describe('Basic request validation', () => {
-    it('requires POST method', async () => {
+  describe("Basic request validation", () => {
+    it("requires POST method", async () => {
       const response = await supertest(app)
-        .get('/token')
+        .get("/token")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'authorization_code'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "authorization_code",
         });
 
       expect(response.status).toBe(405);
-      expect(response.headers.allow).toBe('POST');
+      expect(response.headers.allow).toBe("POST");
       expect(response.body).toEqual({
         error: "method_not_allowed",
-        error_description: "The method GET is not allowed for this endpoint"
+        error_description: "The method GET is not allowed for this endpoint",
       });
     });
 
-    it('requires grant_type parameter', async () => {
+    it("requires grant_type parameter", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
           // Missing grant_type
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_request');
+      expect(response.body.error).toBe("invalid_request");
     });
 
-    it('rejects unsupported grant types', async () => {
+    it("rejects unsupported grant types", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'password' // Unsupported grant type
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "password", // Unsupported grant type
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('unsupported_grant_type');
+      expect(response.body.error).toBe("unsupported_grant_type");
     });
   });
 
-  describe('Client authentication', () => {
-    it('requires valid client credentials', async () => {
+  describe("Client authentication", () => {
+    it("requires valid client credentials", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'invalid-client',
-          client_secret: 'wrong-secret',
-          grant_type: 'authorization_code'
+          client_id: "invalid-client",
+          client_secret: "wrong-secret",
+          grant_type: "authorization_code",
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_client');
+      expect(response.body.error).toBe("invalid_client");
     });
 
-    it('accepts valid client credentials', async () => {
+    it("accepts valid client credentials", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'authorization_code',
-          code: 'valid_code',
-          code_verifier: 'valid_verifier'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "authorization_code",
+          code: "valid_code",
+          code_verifier: "valid_verifier",
         });
 
       expect(response.status).toBe(200);
     });
   });
 
-  describe('Authorization code grant', () => {
-    it('requires code parameter', async () => {
+  describe("Authorization code grant", () => {
+    it("requires code parameter", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'authorization_code',
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "authorization_code",
           // Missing code
-          code_verifier: 'valid_verifier'
+          code_verifier: "valid_verifier",
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_request');
+      expect(response.body.error).toBe("invalid_request");
     });
 
-    it('requires code_verifier parameter', async () => {
+    it("requires code_verifier parameter", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'authorization_code',
-          code: 'valid_code'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "authorization_code",
+          code: "valid_code",
           // Missing code_verifier
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_request');
+      expect(response.body.error).toBe("invalid_request");
     });
 
-    it('verifies code_verifier against challenge', async () => {
+    it("verifies code_verifier against challenge", async () => {
       // Setup invalid verifier
       (pkceChallenge.verifyChallenge as jest.Mock).mockResolvedValueOnce(false);
 
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'authorization_code',
-          code: 'valid_code',
-          code_verifier: 'invalid_verifier'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "authorization_code",
+          code: "valid_code",
+          code_verifier: "invalid_verifier",
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_grant');
-      expect(response.body.error_description).toContain('code_verifier');
+      expect(response.body.error).toBe("invalid_grant");
+      expect(response.body.error_description).toContain("code_verifier");
     });
 
-    it('rejects expired or invalid authorization codes', async () => {
+    it("rejects expired or invalid authorization codes", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'authorization_code',
-          code: 'expired_code',
-          code_verifier: 'valid_verifier'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "authorization_code",
+          code: "expired_code",
+          code_verifier: "valid_verifier",
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_grant');
+      expect(response.body.error).toBe("invalid_grant");
     });
 
-    it('returns tokens for valid code exchange', async () => {
+    it("returns tokens for valid code exchange", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'authorization_code',
-          code: 'valid_code',
-          code_verifier: 'valid_verifier'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "authorization_code",
+          code: "valid_code",
+          code_verifier: "valid_verifier",
         });
 
       expect(response.status).toBe(200);
-      expect(response.body.access_token).toBe('mock_access_token');
-      expect(response.body.token_type).toBe('bearer');
+      expect(response.body.access_token).toBe("mock_access_token");
+      expect(response.body.token_type).toBe("bearer");
       expect(response.body.expires_in).toBe(3600);
-      expect(response.body.refresh_token).toBe('mock_refresh_token');
+      expect(response.body.refresh_token).toBe("mock_refresh_token");
     });
   });
 
-  describe('Refresh token grant', () => {
-    it('requires refresh_token parameter', async () => {
+  describe("Refresh token grant", () => {
+    it("requires refresh_token parameter", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'refresh_token'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "refresh_token",
           // Missing refresh_token
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_request');
+      expect(response.body.error).toBe("invalid_request");
     });
 
-    it('rejects invalid refresh tokens', async () => {
+    it("rejects invalid refresh tokens", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'refresh_token',
-          refresh_token: 'invalid_refresh_token'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "refresh_token",
+          refresh_token: "invalid_refresh_token",
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toBe('invalid_grant');
+      expect(response.body.error).toBe("invalid_grant");
     });
 
-    it('returns new tokens for valid refresh token', async () => {
+    it("returns new tokens for valid refresh token", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'refresh_token',
-          refresh_token: 'valid_refresh_token'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "refresh_token",
+          refresh_token: "valid_refresh_token",
         });
 
       expect(response.status).toBe(200);
-      expect(response.body.access_token).toBe('new_mock_access_token');
-      expect(response.body.token_type).toBe('bearer');
+      expect(response.body.access_token).toBe("new_mock_access_token");
+      expect(response.body.token_type).toBe("bearer");
       expect(response.body.expires_in).toBe(3600);
-      expect(response.body.refresh_token).toBe('new_mock_refresh_token');
+      expect(response.body.refresh_token).toBe("new_mock_refresh_token");
     });
 
-    it('respects requested scopes on refresh', async () => {
+    it("respects requested scopes on refresh", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
+        .post("/token")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'refresh_token',
-          refresh_token: 'valid_refresh_token',
-          scope: 'profile email'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "refresh_token",
+          refresh_token: "valid_refresh_token",
+          scope: "profile email",
         });
 
       expect(response.status).toBe(200);
-      expect(response.body.scope).toBe('profile email');
+      expect(response.body.scope).toBe("profile email");
     });
   });
 
-  describe('CORS support', () => {
-    it('includes CORS headers in response', async () => {
+  describe("CORS support", () => {
+    it("includes CORS headers in response", async () => {
       const response = await supertest(app)
-        .post('/token')
-        .type('form')
-        .set('Origin', 'https://example.com')
+        .post("/token")
+        .type("form")
+        .set("Origin", "https://example.com")
         .send({
-          client_id: 'valid-client',
-          client_secret: 'valid-secret',
-          grant_type: 'authorization_code',
-          code: 'valid_code',
-          code_verifier: 'valid_verifier'
+          client_id: "valid-client",
+          client_secret: "valid-secret",
+          grant_type: "authorization_code",
+          code: "valid_code",
+          code_verifier: "valid_verifier",
         });
 
-      expect(response.header['access-control-allow-origin']).toBe('*');
+      expect(response.header["access-control-allow-origin"]).toBe("*");
     });
   });
 });
-````
+```
 
 ## File: src/server/auth/middleware/clientAuth.ts
-````typescript
+
+```typescript
 import { z } from "zod";
 import { RequestHandler } from "express";
 import { OAuthRegisteredClientsStore } from "../clients.js";
 import { OAuthClientInformationFull } from "../../../shared/auth.js";
-import { InvalidRequestError, InvalidClientError, ServerError, OAuthError } from "../errors.js";
+import {
+  InvalidClientError,
+  InvalidRequestError,
+  OAuthError,
+  ServerError,
+} from "../errors.js";
 
 export type ClientAuthenticationMiddlewareOptions = {
   /**
    * A store used to read information about registered OAuth clients.
    */
   clientsStore: OAuthRegisteredClientsStore;
-}
+};
 
 const ClientAuthenticatedRequestSchema = z.object({
   client_id: z.string(),
@@ -12388,7 +12861,9 @@ declare module "express-serve-static-core" {
   }
 }
 
-export function authenticateClient({ clientsStore }: ClientAuthenticationMiddlewareOptions): RequestHandler {
+export function authenticateClient(
+  { clientsStore }: ClientAuthenticationMiddlewareOptions,
+): RequestHandler {
   return async (req, res, next) => {
     try {
       const result = ClientAuthenticatedRequestSchema.safeParse(req.body);
@@ -12415,7 +12890,10 @@ export function authenticateClient({ clientsStore }: ClientAuthenticationMiddlew
         }
 
         // Check if client_secret has expired
-        if (client.client_secret_expires_at && client.client_secret_expires_at < Math.floor(Date.now() / 1000)) {
+        if (
+          client.client_secret_expires_at &&
+          client.client_secret_expires_at < Math.floor(Date.now() / 1000)
+        ) {
           throw new InvalidClientError("Client secret has expired");
         }
       }
@@ -12432,12 +12910,13 @@ export function authenticateClient({ clientsStore }: ClientAuthenticationMiddlew
         res.status(500).json(serverError.toResponseObject());
       }
     }
-  }
+  };
 }
-````
+```
 
 ## File: src/client/sse.test.ts
-````typescript
+
+```typescript
 import { createServer, type IncomingMessage, type Server } from "http";
 import { AddressInfo } from "net";
 import { JSONRPCMessage } from "../types.js";
@@ -12740,9 +13219,16 @@ describe("SSEClientTransport", () => {
 
     beforeEach(() => {
       mockAuthProvider = {
-        get redirectUrl() { return "http://localhost/callback"; },
-        get clientMetadata() { return { redirect_uris: ["http://localhost/callback"] }; },
-        clientInformation: jest.fn(() => ({ client_id: "test-client-id", client_secret: "test-client-secret" })),
+        get redirectUrl() {
+          return "http://localhost/callback";
+        },
+        get clientMetadata() {
+          return { redirect_uris: ["http://localhost/callback"] };
+        },
+        clientInformation: jest.fn(() => ({
+          client_id: "test-client-id",
+          client_secret: "test-client-secret",
+        })),
         tokens: jest.fn(),
         saveTokens: jest.fn(),
         redirectToAuthorization: jest.fn(),
@@ -12754,7 +13240,7 @@ describe("SSEClientTransport", () => {
     it("attaches auth header from provider on SSE connection", async () => {
       mockAuthProvider.tokens.mockResolvedValue({
         access_token: "test-token",
-        token_type: "Bearer"
+        token_type: "Bearer",
       });
 
       transport = new SSEClientTransport(baseUrl, {
@@ -12770,7 +13256,7 @@ describe("SSEClientTransport", () => {
     it("attaches auth header from provider on POST requests", async () => {
       mockAuthProvider.tokens.mockResolvedValue({
         access_token: "test-token",
-        token_type: "Bearer"
+        token_type: "Bearer",
       });
 
       transport = new SSEClientTransport(baseUrl, {
@@ -12805,7 +13291,7 @@ describe("SSEClientTransport", () => {
         }
       });
 
-      await new Promise<void>(resolve => {
+      await new Promise<void>((resolve) => {
         server.listen(0, "127.0.0.1", () => {
           const addr = server.address() as AddressInfo;
           baseUrl = new URL(`http://127.0.0.1:${addr.port}`);
@@ -12818,7 +13304,9 @@ describe("SSEClientTransport", () => {
       });
 
       await expect(() => transport.start()).rejects.toThrow(UnauthorizedError);
-      expect(mockAuthProvider.redirectToAuthorization.mock.calls).toHaveLength(1);
+      expect(mockAuthProvider.redirectToAuthorization.mock.calls).toHaveLength(
+        1,
+      );
     });
 
     it("attempts auth flow on 401 during POST request", async () => {
@@ -12851,7 +13339,7 @@ describe("SSEClientTransport", () => {
         }
       });
 
-      await new Promise<void>(resolve => {
+      await new Promise<void>((resolve) => {
         server.listen(0, "127.0.0.1", () => {
           const addr = server.address() as AddressInfo;
           baseUrl = new URL(`http://127.0.0.1:${addr.port}`);
@@ -12872,14 +13360,18 @@ describe("SSEClientTransport", () => {
         params: {},
       };
 
-      await expect(() => transport.send(message)).rejects.toThrow(UnauthorizedError);
-      expect(mockAuthProvider.redirectToAuthorization.mock.calls).toHaveLength(1);
+      await expect(() => transport.send(message)).rejects.toThrow(
+        UnauthorizedError,
+      );
+      expect(mockAuthProvider.redirectToAuthorization.mock.calls).toHaveLength(
+        1,
+      );
     });
 
     it("respects custom headers when using auth provider", async () => {
       mockAuthProvider.tokens.mockResolvedValue({
         access_token: "test-token",
-        token_type: "Bearer"
+        token_type: "Bearer",
       });
 
       const customHeaders = {
@@ -12913,7 +13405,7 @@ describe("SSEClientTransport", () => {
       let currentTokens: OAuthTokens = {
         access_token: "expired-token",
         token_type: "Bearer",
-        refresh_token: "refresh-token"
+        refresh_token: "refresh-token",
       };
       mockAuthProvider.tokens.mockImplementation(() => currentTokens);
       mockAuthProvider.saveTokens.mockImplementation((tokens) => {
@@ -12930,18 +13422,22 @@ describe("SSEClientTransport", () => {
         if (req.url === "/token" && req.method === "POST") {
           // Handle token refresh request
           let body = "";
-          req.on("data", chunk => { body += chunk; });
+          req.on("data", (chunk) => {
+            body += chunk;
+          });
           req.on("end", () => {
             const params = new URLSearchParams(body);
-            if (params.get("grant_type") === "refresh_token" &&
+            if (
+              params.get("grant_type") === "refresh_token" &&
               params.get("refresh_token") === "refresh-token" &&
               params.get("client_id") === "test-client-id" &&
-              params.get("client_secret") === "test-client-secret") {
+              params.get("client_secret") === "test-client-secret"
+            ) {
               res.writeHead(200, { "Content-Type": "application/json" });
               res.end(JSON.stringify({
                 access_token: "new-token",
                 token_type: "Bearer",
-                refresh_token: "new-refresh-token"
+                refresh_token: "new-refresh-token",
               }));
             } else {
               res.writeHead(400).end();
@@ -12976,7 +13472,7 @@ describe("SSEClientTransport", () => {
         res.writeHead(401).end();
       });
 
-      await new Promise<void>(resolve => {
+      await new Promise<void>((resolve) => {
         server.listen(0, "127.0.0.1", () => {
           const addr = server.address() as AddressInfo;
           baseUrl = new URL(`http://127.0.0.1:${addr.port}`);
@@ -12993,7 +13489,7 @@ describe("SSEClientTransport", () => {
       expect(mockAuthProvider.saveTokens).toHaveBeenCalledWith({
         access_token: "new-token",
         token_type: "Bearer",
-        refresh_token: "new-refresh-token"
+        refresh_token: "new-refresh-token",
       });
       expect(connectionAttempts).toBe(1);
       expect(lastServerRequest.headers.authorization).toBe("Bearer new-token");
@@ -13004,7 +13500,7 @@ describe("SSEClientTransport", () => {
       let currentTokens: OAuthTokens = {
         access_token: "expired-token",
         token_type: "Bearer",
-        refresh_token: "refresh-token"
+        refresh_token: "refresh-token",
       };
       mockAuthProvider.tokens.mockImplementation(() => currentTokens);
       mockAuthProvider.saveTokens.mockImplementation((tokens) => {
@@ -13021,18 +13517,22 @@ describe("SSEClientTransport", () => {
         if (req.url === "/token" && req.method === "POST") {
           // Handle token refresh request
           let body = "";
-          req.on("data", chunk => { body += chunk; });
+          req.on("data", (chunk) => {
+            body += chunk;
+          });
           req.on("end", () => {
             const params = new URLSearchParams(body);
-            if (params.get("grant_type") === "refresh_token" &&
+            if (
+              params.get("grant_type") === "refresh_token" &&
               params.get("refresh_token") === "refresh-token" &&
               params.get("client_id") === "test-client-id" &&
-              params.get("client_secret") === "test-client-secret") {
+              params.get("client_secret") === "test-client-secret"
+            ) {
               res.writeHead(200, { "Content-Type": "application/json" });
               res.end(JSON.stringify({
                 access_token: "new-token",
                 token_type: "Bearer",
-                refresh_token: "new-refresh-token"
+                refresh_token: "new-refresh-token",
               }));
             } else {
               res.writeHead(400).end();
@@ -13081,7 +13581,7 @@ describe("SSEClientTransport", () => {
         }
       });
 
-      await new Promise<void>(resolve => {
+      await new Promise<void>((resolve) => {
         server.listen(0, "127.0.0.1", () => {
           const addr = server.address() as AddressInfo;
           baseUrl = new URL(`http://127.0.0.1:${addr.port}`);
@@ -13107,7 +13607,7 @@ describe("SSEClientTransport", () => {
       expect(mockAuthProvider.saveTokens).toHaveBeenCalledWith({
         access_token: "new-token",
         token_type: "Bearer",
-        refresh_token: "new-refresh-token"
+        refresh_token: "new-refresh-token",
       });
       expect(postAttempts).toBe(1);
       expect(lastServerRequest.headers.authorization).toBe("Bearer new-token");
@@ -13118,7 +13618,7 @@ describe("SSEClientTransport", () => {
       let currentTokens: OAuthTokens = {
         access_token: "expired-token",
         token_type: "Bearer",
-        refresh_token: "refresh-token"
+        refresh_token: "refresh-token",
       };
       mockAuthProvider.tokens.mockImplementation(() => currentTokens);
       mockAuthProvider.saveTokens.mockImplementation((tokens) => {
@@ -13144,7 +13644,7 @@ describe("SSEClientTransport", () => {
         res.writeHead(401).end();
       });
 
-      await new Promise<void>(resolve => {
+      await new Promise<void>((resolve) => {
         server.listen(0, "127.0.0.1", () => {
           const addr = server.address() as AddressInfo;
           baseUrl = new URL(`http://127.0.0.1:${addr.port}`);
@@ -13161,101 +13661,114 @@ describe("SSEClientTransport", () => {
     });
   });
 });
-````
+```
 
 ## File: src/server/auth/handlers/authorize.test.ts
-````typescript
-import { authorizationHandler, AuthorizationHandlerOptions } from './authorize.js';
-import { OAuthServerProvider, AuthorizationParams } from '../provider.js';
-import { OAuthRegisteredClientsStore } from '../clients.js';
-import { OAuthClientInformationFull, OAuthTokens } from '../../../shared/auth.js';
-import express, { Response } from 'express';
-import supertest from 'supertest';
-import { AuthInfo } from '../types.js';
-import { InvalidTokenError } from '../errors.js';
 
-describe('Authorization Handler', () => {
+```typescript
+import {
+  authorizationHandler,
+  AuthorizationHandlerOptions,
+} from "./authorize.js";
+import { AuthorizationParams, OAuthServerProvider } from "../provider.js";
+import { OAuthRegisteredClientsStore } from "../clients.js";
+import {
+  OAuthClientInformationFull,
+  OAuthTokens,
+} from "../../../shared/auth.js";
+import express, { Response } from "express";
+import supertest from "supertest";
+import { AuthInfo } from "../types.js";
+import { InvalidTokenError } from "../errors.js";
+
+describe("Authorization Handler", () => {
   // Mock client data
   const validClient: OAuthClientInformationFull = {
-    client_id: 'valid-client',
-    client_secret: 'valid-secret',
-    redirect_uris: ['https://example.com/callback'],
-    scope: 'profile email'
+    client_id: "valid-client",
+    client_secret: "valid-secret",
+    redirect_uris: ["https://example.com/callback"],
+    scope: "profile email",
   };
 
   const multiRedirectClient: OAuthClientInformationFull = {
-    client_id: 'multi-redirect-client',
-    client_secret: 'valid-secret',
+    client_id: "multi-redirect-client",
+    client_secret: "valid-secret",
     redirect_uris: [
-      'https://example.com/callback1',
-      'https://example.com/callback2'
+      "https://example.com/callback1",
+      "https://example.com/callback2",
     ],
-    scope: 'profile email'
+    scope: "profile email",
   };
 
   // Mock client store
   const mockClientStore: OAuthRegisteredClientsStore = {
-    async getClient(clientId: string): Promise<OAuthClientInformationFull | undefined> {
-      if (clientId === 'valid-client') {
+    async getClient(
+      clientId: string,
+    ): Promise<OAuthClientInformationFull | undefined> {
+      if (clientId === "valid-client") {
         return validClient;
-      } else if (clientId === 'multi-redirect-client') {
+      } else if (clientId === "multi-redirect-client") {
         return multiRedirectClient;
       }
       return undefined;
-    }
+    },
   };
 
   // Mock provider
   const mockProvider: OAuthServerProvider = {
     clientsStore: mockClientStore,
 
-    async authorize(client: OAuthClientInformationFull, params: AuthorizationParams, res: Response): Promise<void> {
+    async authorize(
+      client: OAuthClientInformationFull,
+      params: AuthorizationParams,
+      res: Response,
+    ): Promise<void> {
       // Mock implementation - redirects to redirectUri with code and state
       const redirectUrl = new URL(params.redirectUri);
-      redirectUrl.searchParams.set('code', 'mock_auth_code');
+      redirectUrl.searchParams.set("code", "mock_auth_code");
       if (params.state) {
-        redirectUrl.searchParams.set('state', params.state);
+        redirectUrl.searchParams.set("state", params.state);
       }
       res.redirect(302, redirectUrl.toString());
     },
 
     async challengeForAuthorizationCode(): Promise<string> {
-      return 'mock_challenge';
+      return "mock_challenge";
     },
 
     async exchangeAuthorizationCode(): Promise<OAuthTokens> {
       return {
-        access_token: 'mock_access_token',
-        token_type: 'bearer',
+        access_token: "mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'mock_refresh_token'
+        refresh_token: "mock_refresh_token",
       };
     },
 
     async exchangeRefreshToken(): Promise<OAuthTokens> {
       return {
-        access_token: 'new_mock_access_token',
-        token_type: 'bearer',
+        access_token: "new_mock_access_token",
+        token_type: "bearer",
         expires_in: 3600,
-        refresh_token: 'new_mock_refresh_token'
+        refresh_token: "new_mock_refresh_token",
       };
     },
 
     async verifyAccessToken(token: string): Promise<AuthInfo> {
-      if (token === 'valid_token') {
+      if (token === "valid_token") {
         return {
           token,
-          clientId: 'valid-client',
-          scopes: ['read', 'write'],
-          expiresAt: Date.now() / 1000 + 3600
+          clientId: "valid-client",
+          scopes: ["read", "write"],
+          expiresAt: Date.now() / 1000 + 3600,
         };
       }
-      throw new InvalidTokenError('Token is invalid or expired');
+      throw new InvalidTokenError("Token is invalid or expired");
     },
 
     async revokeToken(): Promise<void> {
       // Do nothing in mock
-    }
+    },
   };
 
   // Setup express app with handler
@@ -13266,254 +13779,261 @@ describe('Authorization Handler', () => {
     app = express();
     options = { provider: mockProvider };
     const handler = authorizationHandler(options);
-    app.use('/authorize', handler);
+    app.use("/authorize", handler);
   });
 
-  describe('HTTP method validation', () => {
-    it('rejects non-GET/POST methods', async () => {
+  describe("HTTP method validation", () => {
+    it("rejects non-GET/POST methods", async () => {
       const response = await supertest(app)
-        .put('/authorize')
-        .query({ client_id: 'valid-client' });
+        .put("/authorize")
+        .query({ client_id: "valid-client" });
 
       expect(response.status).toBe(405); // Method not allowed response from handler
     });
   });
 
-  describe('Client validation', () => {
-    it('requires client_id parameter', async () => {
+  describe("Client validation", () => {
+    it("requires client_id parameter", async () => {
       const response = await supertest(app)
-        .get('/authorize');
+        .get("/authorize");
 
       expect(response.status).toBe(400);
-      expect(response.text).toContain('client_id');
+      expect(response.text).toContain("client_id");
     });
 
-    it('validates that client exists', async () => {
+    it("validates that client exists", async () => {
       const response = await supertest(app)
-        .get('/authorize')
-        .query({ client_id: 'nonexistent-client' });
+        .get("/authorize")
+        .query({ client_id: "nonexistent-client" });
 
       expect(response.status).toBe(400);
     });
   });
 
-  describe('Redirect URI validation', () => {
-    it('uses the only redirect_uri if client has just one and none provided', async () => {
+  describe("Redirect URI validation", () => {
+    it("uses the only redirect_uri if client has just one and none provided", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256'
+          client_id: "valid-client",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.origin + location.pathname).toBe('https://example.com/callback');
+      expect(location.origin + location.pathname).toBe(
+        "https://example.com/callback",
+      );
     });
 
-    it('requires redirect_uri if client has multiple', async () => {
+    it("requires redirect_uri if client has multiple", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'multi-redirect-client',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256'
+          client_id: "multi-redirect-client",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
         });
 
       expect(response.status).toBe(400);
     });
 
-    it('validates redirect_uri against client registered URIs', async () => {
+    it("validates redirect_uri against client registered URIs", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          redirect_uri: 'https://malicious.com/callback',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256'
+          client_id: "valid-client",
+          redirect_uri: "https://malicious.com/callback",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
         });
 
       expect(response.status).toBe(400);
     });
 
-    it('accepts valid redirect_uri that client registered with', async () => {
+    it("accepts valid redirect_uri that client registered with", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          redirect_uri: 'https://example.com/callback',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256'
+          client_id: "valid-client",
+          redirect_uri: "https://example.com/callback",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.origin + location.pathname).toBe('https://example.com/callback');
+      expect(location.origin + location.pathname).toBe(
+        "https://example.com/callback",
+      );
     });
   });
 
-  describe('Authorization request validation', () => {
-    it('requires response_type=code', async () => {
+  describe("Authorization request validation", () => {
+    it("requires response_type=code", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          redirect_uri: 'https://example.com/callback',
-          response_type: 'token', // invalid - we only support code flow
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256'
+          client_id: "valid-client",
+          redirect_uri: "https://example.com/callback",
+          response_type: "token", // invalid - we only support code flow
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.searchParams.get('error')).toBe('invalid_request');
+      expect(location.searchParams.get("error")).toBe("invalid_request");
     });
 
-    it('requires code_challenge parameter', async () => {
+    it("requires code_challenge parameter", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          redirect_uri: 'https://example.com/callback',
-          response_type: 'code',
-          code_challenge_method: 'S256'
+          client_id: "valid-client",
+          redirect_uri: "https://example.com/callback",
+          response_type: "code",
+          code_challenge_method: "S256",
           // Missing code_challenge
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.searchParams.get('error')).toBe('invalid_request');
+      expect(location.searchParams.get("error")).toBe("invalid_request");
     });
 
-    it('requires code_challenge_method=S256', async () => {
+    it("requires code_challenge_method=S256", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          redirect_uri: 'https://example.com/callback',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'plain' // Only S256 is supported
+          client_id: "valid-client",
+          redirect_uri: "https://example.com/callback",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "plain", // Only S256 is supported
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.searchParams.get('error')).toBe('invalid_request');
+      expect(location.searchParams.get("error")).toBe("invalid_request");
     });
   });
 
-  describe('Scope validation', () => {
-    it('validates requested scopes against client registered scopes', async () => {
+  describe("Scope validation", () => {
+    it("validates requested scopes against client registered scopes", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          redirect_uri: 'https://example.com/callback',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256',
-          scope: 'profile email admin' // 'admin' not in client scopes
+          client_id: "valid-client",
+          redirect_uri: "https://example.com/callback",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
+          scope: "profile email admin", // 'admin' not in client scopes
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.searchParams.get('error')).toBe('invalid_scope');
+      expect(location.searchParams.get("error")).toBe("invalid_scope");
     });
 
-    it('accepts valid scopes subset', async () => {
+    it("accepts valid scopes subset", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          redirect_uri: 'https://example.com/callback',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256',
-          scope: 'profile' // subset of client scopes
+          client_id: "valid-client",
+          redirect_uri: "https://example.com/callback",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
+          scope: "profile", // subset of client scopes
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.searchParams.has('code')).toBe(true);
+      expect(location.searchParams.has("code")).toBe(true);
     });
   });
 
-  describe('Successful authorization', () => {
-    it('handles successful authorization with all parameters', async () => {
+  describe("Successful authorization", () => {
+    it("handles successful authorization with all parameters", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          redirect_uri: 'https://example.com/callback',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256',
-          scope: 'profile email',
-          state: 'xyz789'
+          client_id: "valid-client",
+          redirect_uri: "https://example.com/callback",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
+          scope: "profile email",
+          state: "xyz789",
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.origin + location.pathname).toBe('https://example.com/callback');
-      expect(location.searchParams.get('code')).toBe('mock_auth_code');
-      expect(location.searchParams.get('state')).toBe('xyz789');
+      expect(location.origin + location.pathname).toBe(
+        "https://example.com/callback",
+      );
+      expect(location.searchParams.get("code")).toBe("mock_auth_code");
+      expect(location.searchParams.get("state")).toBe("xyz789");
     });
 
-    it('preserves state parameter in response', async () => {
+    it("preserves state parameter in response", async () => {
       const response = await supertest(app)
-        .get('/authorize')
+        .get("/authorize")
         .query({
-          client_id: 'valid-client',
-          redirect_uri: 'https://example.com/callback',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256',
-          state: 'state-value-123'
+          client_id: "valid-client",
+          redirect_uri: "https://example.com/callback",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
+          state: "state-value-123",
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.searchParams.get('state')).toBe('state-value-123');
+      expect(location.searchParams.get("state")).toBe("state-value-123");
     });
 
-    it('handles POST requests the same as GET', async () => {
+    it("handles POST requests the same as GET", async () => {
       const response = await supertest(app)
-        .post('/authorize')
-        .type('form')
+        .post("/authorize")
+        .type("form")
         .send({
-          client_id: 'valid-client',
-          response_type: 'code',
-          code_challenge: 'challenge123',
-          code_challenge_method: 'S256'
+          client_id: "valid-client",
+          response_type: "code",
+          code_challenge: "challenge123",
+          code_challenge_method: "S256",
         });
 
       expect(response.status).toBe(302);
       const location = new URL(response.header.location);
-      expect(location.searchParams.has('code')).toBe(true);
+      expect(location.searchParams.has("code")).toBe(true);
     });
   });
 });
-````
+```
 
 ## File: src/server/auth/handlers/revoke.ts
-````typescript
+
+```typescript
 import { OAuthServerProvider } from "../provider.js";
 import express, { RequestHandler } from "express";
 import cors from "cors";
 import { authenticateClient } from "../middleware/clientAuth.js";
 import { OAuthTokenRevocationRequestSchema } from "../../../shared/auth.js";
-import { rateLimit, Options as RateLimitOptions } from "express-rate-limit";
+import { Options as RateLimitOptions, rateLimit } from "express-rate-limit";
 import { allowedMethods } from "../middleware/allowedMethods.js";
 import {
   InvalidRequestError,
+  OAuthError,
   ServerError,
   TooManyRequestsError,
-  OAuthError
 } from "../errors.js";
 
 export type RevocationHandlerOptions = {
@@ -13525,7 +14045,9 @@ export type RevocationHandlerOptions = {
   rateLimit?: Partial<RateLimitOptions> | false;
 };
 
-export function revocationHandler({ provider, rateLimit: rateLimitConfig }: RevocationHandlerOptions): RequestHandler {
+export function revocationHandler(
+  { provider, rateLimit: rateLimitConfig }: RevocationHandlerOptions,
+): RequestHandler {
   if (!provider.revokeToken) {
     throw new Error("Auth provider does not support revoking tokens");
   }
@@ -13546,8 +14068,10 @@ export function revocationHandler({ provider, rateLimit: rateLimitConfig }: Revo
       max: 50, // 50 requests per windowMs
       standardHeaders: true,
       legacyHeaders: false,
-      message: new TooManyRequestsError('You have exceeded the rate limit for token revocation requests').toResponseObject(),
-      ...rateLimitConfig
+      message: new TooManyRequestsError(
+        "You have exceeded the rate limit for token revocation requests",
+      ).toResponseObject(),
+      ...rateLimitConfig,
     }));
   }
 
@@ -13555,7 +14079,7 @@ export function revocationHandler({ provider, rateLimit: rateLimitConfig }: Revo
   router.use(authenticateClient({ clientsStore: provider.clientsStore }));
 
   router.post("/", async (req, res) => {
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader("Cache-Control", "no-store");
 
     try {
       const parseResult = OAuthTokenRevocationRequestSchema.safeParse(req.body);
@@ -13586,10 +14110,11 @@ export function revocationHandler({ provider, rateLimit: rateLimitConfig }: Revo
 
   return router;
 }
-````
+```
 
 ## File: src/shared/auth.ts
-````typescript
+
+```typescript
 import { z } from "zod";
 
 /**
@@ -13653,7 +14178,10 @@ export const OAuthErrorResponseSchema = z
  * RFC 7591 OAuth 2.0 Dynamic Client Registration metadata
  */
 export const OAuthClientMetadataSchema = z.object({
-  redirect_uris: z.array(z.string()).refine((uris) => uris.every((uri) => URL.canParse(uri)), { message: "redirect_uris must contain valid URLs" }),
+  redirect_uris: z.array(z.string()).refine(
+    (uris) => uris.every((uri) => URL.canParse(uri)),
+    { message: "redirect_uris must contain valid URLs" },
+  ),
   token_endpoint_auth_method: z.string().optional(),
   grant_types: z.array(z.string()).optional(),
   response_types: z.array(z.string()).optional(),
@@ -13683,7 +14211,9 @@ export const OAuthClientInformationSchema = z.object({
 /**
  * RFC 7591 OAuth 2.0 Dynamic Client Registration full response (client information plus metadata)
  */
-export const OAuthClientInformationFullSchema = OAuthClientMetadataSchema.merge(OAuthClientInformationSchema);
+export const OAuthClientInformationFullSchema = OAuthClientMetadataSchema.merge(
+  OAuthClientInformationSchema,
+);
 
 /**
  * RFC 7591 OAuth 2.0 Dynamic Client Registration error response
@@ -13705,29 +14235,38 @@ export type OAuthMetadata = z.infer<typeof OAuthMetadataSchema>;
 export type OAuthTokens = z.infer<typeof OAuthTokensSchema>;
 export type OAuthErrorResponse = z.infer<typeof OAuthErrorResponseSchema>;
 export type OAuthClientMetadata = z.infer<typeof OAuthClientMetadataSchema>;
-export type OAuthClientInformation = z.infer<typeof OAuthClientInformationSchema>;
-export type OAuthClientInformationFull = z.infer<typeof OAuthClientInformationFullSchema>;
-export type OAuthClientRegistrationError = z.infer<typeof OAuthClientRegistrationErrorSchema>;
-export type OAuthTokenRevocationRequest = z.infer<typeof OAuthTokenRevocationRequestSchema>;
-````
+export type OAuthClientInformation = z.infer<
+  typeof OAuthClientInformationSchema
+>;
+export type OAuthClientInformationFull = z.infer<
+  typeof OAuthClientInformationFullSchema
+>;
+export type OAuthClientRegistrationError = z.infer<
+  typeof OAuthClientRegistrationErrorSchema
+>;
+export type OAuthTokenRevocationRequest = z.infer<
+  typeof OAuthTokenRevocationRequestSchema
+>;
+```
 
 ## File: src/server/auth/handlers/token.ts
-````typescript
+
+```typescript
 import { z } from "zod";
 import express, { RequestHandler } from "express";
 import { OAuthServerProvider } from "../provider.js";
 import cors from "cors";
 import { verifyChallenge } from "pkce-challenge";
 import { authenticateClient } from "../middleware/clientAuth.js";
-import { rateLimit, Options as RateLimitOptions } from "express-rate-limit";
+import { Options as RateLimitOptions, rateLimit } from "express-rate-limit";
 import { allowedMethods } from "../middleware/allowedMethods.js";
 import {
-  InvalidRequestError,
   InvalidGrantError,
-  UnsupportedGrantTypeError,
+  InvalidRequestError,
+  OAuthError,
   ServerError,
   TooManyRequestsError,
-  OAuthError
+  UnsupportedGrantTypeError,
 } from "../errors.js";
 
 export type TokenHandlerOptions = {
@@ -13753,7 +14292,9 @@ const RefreshTokenGrantSchema = z.object({
   scope: z.string().optional(),
 });
 
-export function tokenHandler({ provider, rateLimit: rateLimitConfig }: TokenHandlerOptions): RequestHandler {
+export function tokenHandler(
+  { provider, rateLimit: rateLimitConfig }: TokenHandlerOptions,
+): RequestHandler {
   // Nested router so we can configure middleware and restrict HTTP method
   const router = express.Router();
 
@@ -13767,11 +14308,13 @@ export function tokenHandler({ provider, rateLimit: rateLimitConfig }: TokenHand
   if (rateLimitConfig !== false) {
     router.use(rateLimit({
       windowMs: 15 * 60 * 1000, // 15 minutes
-      max: 50, // 50 requests per windowMs 
+      max: 50, // 50 requests per windowMs
       standardHeaders: true,
       legacyHeaders: false,
-      message: new TooManyRequestsError('You have exceeded the rate limit for token requests').toResponseObject(),
-      ...rateLimitConfig
+      message: new TooManyRequestsError(
+        "You have exceeded the rate limit for token requests",
+      ).toResponseObject(),
+      ...rateLimitConfig,
     }));
   }
 
@@ -13779,7 +14322,7 @@ export function tokenHandler({ provider, rateLimit: rateLimitConfig }: TokenHand
   router.use(authenticateClient({ clientsStore: provider.clientsStore }));
 
   router.post("/", async (req, res) => {
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader("Cache-Control", "no-store");
 
     try {
       const parseResult = TokenRequestSchema.safeParse(req.body);
@@ -13806,9 +14349,14 @@ export function tokenHandler({ provider, rateLimit: rateLimitConfig }: TokenHand
           const { code, code_verifier } = parseResult.data;
 
           // Verify PKCE challenge
-          const codeChallenge = await provider.challengeForAuthorizationCode(client, code);
+          const codeChallenge = await provider.challengeForAuthorizationCode(
+            client,
+            code,
+          );
           if (!(await verifyChallenge(code_verifier, codeChallenge))) {
-            throw new InvalidGrantError("code_verifier does not match the challenge");
+            throw new InvalidGrantError(
+              "code_verifier does not match the challenge",
+            );
           }
 
           const tokens = await provider.exchangeAuthorizationCode(client, code);
@@ -13825,7 +14373,11 @@ export function tokenHandler({ provider, rateLimit: rateLimitConfig }: TokenHand
           const { refresh_token, scope } = parseResult.data;
 
           const scopes = scope?.split(" ");
-          const tokens = await provider.exchangeRefreshToken(client, refresh_token, scopes);
+          const tokens = await provider.exchangeRefreshToken(
+            client,
+            refresh_token,
+            scopes,
+          );
           res.status(200).json(tokens);
           break;
         }
@@ -13835,7 +14387,7 @@ export function tokenHandler({ provider, rateLimit: rateLimitConfig }: TokenHand
 
         default:
           throw new UnsupportedGrantTypeError(
-            "The grant type is not supported by this authorization server."
+            "The grant type is not supported by this authorization server.",
           );
       }
     } catch (error) {
@@ -13852,13 +14404,18 @@ export function tokenHandler({ provider, rateLimit: rateLimitConfig }: TokenHand
 
   return router;
 }
-````
+```
 
 ## File: src/server/auth/provider.ts
-````typescript
+
+```typescript
 import { Response } from "express";
 import { OAuthRegisteredClientsStore } from "./clients.js";
-import { OAuthClientInformationFull, OAuthTokenRevocationRequest, OAuthTokens } from "../../shared/auth.js";
+import {
+  OAuthClientInformationFull,
+  OAuthTokenRevocationRequest,
+  OAuthTokens,
+} from "../../shared/auth.js";
 import { AuthInfo } from "./types.js";
 
 export type AuthorizationParams = {
@@ -13878,28 +14435,42 @@ export interface OAuthServerProvider {
   get clientsStore(): OAuthRegisteredClientsStore;
 
   /**
-   * Begins the authorization flow, which can either be implemented by this server itself or via redirection to a separate authorization server. 
-   * 
+   * Begins the authorization flow, which can either be implemented by this server itself or via redirection to a separate authorization server.
+   *
    * This server must eventually issue a redirect with an authorization response or an error response to the given redirect URI. Per OAuth 2.1:
    * - In the successful case, the redirect MUST include the `code` and `state` (if present) query parameters.
    * - In the error case, the redirect MUST include the `error` query parameter, and MAY include an optional `error_description` query parameter.
    */
-  authorize(client: OAuthClientInformationFull, params: AuthorizationParams, res: Response): Promise<void>;
+  authorize(
+    client: OAuthClientInformationFull,
+    params: AuthorizationParams,
+    res: Response,
+  ): Promise<void>;
 
   /**
    * Returns the `codeChallenge` that was used when the indicated authorization began.
    */
-  challengeForAuthorizationCode(client: OAuthClientInformationFull, authorizationCode: string): Promise<string>;
+  challengeForAuthorizationCode(
+    client: OAuthClientInformationFull,
+    authorizationCode: string,
+  ): Promise<string>;
 
   /**
    * Exchanges an authorization code for an access token.
    */
-  exchangeAuthorizationCode(client: OAuthClientInformationFull, authorizationCode: string): Promise<OAuthTokens>;
+  exchangeAuthorizationCode(
+    client: OAuthClientInformationFull,
+    authorizationCode: string,
+  ): Promise<OAuthTokens>;
 
   /**
    * Exchanges a refresh token for an access token.
    */
-  exchangeRefreshToken(client: OAuthClientInformationFull, refreshToken: string, scopes?: string[]): Promise<OAuthTokens>;
+  exchangeRefreshToken(
+    client: OAuthClientInformationFull,
+    refreshToken: string,
+    scopes?: string[],
+  ): Promise<OAuthTokens>;
 
   /**
    * Verifies an access token and returns information about it.
@@ -13908,21 +14479,25 @@ export interface OAuthServerProvider {
 
   /**
    * Revokes an access or refresh token. If unimplemented, token revocation is not supported (not recommended).
-   * 
+   *
    * If the given token is invalid or already revoked, this method should do nothing.
    */
-  revokeToken?(client: OAuthClientInformationFull, request: OAuthTokenRevocationRequest): Promise<void>;
+  revokeToken?(
+    client: OAuthClientInformationFull,
+    request: OAuthTokenRevocationRequest,
+  ): Promise<void>;
 }
-````
+```
 
 ## File: src/client/auth.test.ts
-````typescript
+
+```typescript
 import {
   discoverOAuthMetadata,
-  startAuthorization,
   exchangeAuthorization,
   refreshAuthorization,
   registerClient,
+  startAuthorization,
 } from "./auth.js";
 
 // Mock fetch globally
@@ -13956,9 +14531,11 @@ describe("OAuth Authorization", () => {
       const calls = mockFetch.mock.calls;
       expect(calls.length).toBe(1);
       const [url, options] = calls[0];
-      expect(url.toString()).toBe("https://auth.example.com/.well-known/oauth-authorization-server");
+      expect(url.toString()).toBe(
+        "https://auth.example.com/.well-known/oauth-authorization-server",
+      );
       expect(options.headers).toEqual({
-        "MCP-Protocol-Version": "2024-11-05"
+        "MCP-Protocol-Version": "2024-11-05",
       });
     });
 
@@ -13979,7 +14556,7 @@ describe("OAuth Authorization", () => {
           return Promise.resolve({
             ok: true,
             status: 200,
-            json: async () => validMetadata
+            json: async () => validMetadata,
           });
         }
       });
@@ -13992,7 +14569,9 @@ describe("OAuth Authorization", () => {
       expect(mockFetch).toHaveBeenCalledTimes(2);
 
       // Verify first call had MCP header
-      expect(mockFetch.mock.calls[0][1]?.headers).toHaveProperty("MCP-Protocol-Version");
+      expect(mockFetch.mock.calls[0][1]?.headers).toHaveProperty(
+        "MCP-Protocol-Version",
+      );
     });
 
     it("throws an error when all fetch attempts fail", async () => {
@@ -14037,7 +14616,7 @@ describe("OAuth Authorization", () => {
       });
 
       await expect(
-        discoverOAuthMetadata("https://auth.example.com")
+        discoverOAuthMetadata("https://auth.example.com"),
       ).rejects.toThrow("HTTP 500");
     });
 
@@ -14052,7 +14631,7 @@ describe("OAuth Authorization", () => {
       });
 
       await expect(
-        discoverOAuthMetadata("https://auth.example.com")
+        discoverOAuthMetadata("https://auth.example.com"),
       ).rejects.toThrow();
     });
   });
@@ -14079,19 +14658,21 @@ describe("OAuth Authorization", () => {
         {
           clientInformation: validClientInfo,
           redirectUrl: "http://localhost:3000/callback",
-        }
+        },
       );
 
       expect(authorizationUrl.toString()).toMatch(
-        /^https:\/\/auth\.example\.com\/authorize\?/
+        /^https:\/\/auth\.example\.com\/authorize\?/,
       );
       expect(authorizationUrl.searchParams.get("response_type")).toBe("code");
-      expect(authorizationUrl.searchParams.get("code_challenge")).toBe("test_challenge");
+      expect(authorizationUrl.searchParams.get("code_challenge")).toBe(
+        "test_challenge",
+      );
       expect(authorizationUrl.searchParams.get("code_challenge_method")).toBe(
-        "S256"
+        "S256",
       );
       expect(authorizationUrl.searchParams.get("redirect_uri")).toBe(
-        "http://localhost:3000/callback"
+        "http://localhost:3000/callback",
       );
       expect(codeVerifier).toBe("test_verifier");
     });
@@ -14103,11 +14684,11 @@ describe("OAuth Authorization", () => {
           metadata: validMetadata,
           clientInformation: validClientInfo,
           redirectUrl: "http://localhost:3000/callback",
-        }
+        },
       );
 
       expect(authorizationUrl.toString()).toMatch(
-        /^https:\/\/auth\.example\.com\/auth\?/
+        /^https:\/\/auth\.example\.com\/auth\?/,
       );
     });
 
@@ -14122,7 +14703,7 @@ describe("OAuth Authorization", () => {
           metadata,
           clientInformation: validClientInfo,
           redirectUrl: "http://localhost:3000/callback",
-        })
+        }),
       ).rejects.toThrow(/does not support response type/);
     });
 
@@ -14138,7 +14719,7 @@ describe("OAuth Authorization", () => {
           metadata,
           clientInformation: validClientInfo,
           redirectUrl: "http://localhost:3000/callback",
-        })
+        }),
       ).rejects.toThrow(/does not support code challenge method/);
     });
   });
@@ -14182,7 +14763,7 @@ describe("OAuth Authorization", () => {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-        })
+        }),
       );
 
       const body = mockFetch.mock.calls[0][1].body as URLSearchParams;
@@ -14210,7 +14791,7 @@ describe("OAuth Authorization", () => {
           authorizationCode: "code123",
           codeVerifier: "verifier123",
           redirectUri: "http://localhost:3000/callback",
-        })
+        }),
       ).rejects.toThrow();
     });
 
@@ -14226,7 +14807,7 @@ describe("OAuth Authorization", () => {
           authorizationCode: "code123",
           codeVerifier: "verifier123",
           redirectUri: "http://localhost:3000/callback",
-        })
+        }),
       ).rejects.toThrow("Token exchange failed");
     });
   });
@@ -14268,7 +14849,7 @@ describe("OAuth Authorization", () => {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-        })
+        }),
       );
 
       const body = mockFetch.mock.calls[0][1].body as URLSearchParams;
@@ -14292,7 +14873,7 @@ describe("OAuth Authorization", () => {
         refreshAuthorization("https://auth.example.com", {
           clientInformation: validClientInfo,
           refreshToken: "refresh123",
-        })
+        }),
       ).rejects.toThrow();
     });
 
@@ -14306,7 +14887,7 @@ describe("OAuth Authorization", () => {
         refreshAuthorization("https://auth.example.com", {
           clientInformation: validClientInfo,
           refreshToken: "refresh123",
-        })
+        }),
       ).rejects.toThrow("Token refresh failed");
     });
   });
@@ -14347,7 +14928,7 @@ describe("OAuth Authorization", () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(validClientMetadata),
-        })
+        }),
       );
     });
 
@@ -14364,7 +14945,7 @@ describe("OAuth Authorization", () => {
       await expect(
         registerClient("https://auth.example.com", {
           clientMetadata: validClientMetadata,
-        })
+        }),
       ).rejects.toThrow();
     });
 
@@ -14380,7 +14961,7 @@ describe("OAuth Authorization", () => {
         registerClient("https://auth.example.com", {
           metadata,
           clientMetadata: validClientMetadata,
-        })
+        }),
       ).rejects.toThrow(/does not support dynamic client registration/);
     });
 
@@ -14393,23 +14974,34 @@ describe("OAuth Authorization", () => {
       await expect(
         registerClient("https://auth.example.com", {
           clientMetadata: validClientMetadata,
-        })
+        }),
       ).rejects.toThrow("Dynamic client registration failed");
     });
   });
 });
-````
+```
 
 ## File: src/client/auth.ts
-````typescript
+
+```typescript
 import pkceChallenge from "pkce-challenge";
 import { LATEST_PROTOCOL_VERSION } from "../types.js";
-import type { OAuthClientMetadata, OAuthClientInformation, OAuthTokens, OAuthMetadata, OAuthClientInformationFull } from "../shared/auth.js";
-import { OAuthClientInformationFullSchema, OAuthMetadataSchema, OAuthTokensSchema } from "../shared/auth.js";
+import type {
+  OAuthClientInformation,
+  OAuthClientInformationFull,
+  OAuthClientMetadata,
+  OAuthMetadata,
+  OAuthTokens,
+} from "../shared/auth.js";
+import {
+  OAuthClientInformationFullSchema,
+  OAuthMetadataSchema,
+  OAuthTokensSchema,
+} from "../shared/auth.js";
 
 /**
  * Implements an end-to-end OAuth client to be used with one MCP server.
- * 
+ *
  * This client relies upon a concept of an authorized "session," the exact
  * meaning of which is application-defined. Tokens, authorization codes, and
  * code verifiers should not cross different sessions.
@@ -14430,17 +15022,22 @@ export interface OAuthClientProvider {
    * server, or returns `undefined` if the client is not registered with the
    * server.
    */
-  clientInformation(): OAuthClientInformation | undefined | Promise<OAuthClientInformation | undefined>;
+  clientInformation():
+    | OAuthClientInformation
+    | undefined
+    | Promise<OAuthClientInformation | undefined>;
 
   /**
    * If implemented, this permits the OAuth client to dynamically register with
    * the server. Client information saved this way should later be read via
    * `clientInformation()`.
-   * 
+   *
    * This method is not required to be implemented if client information is
    * statically known (e.g., pre-registered).
    */
-  saveClientInformation?(clientInformation: OAuthClientInformationFull): void | Promise<void>;
+  saveClientInformation?(
+    clientInformation: OAuthClientInformationFull,
+  ): void | Promise<void>;
 
   /**
    * Loads any existing OAuth tokens for the current session, or returns
@@ -14482,24 +15079,32 @@ export class UnauthorizedError extends Error {
 
 /**
  * Orchestrates the full auth flow with a server.
- * 
+ *
  * This can be used as a single entry point for all authorization functionality,
  * instead of linking together the other lower-level functions in this module.
  */
 export async function auth(
   provider: OAuthClientProvider,
-  { serverUrl, authorizationCode }: { serverUrl: string | URL, authorizationCode?: string }): Promise<AuthResult> {
+  { serverUrl, authorizationCode }: {
+    serverUrl: string | URL;
+    authorizationCode?: string;
+  },
+): Promise<AuthResult> {
   const metadata = await discoverOAuthMetadata(serverUrl);
 
   // Handle client registration if needed
   let clientInformation = await Promise.resolve(provider.clientInformation());
   if (!clientInformation) {
     if (authorizationCode !== undefined) {
-      throw new Error("Existing OAuth client information is required when exchanging an authorization code");
+      throw new Error(
+        "Existing OAuth client information is required when exchanging an authorization code",
+      );
     }
 
     if (!provider.saveClientInformation) {
-      throw new Error("OAuth client information must be saveable for dynamic registration");
+      throw new Error(
+        "OAuth client information must be saveable for dynamic registration",
+      );
     }
 
     const fullInformation = await registerClient(serverUrl, {
@@ -14546,11 +15151,14 @@ export async function auth(
   }
 
   // Start new authorization flow
-  const { authorizationUrl, codeVerifier } = await startAuthorization(serverUrl, {
-    metadata,
-    clientInformation,
-    redirectUrl: provider.redirectUrl
-  });
+  const { authorizationUrl, codeVerifier } = await startAuthorization(
+    serverUrl,
+    {
+      metadata,
+      clientInformation,
+      redirectUrl: provider.redirectUrl,
+    },
+  );
 
   await provider.saveCodeVerifier(codeVerifier);
   await provider.redirectToAuthorization(authorizationUrl);
@@ -14572,8 +15180,9 @@ export async function discoverOAuthMetadata(
   try {
     response = await fetch(url, {
       headers: {
-        "MCP-Protocol-Version": opts?.protocolVersion ?? LATEST_PROTOCOL_VERSION
-      }
+        "MCP-Protocol-Version": opts?.protocolVersion ??
+          LATEST_PROTOCOL_VERSION,
+      },
     });
   } catch (error) {
     // CORS errors come back as TypeError
@@ -14795,7 +15404,9 @@ export async function registerClient(
 
   if (metadata) {
     if (!metadata.registration_endpoint) {
-      throw new Error("Incompatible auth server: does not support dynamic client registration");
+      throw new Error(
+        "Incompatible auth server: does not support dynamic client registration",
+      );
     }
 
     registrationUrl = new URL(metadata.registration_endpoint);
@@ -14812,28 +15423,31 @@ export async function registerClient(
   });
 
   if (!response.ok) {
-    throw new Error(`Dynamic client registration failed: HTTP ${response.status}`);
+    throw new Error(
+      `Dynamic client registration failed: HTTP ${response.status}`,
+    );
   }
 
   return OAuthClientInformationFullSchema.parse(await response.json());
 }
-````
+```
 
 ## File: src/server/auth/handlers/authorize.ts
-````typescript
+
+```typescript
 import { RequestHandler } from "express";
 import { z } from "zod";
 import express from "express";
 import { OAuthServerProvider } from "../provider.js";
-import { rateLimit, Options as RateLimitOptions } from "express-rate-limit";
+import { Options as RateLimitOptions, rateLimit } from "express-rate-limit";
 import { allowedMethods } from "../middleware/allowedMethods.js";
 import {
-  InvalidRequestError,
   InvalidClientError,
+  InvalidRequestError,
   InvalidScopeError,
+  OAuthError,
   ServerError,
   TooManyRequestsError,
-  OAuthError
 } from "../errors.js";
 
 export type AuthorizationHandlerOptions = {
@@ -14848,7 +15462,10 @@ export type AuthorizationHandlerOptions = {
 // Parameters that must be validated in order to issue redirects.
 const ClientAuthorizationParamsSchema = z.object({
   client_id: z.string(),
-  redirect_uri: z.string().optional().refine((value) => value === undefined || URL.canParse(value), { message: "redirect_uri must be a valid URL" }),
+  redirect_uri: z.string().optional().refine(
+    (value) => value === undefined || URL.canParse(value),
+    { message: "redirect_uri must be a valid URL" },
+  ),
 });
 
 // Parameters that must be validated for a successful authorization request. Failure can be reported to the redirect URI.
@@ -14860,7 +15477,9 @@ const RequestAuthorizationParamsSchema = z.object({
   state: z.string().optional(),
 });
 
-export function authorizationHandler({ provider, rateLimit: rateLimitConfig }: AuthorizationHandlerOptions): RequestHandler {
+export function authorizationHandler(
+  { provider, rateLimit: rateLimitConfig }: AuthorizationHandlerOptions,
+): RequestHandler {
   // Create a router to apply middleware
   const router = express.Router();
   router.use(allowedMethods(["GET", "POST"]));
@@ -14873,13 +15492,15 @@ export function authorizationHandler({ provider, rateLimit: rateLimitConfig }: A
       max: 100, // 100 requests per windowMs
       standardHeaders: true,
       legacyHeaders: false,
-      message: new TooManyRequestsError('You have exceeded the rate limit for authorization requests').toResponseObject(),
-      ...rateLimitConfig
+      message: new TooManyRequestsError(
+        "You have exceeded the rate limit for authorization requests",
+      ).toResponseObject(),
+      ...rateLimitConfig,
     }));
   }
 
   router.all("/", async (req, res) => {
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader("Cache-Control", "no-store");
 
     // In the authorization flow, errors are split into two categories:
     // 1. Pre-redirect errors (direct response with 400)
@@ -14888,7 +15509,9 @@ export function authorizationHandler({ provider, rateLimit: rateLimitConfig }: A
     // Phase 1: Validate client_id and redirect_uri. Any errors here must be direct responses.
     let client_id, redirect_uri, client;
     try {
-      const result = ClientAuthorizationParamsSchema.safeParse(req.method === 'POST' ? req.body : req.query);
+      const result = ClientAuthorizationParamsSchema.safeParse(
+        req.method === "POST" ? req.body : req.query,
+      );
       if (!result.success) {
         throw new InvalidRequestError(result.error.message);
       }
@@ -14908,7 +15531,9 @@ export function authorizationHandler({ provider, rateLimit: rateLimitConfig }: A
       } else if (client.redirect_uris.length === 1) {
         redirect_uri = client.redirect_uris[0];
       } else {
-        throw new InvalidRequestError("redirect_uri must be specified when client has multiple registered URIs");
+        throw new InvalidRequestError(
+          "redirect_uri must be specified when client has multiple registered URIs",
+        );
       }
     } catch (error) {
       // Pre-redirect errors - return direct response
@@ -14933,7 +15558,9 @@ export function authorizationHandler({ provider, rateLimit: rateLimitConfig }: A
     let state;
     try {
       // Parse and validate authorization parameters
-      const parseResult = RequestAuthorizationParamsSchema.safeParse(req.method === 'POST' ? req.body : req.query);
+      const parseResult = RequestAuthorizationParamsSchema.safeParse(
+        req.method === "POST" ? req.body : req.query,
+      );
       if (!parseResult.success) {
         throw new InvalidRequestError(parseResult.error.message);
       }
@@ -14950,7 +15577,9 @@ export function authorizationHandler({ provider, rateLimit: rateLimitConfig }: A
         // Check each requested scope against allowed scopes
         for (const scope of requestedScopes) {
           if (!allowedScopes.has(scope)) {
-            throw new InvalidScopeError(`Client was not registered with scope ${scope}`);
+            throw new InvalidScopeError(
+              `Client was not registered with scope ${scope}`,
+            );
           }
         }
       }
@@ -14969,7 +15598,10 @@ export function authorizationHandler({ provider, rateLimit: rateLimitConfig }: A
       } else {
         console.error("Unexpected error during authorization:", error);
         const serverError = new ServerError("Internal Server Error");
-        res.redirect(302, createErrorRedirect(redirect_uri, serverError, state));
+        res.redirect(
+          302,
+          createErrorRedirect(redirect_uri, serverError, state),
+        );
       }
     }
   });
@@ -14980,7 +15612,11 @@ export function authorizationHandler({ provider, rateLimit: rateLimitConfig }: A
 /**
  * Helper function to create redirect URL with error parameters
  */
-function createErrorRedirect(redirectUri: string, error: OAuthError, state?: string): string {
+function createErrorRedirect(
+  redirectUri: string,
+  error: OAuthError,
+  state?: string,
+): string {
   const errorUrl = new URL(redirectUri);
   errorUrl.searchParams.set("error", error.errorCode);
   errorUrl.searchParams.set("error_description", error.message);
@@ -14992,10 +15628,11 @@ function createErrorRedirect(redirectUri: string, error: OAuthError, state?: str
   }
   return errorUrl.href;
 }
-````
+```
 
 ## File: package.json
-````json
+
+```json
 {
   "name": "@modelcontextprotocol/sdk",
   "version": "1.8.0",
@@ -15081,22 +15718,26 @@ function createErrorRedirect(redirectUri: string, error: OAuthError, state?: str
     "strip-ansi": "6.0.1"
   }
 }
-````
+```
 
 ## File: src/server/auth/handlers/register.ts
-````typescript
+
+```typescript
 import express, { RequestHandler } from "express";
-import { OAuthClientInformationFull, OAuthClientMetadataSchema } from "../../../shared/auth.js";
-import crypto from 'node:crypto';
-import cors from 'cors';
+import {
+  OAuthClientInformationFull,
+  OAuthClientMetadataSchema,
+} from "../../../shared/auth.js";
+import crypto from "node:crypto";
+import cors from "cors";
 import { OAuthRegisteredClientsStore } from "../clients.js";
-import { rateLimit, Options as RateLimitOptions } from "express-rate-limit";
+import { Options as RateLimitOptions, rateLimit } from "express-rate-limit";
 import { allowedMethods } from "../middleware/allowedMethods.js";
 import {
   InvalidClientMetadataError,
+  OAuthError,
   ServerError,
   TooManyRequestsError,
-  OAuthError
 } from "../errors.js";
 
 export type ClientRegistrationHandlerOptions = {
@@ -15107,7 +15748,7 @@ export type ClientRegistrationHandlerOptions = {
 
   /**
    * The number of seconds after which to expire issued client secrets, or 0 to prevent expiration of client secrets (not recommended).
-   * 
+   *
    * If not set, defaults to 30 days.
    */
   clientSecretExpirySeconds?: number;
@@ -15125,10 +15766,12 @@ const DEFAULT_CLIENT_SECRET_EXPIRY_SECONDS = 30 * 24 * 60 * 60; // 30 days
 export function clientRegistrationHandler({
   clientsStore,
   clientSecretExpirySeconds = DEFAULT_CLIENT_SECRET_EXPIRY_SECONDS,
-  rateLimit: rateLimitConfig
+  rateLimit: rateLimitConfig,
 }: ClientRegistrationHandlerOptions): RequestHandler {
   if (!clientsStore.registerClient) {
-    throw new Error("Client registration store does not support registering clients");
+    throw new Error(
+      "Client registration store does not support registering clients",
+    );
   }
 
   // Nested router so we can configure middleware and restrict HTTP method
@@ -15147,13 +15790,15 @@ export function clientRegistrationHandler({
       max: 20, // 20 requests per hour - stricter as registration is sensitive
       standardHeaders: true,
       legacyHeaders: false,
-      message: new TooManyRequestsError('You have exceeded the rate limit for client registration requests').toResponseObject(),
-      ...rateLimitConfig
+      message: new TooManyRequestsError(
+        "You have exceeded the rate limit for client registration requests",
+      ).toResponseObject(),
+      ...rateLimitConfig,
     }));
   }
 
   router.post("/", async (req, res) => {
-    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader("Cache-Control", "no-store");
 
     try {
       const parseResult = OAuthClientMetadataSchema.safeParse(req.body);
@@ -15162,19 +15807,24 @@ export function clientRegistrationHandler({
       }
 
       const clientMetadata = parseResult.data;
-      const isPublicClient = clientMetadata.token_endpoint_auth_method === 'none'
+      const isPublicClient =
+        clientMetadata.token_endpoint_auth_method === "none";
 
       // Generate client credentials
       const clientId = crypto.randomUUID();
       const clientSecret = isPublicClient
         ? undefined
-        : crypto.randomBytes(32).toString('hex');
+        : crypto.randomBytes(32).toString("hex");
       const clientIdIssuedAt = Math.floor(Date.now() / 1000);
 
       // Calculate client secret expiry time
-      const clientsDoExpire = clientSecretExpirySeconds > 0
-      const secretExpiryTime = clientsDoExpire ? clientIdIssuedAt + clientSecretExpirySeconds : 0
-      const clientSecretExpiresAt = isPublicClient ? undefined : secretExpiryTime
+      const clientsDoExpire = clientSecretExpirySeconds > 0;
+      const secretExpiryTime = clientsDoExpire
+        ? clientIdIssuedAt + clientSecretExpirySeconds
+        : 0;
+      const clientSecretExpiresAt = isPublicClient
+        ? undefined
+        : secretExpiryTime;
 
       let clientInfo: OAuthClientInformationFull = {
         ...clientMetadata,
@@ -15200,4 +15850,4 @@ export function clientRegistrationHandler({
 
   return router;
 }
-````
+```

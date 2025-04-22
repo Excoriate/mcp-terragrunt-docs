@@ -1,10 +1,10 @@
 {
-    "workbench.colorCustomizations": {
-        "editor.lineHighlightBackground": "#0004072d",
-        "editor.lineHighlightBorder": "#4ac3081f",
-        "terminal.background": "#010d13f0",
-        "activityBar.background": "#292E35",
-        "titleBar.activeBackground": "#39404A",
-        "titleBar.activeForeground": "#F9FAFB"
-    }
+  "workbench.colorCustomizations": {
+    "editor.lineHighlightBackground": "#0004072d",
+    "editor.lineHighlightBorder": "#4ac3081f",
+    "terminal.background": "#010d13f0",
+    "activityBar.background": "#292E35",
+    "titleBar.activeBackground": "#39404A",
+    "titleBar.activeForeground": "#F9FAFB"
+  }
 }

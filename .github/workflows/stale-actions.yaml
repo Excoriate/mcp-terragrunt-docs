@@ -1,8 +1,8 @@
 ---
-name: 'Mark or close stale issues and PRs'
+name: "Mark or close stale issues and PRs"
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
 
 jobs:
   stale:

@@ -3,10 +3,12 @@ title: "Sampling"
 description: "Let your servers request completions from LLMs"
 ---
 
-Sampling is a powerful MCP feature that allows servers to request LLM completions through the client, enabling sophisticated agentic behaviors while maintaining security and privacy.
+Sampling is a powerful MCP feature that allows servers to request LLM
+completions through the client, enabling sophisticated agentic behaviors while
+maintaining security and privacy.
 
-> **Info:**
->   This feature of MCP is not yet supported in the Claude Desktop client.
+> **Info:** This feature of MCP is not yet supported in the Claude Desktop
+> client.
 
 ## How sampling works
 
@@ -18,7 +20,8 @@ The sampling flow follows these steps:
 4. Client reviews the completion
 5. Client returns the result to the server
 
-This human-in-the-loop design ensures users maintain control over what the LLM sees and generates.
+This human-in-the-loop design ensures users maintain control over what the LLM
+sees and generates.
 
 ## Message format
 
@@ -62,7 +65,8 @@ Sampling requests use a standardized message format:
 
 ### Messages
 
-The `messages` array contains the conversation history to send to the LLM. Each message has:
+The `messages` array contains the conversation history to send to the LLM. Each
+message has:
 
 - `role`: Either "user" or "assistant"
 - `content`: The message content, which can be:
@@ -71,10 +75,13 @@ The `messages` array contains the conversation history to send to the LLM. Each 
 
 ### Model preferences
 
-The `modelPreferences` object allows servers to specify their model selection preferences:
+The `modelPreferences` object allows servers to specify their model selection
+preferences:
 
-- `hints`: Array of model name suggestions that clients can use to select an appropriate model:
-  - `name`: String that can match full or partial model names (e.g. "claude-3", "sonnet")
+- `hints`: Array of model name suggestions that clients can use to select an
+  appropriate model:
+  - `name`: String that can match full or partial model names (e.g. "claude-3",
+    "sonnet")
   - Clients may map hints to equivalent models from different providers
   - Multiple hints are evaluated in preference order
 
@@ -83,11 +90,13 @@ The `modelPreferences` object allows servers to specify their model selection pr
   - `speedPriority`: Importance of low latency response
   - `intelligencePriority`: Importance of advanced model capabilities
 
-Clients make the final model selection based on these preferences and their available models.
+Clients make the final model selection based on these preferences and their
+available models.
 
 ### System prompt
 
-An optional `systemPrompt` field allows servers to request a specific system prompt. The client may modify or ignore this.
+An optional `systemPrompt` field allows servers to request a specific system
+prompt. The client may modify or ignore this.
 
 ### Context inclusion
 
@@ -129,6 +138,7 @@ The client returns a completion result:
 ## Example request
 
 Here's an example of requesting sampling from a client:
+
 ```json
 {
   "method": "sampling/createMessage",

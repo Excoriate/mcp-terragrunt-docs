@@ -9,7 +9,8 @@ assignees: ["Excoriate"] # Adjust if needed
 ## 🔍 Bug Description
 
 > [!WARNING]
-> Provide a clear and concise description of the bug you encountered with the MCP server.
+> Provide a clear and concise description of the bug you encountered with the
+> MCP server.
 
 ### Expected Behavior
 
@@ -40,7 +41,8 @@ assignees: ["Excoriate"] # Adjust if needed
 ### Minimal Reproducible Example
 
 > [!WARNING]
-> If applicable, include a minimal code snippet (TypeScript) or configuration that demonstrates the issue:
+> If applicable, include a minimal code snippet (TypeScript) or configuration
+> that demonstrates the issue:
 
 ```typescript
 // Your minimal reproducible TypeScript code snippet (if applicable)
@@ -53,9 +55,11 @@ assignees: ["Excoriate"] # Adjust if needed
 > Provide context about your environment:
 
 - **Deno Version**: (e.g., `deno --version`)
-- **MCP SDK Version**: (from `deno.lock` or `deno.json`, e.g., `npm:@modelcontextprotocol/sdk@1.8.0`)
+- **MCP SDK Version**: (from `deno.lock` or `deno.json`, e.g.,
+  `npm:@modelcontextprotocol/sdk@1.8.0`)
 - **Operating System**: (e.g., macOS Sonoma 14.1, Windows 11, Ubuntu 22.04)
-- **MCP Client Used**: (e.g., Claude Desktop vX.Y.Z, MCP Inspector, Custom Client)
+- **MCP Client Used**: (e.g., Claude Desktop vX.Y.Z, MCP Inspector, Custom
+  Client)
 - **Relevant `deno.json` / `deno.lock` sections**: (if applicable)
 
 ## 📋 Diagnostic Information
@@ -75,7 +79,8 @@ assignees: ["Excoriate"] # Adjust if needed
 >
 > - When did you first notice this issue?
 > - Does it happen consistently or intermittently?
-> - Any recent changes (e.g., dependency updates, code changes) that might have introduced the bug?
+> - Any recent changes (e.g., dependency updates, code changes) that might have
+>   introduced the bug?
 
 ### Checklist
 

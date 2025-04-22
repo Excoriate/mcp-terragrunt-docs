@@ -123,3 +123,4 @@ $RECYCLE.BIN/
 
 # Deno language server cache
 .deno_dir/
+repomix-output.xml

@@ -3,11 +3,16 @@ title: "Roots"
 description: "Understanding roots in MCP"
 ---
 
-Roots are a concept in MCP that define the boundaries where servers can operate. They provide a way for clients to inform servers about relevant resources and their locations.
+Roots are a concept in MCP that define the boundaries where servers can operate.
+They provide a way for clients to inform servers about relevant resources and
+their locations.
 
 ## What are Roots?
 
-A root is a URI that a client suggests a server should focus on. When a client connects to a server, it declares which roots the server should work with. While primarily used for filesystem paths, roots can be any valid URI including HTTP URLs.
+A root is a URI that a client suggests a server should focus on. When a client
+connects to a server, it declares which roots the server should work with. While
+primarily used for filesystem paths, roots can be any valid URI including HTTP
+URLs.
 
 For example, roots could be:
 
@@ -22,7 +27,8 @@ Roots serve several important purposes:
 
 1. **Guidance**: They inform servers about relevant resources and locations
 2. **Clarity**: Roots make it clear which resources are part of your workspace
-3. **Organization**: Multiple roots let you work with different resources simultaneously
+3. **Organization**: Multiple roots let you work with different resources
+   simultaneously
 
 ## How Roots Work
 
@@ -76,4 +82,5 @@ Here's how a typical MCP client might expose roots:
 }
 ```
 
-This configuration suggests the server focus on both a local repository and an API endpoint while keeping them logically separated.
+This configuration suggests the server focus on both a local repository and an
+API endpoint while keeping them logically separated.

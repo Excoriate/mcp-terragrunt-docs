@@ -3,20 +3,32 @@ title: "Tools"
 description: "Enable LLMs to perform actions through your server"
 ---
 
-Tools are a powerful primitive in the Model Context Protocol (MCP) that enable servers to expose executable functionality to clients. Through tools, LLMs can interact with external systems, perform computations, and take actions in the real world.
+Tools are a powerful primitive in the Model Context Protocol (MCP) that enable
+servers to expose executable functionality to clients. Through tools, LLMs can
+interact with external systems, perform computations, and take actions in the
+real world.
 
-> **Note:**
->   Tools are designed to be **model-controlled**, meaning that tools are exposed from servers to clients with the intention of the AI model being able to automatically invoke them (with a human in the loop to grant approval).
+> **Note:** Tools are designed to be **model-controlled**, meaning that tools
+> are exposed from servers to clients with the intention of the AI model being
+> able to automatically invoke them (with a human in the loop to grant
+> approval).
 
 ## Overview
 
-Tools in MCP allow servers to expose executable functions that can be invoked by clients and used by LLMs to perform actions. Key aspects of tools include:
+Tools in MCP allow servers to expose executable functions that can be invoked by
+clients and used by LLMs to perform actions. Key aspects of tools include:
 
-- **Discovery**: Clients can list available tools through the `tools/list` endpoint
-- **Invocation**: Tools are called using the `tools/call` endpoint, where servers perform the requested operation and return results
-- **Flexibility**: Tools can range from simple calculations to complex API interactions
+- **Discovery**: Clients can list available tools through the `tools/list`
+  endpoint
+- **Invocation**: Tools are called using the `tools/call` endpoint, where
+  servers perform the requested operation and return results
+- **Flexibility**: Tools can range from simple calculations to complex API
+  interactions
 
-Like [resources](/docs/concepts/resources), tools are identified by unique names and can include descriptions to guide their usage. However, unlike resources, tools represent dynamic operations that can modify state or interact with external systems.
+Like [resources](/docs/concepts/resources), tools are identified by unique names
+and can include descriptions to guide their usage. However, unlike resources,
+tools represent dynamic operations that can modify state or interact with
+external systems.
 
 ## Tool definition structure
 
@@ -38,14 +50,15 @@ Each tool is defined with the following structure:
 Here's an example of implementing a basic tool in an MCP server:
 
 ### TypeScript
+
 ```typescript
 const server = new Server({
   name: "example-server",
-  version: "1.0.0"
+  version: "1.0.0",
 }, {
   capabilities: {
-    tools: {}
-  }
+    tools: {},
+  },
 });
 
 // Define available tools
@@ -58,11 +71,11 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         type: "object",
         properties: {
           a: { type: "number" },
-          b: { type: "number" }
+          b: { type: "number" },
         },
-        required: ["a", "b"]
-      }
-    }]
+        required: ["a", "b"],
+      },
+    }],
   };
 });
 
@@ -74,9 +87,9 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
       content: [
         {
           type: "text",
-          text: String(a + b)
-        }
-      ]
+          text: String(a + b),
+        },
+      ],
     };
   }
   throw new Error("Tool not found");
@@ -84,6 +97,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 ```
 
 ### Python
+
 ```python
 app = Server("example-server")
 
@@ -181,13 +195,44 @@ Tools that transform or analyze data:
 }
 ```
 
+### GitHub Issue Retrieval
+
+A tool for retrieving all open issues from the official Terragrunt GitHub repository. This tool enables users to programmatically access the current list of open issues, which is essential for tracking bugs, feature requests, and ongoing work in the Terragrunt project.
+
+```typescript
+{
+  name: "get-all-open-issues",
+  description: "Retrieve all open issues from the Terragrunt GitHub repository, handling pagination and returning detailed metadata for each issue. Requires a valid GitHub token to avoid rate limiting.",
+  inputSchema: {
+    type: "object",
+    properties: {
+      githubToken: {
+        type: "string",
+        description: "A valid GitHub token required for authenticating and accessing the issue data.",
+      },
+    },
+  },
+}
+```
+
+**When to use:**
+- When you need to fetch the complete list of open issues for triage, reporting, or analysis
+- When you want to monitor the current state of the Terragrunt issue tracker
+- For building dashboards, reports, or integrations that require up-to-date issue data
+
+**Best practices:**
+- Always provide a valid GitHub token to ensure reliable access and avoid rate limiting
+- Use this tool to keep track of open issues for project management, automation, or reporting
+- Combine with other tools (such as documentation fetchers) for comprehensive project insights
+
 ## Best practices
 
 When implementing tools:
 
 1. Provide clear, descriptive names and descriptions
 2. Use detailed JSON Schema definitions for parameters
-3. Include examples in tool descriptions to demonstrate how the model should use them
+3. Include examples in tool descriptions to demonstrate how the model should use
+   them
 4. Implement proper error handling and validation
 5. Use progress reporting for long operations
 6. Keep tool operations focused and atomic
@@ -229,13 +274,16 @@ When exposing tools:
 MCP supports dynamic tool discovery:
 
 1. Clients can list available tools at any time
-2. Servers can notify clients when tools change using `notifications/tools/list_changed`
+2. Servers can notify clients when tools change using
+   `notifications/tools/list_changed`
 3. Tools can be added or removed during runtime
 4. Tool definitions can be updated (though this should be done carefully)
 
 ## Error handling
 
-Tool errors should be reported within the result object, not as MCP protocol-level errors. This allows the LLM to see and potentially handle the error. When a tool encounters an error:
+Tool errors should be reported within the result object, not as MCP
+protocol-level errors. This allows the LLM to see and potentially handle the
+error. When a tool encounters an error:
 
 1. Set `isError` to `true` in the result
 2. Include error details in the `content` array
@@ -243,6 +291,7 @@ Tool errors should be reported within the result object, not as MCP protocol-lev
 Here's an example of proper error handling for tools:
 
 ### TypeScript
+
 ```typescript
 try {
   // Tool operation
@@ -251,9 +300,9 @@ try {
     content: [
       {
         type: "text",
-        text: `Operation successful: ${result}`
-      }
-    ]
+        text: `Operation successful: ${result}`,
+      },
+    ],
   };
 } catch (error) {
   return {
@@ -261,14 +310,15 @@ try {
     content: [
       {
         type: "text",
-        text: `Error: ${error.message}`
-      }
-    ]
+        text: `Error: ${error.message}`,
+      },
+    ],
   };
 }
 ```
 
 ### Python
+
 ```python
 try:
     # Tool operation
@@ -293,14 +343,20 @@ except Exception as error:
     )
 ```
 
-This approach allows the LLM to see that an error occurred and potentially take corrective action or request human intervention.
+This approach allows the LLM to see that an error occurred and potentially take
+corrective action or request human intervention.
 
 ## Testing tools
 
 A comprehensive testing strategy for MCP tools should cover:
 
-- **Functional testing**: Verify tools execute correctly with valid inputs and handle invalid inputs appropriately
-- **Integration testing**: Test tool interaction with external systems using both real and mocked dependencies
-- **Security testing**: Validate authentication, authorization, input sanitization, and rate limiting
-- **Performance testing**: Check behavior under load, timeout handling, and resource cleanup
-- **Error handling**: Ensure tools properly report errors through the MCP protocol and clean up resources
+- **Functional testing**: Verify tools execute correctly with valid inputs and
+  handle invalid inputs appropriately
+- **Integration testing**: Test tool interaction with external systems using
+  both real and mocked dependencies
+- **Security testing**: Validate authentication, authorization, input
+  sanitization, and rate limiting
+- **Performance testing**: Check behavior under load, timeout handling, and
+  resource cleanup
+- **Error handling**: Ensure tools properly report errors through the MCP
+  protocol and clean up resources

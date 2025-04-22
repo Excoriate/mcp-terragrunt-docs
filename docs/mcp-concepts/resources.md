@@ -3,20 +3,29 @@ title: "Resources"
 description: "Expose data and content from your servers to LLMs"
 ---
 
-Resources are a core primitive in the Model Context Protocol (MCP) that allow servers to expose data and content that can be read by clients and used as context for LLM interactions.
+Resources are a core primitive in the Model Context Protocol (MCP) that allow
+servers to expose data and content that can be read by clients and used as
+context for LLM interactions.
 
-> **Note:**
->   Resources are designed to be **application-controlled**, meaning that the client application can decide how and when they should be used.
->   Different MCP clients may handle resources differently. For example:
->   - Claude Desktop currently requires users to explicitly select resources before they can be used
->   - Other clients might automatically select resources based on heuristics
->   - Some implementations may even allow the AI model itself to determine which resources to use
-> 
->   Server authors should be prepared to handle any of these interaction patterns when implementing resource support. In order to expose data to models automatically, server authors should use a **model-controlled** primitive such as [Tools](./tools).
+> **Note:** Resources are designed to be **application-controlled**, meaning
+> that the client application can decide how and when they should be used.
+> Different MCP clients may handle resources differently. For example:
+>
+> - Claude Desktop currently requires users to explicitly select resources
+>   before they can be used
+> - Other clients might automatically select resources based on heuristics
+> - Some implementations may even allow the AI model itself to determine which
+>   resources to use
+>
+> Server authors should be prepared to handle any of these interaction patterns
+> when implementing resource support. In order to expose data to models
+> automatically, server authors should use a **model-controlled** primitive such
+> as [Tools](./tools).
 
 ## Overview
 
-Resources represent any kind of data that an MCP server wants to make available to clients. This can include:
+Resources represent any kind of data that an MCP server wants to make available
+to clients. This can include:
 
 - File contents
 - Database records
@@ -26,7 +35,8 @@ Resources represent any kind of data that an MCP server wants to make available 
 - Log files
 - And more
 
-Each resource is identified by a unique URI and can contain either text or binary data.
+Each resource is identified by a unique URI and can contain either text or
+binary data.
 
 ## Resource URIs
 
@@ -37,11 +47,13 @@ Resources are identified using URIs that follow this format:
 ```
 
 For example:
+
 - `file:///home/user/documents/report.pdf`
 - `postgres://database/customers/schema`
 - `screen://localhost/display1`
 
-The protocol and path structure is defined by the MCP server implementation. Servers can define their own custom URI schemes.
+The protocol and path structure is defined by the MCP server implementation.
+Servers can define their own custom URI schemes.
 
 ## Resource types
 
@@ -50,6 +62,7 @@ Resources can contain two types of content:
 ### Text resources
 
 Text resources contain UTF-8 encoded text data. These are suitable for:
+
 - Source code
 - Configuration files
 - Log files
@@ -58,7 +71,9 @@ Text resources contain UTF-8 encoded text data. These are suitable for:
 
 ### Binary resources
 
-Binary resources contain raw binary data encoded in base64. These are suitable for:
+Binary resources contain raw binary data encoded in base64. These are suitable
+for:
+
 - Images
 - PDFs
 - Audio files
@@ -71,7 +86,8 @@ Clients can discover available resources through two main methods:
 
 ### Direct resources
 
-Servers expose a list of concrete resources via the `resources/list` endpoint. Each resource includes:
+Servers expose a list of concrete resources via the `resources/list` endpoint.
+Each resource includes:
 
 ```typescript
 {
@@ -84,7 +100,9 @@ Servers expose a list of concrete resources via the `resources/list` endpoint. E
 
 ### Resource templates
 
-For dynamic resources, servers can expose [URI templates](https://datatracker.ietf.org/doc/html/rfc6570) that clients can use to construct valid resource URIs:
+For dynamic resources, servers can expose
+[URI templates](https://datatracker.ietf.org/doc/html/rfc6570) that clients can
+use to construct valid resource URIs:
 
 ```typescript
 {
@@ -97,7 +115,8 @@ For dynamic resources, servers can expose [URI templates](https://datatracker.ie
 
 ## Reading resources
 
-To read a resource, clients make a `resources/read` request with the resource URI.
+To read a resource, clients make a `resources/read` request with the resource
+URI.
 
 The server responds with a list of resource contents:
 
@@ -116,8 +135,9 @@ The server responds with a list of resource contents:
 }
 ```
 
-> **Tip:**
->   Servers may return multiple resources in response to one `resources/read` request. This could be used, for example, to return a list of files inside a directory when the directory is read.
+> **Tip:** Servers may return multiple resources in response to one
+> `resources/read` request. This could be used, for example, to return a list of
+> files inside a directory when the directory is read.
 
 ## Resource updates
 
@@ -125,7 +145,8 @@ MCP supports real-time updates for resources through two mechanisms:
 
 ### List changes
 
-Servers can notify clients when their list of available resources changes via the `notifications/resources/list_changed` notification.
+Servers can notify clients when their list of available resources changes via
+the `notifications/resources/list_changed` notification.
 
 ### Content changes
 
@@ -141,14 +162,15 @@ Clients can subscribe to updates for specific resources:
 Here's a simple example of implementing resource support in an MCP server:
 
 ### TypeScript
+
 ```typescript
 const server = new Server({
   name: "example-server",
-  version: "1.0.0"
+  version: "1.0.0",
 }, {
   capabilities: {
-    resources: {}
-  }
+    resources: {},
+  },
 });
 
 // List available resources
@@ -158,9 +180,9 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => {
       {
         uri: "file:///logs/app.log",
         name: "Application Logs",
-        mimeType: "text/plain"
-      }
-    ]
+        mimeType: "text/plain",
+      },
+    ],
   };
 });
 
@@ -175,9 +197,9 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
         {
           uri,
           mimeType: "text/plain",
-          text: logContents
-        }
-      ]
+          text: logContents,
+        },
+      ],
     };
   }
 
@@ -186,6 +208,7 @@ server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
 ```
 
 ### Python
+
 ```python
 app = Server("example-server")
 

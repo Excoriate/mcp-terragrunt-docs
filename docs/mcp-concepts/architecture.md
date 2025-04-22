@@ -3,13 +3,16 @@ title: "Core architecture"
 description: "Understand how MCP connects clients, servers, and LLMs"
 ---
 
-The Model Context Protocol (MCP) is built on a flexible, extensible architecture that enables seamless communication between LLM applications and integrations. This document covers the core architectural components and concepts.
+The Model Context Protocol (MCP) is built on a flexible, extensible architecture
+that enables seamless communication between LLM applications and integrations.
+This document covers the core architectural components and concepts.
 
 ## Overview
 
 MCP follows a client-server architecture where:
 
-- **Hosts** are LLM applications (like Claude Desktop or IDEs) that initiate connections
+- **Hosts** are LLM applications (like Claude Desktop or IDEs) that initiate
+  connections
 - **Clients** maintain 1:1 connections with servers, inside the host application
 - **Servers** provide context, tools, and prompts to clients
 
@@ -34,26 +37,35 @@ flowchart LR
 
 ### Protocol layer
 
-The protocol layer handles message framing, request/response linking, and high-level communication patterns.
+The protocol layer handles message framing, request/response linking, and
+high-level communication patterns.
 
 ### TypeScript
+
 ```typescript
 class Protocol<Request, Notification, Result> {
-    // Handle incoming requests
-    setRequestHandler<T>(schema: T, handler: (request: T, extra: RequestHandlerExtra) => Promise<Result>): void
+  // Handle incoming requests
+  setRequestHandler<T>(
+    schema: T,
+    handler: (request: T, extra: RequestHandlerExtra) => Promise<Result>,
+  ): void;
 
-    // Handle incoming notifications
-    setNotificationHandler<T>(schema: T, handler: (notification: T) => Promise<void>): void
+  // Handle incoming notifications
+  setNotificationHandler<T>(
+    schema: T,
+    handler: (notification: T) => Promise<void>,
+  ): void;
 
-    // Send requests and await responses
-    request<T>(request: Request, schema: T, options?: RequestOptions): Promise<T>
+  // Send requests and await responses
+  request<T>(request: Request, schema: T, options?: RequestOptions): Promise<T>;
 
-    // Send one-way notifications
-    notification(notification: Notification): Promise<void>
+  // Send one-way notifications
+  notification(notification: Notification): Promise<void>;
 }
 ```
 
 ### Python
+
 ```python
 class Session(BaseSession[RequestT, NotificationT, ResultT]):
     async def send_request(
@@ -90,13 +102,14 @@ class Session(BaseSession[RequestT, NotificationT, ResultT]):
 
 Key classes include:
 
-* `Protocol`
-* `Client`
-* `Server`
+- `Protocol`
+- `Client`
+- `Server`
 
 ### Transport layer
 
-The transport layer handles the actual communication between clients and servers. MCP supports multiple transport mechanisms:
+The transport layer handles the actual communication between clients and
+servers. MCP supports multiple transport mechanisms:
 
 1. **Stdio transport**
    - Uses standard input/output for communication
@@ -106,43 +119,45 @@ The transport layer handles the actual communication between clients and servers
    - Uses Server-Sent Events for server-to-client messages
    - HTTP POST for client-to-server messages
 
-All transports use [JSON-RPC](https://www.jsonrpc.org/) 2.0 to exchange messages. See the [specification](https://spec.modelcontextprotocol.io) for detailed information about the Model Context Protocol message format.
+All transports use [JSON-RPC](https://www.jsonrpc.org/) 2.0 to exchange
+messages. See the [specification](https://spec.modelcontextprotocol.io) for
+detailed information about the Model Context Protocol message format.
 
 ### Message types
 
 MCP has these main types of messages:
 
 1. **Requests** expect a response from the other side:
-    ```typescript
-    interface Request {
-      method: string;
-      params?: { ... };
-    }
-    ```
+   ```typescript
+   interface Request {
+     method: string;
+     params?: { ... };
+   }
+   ```
 
 2. **Results** are successful responses to requests:
-    ```typescript
-    interface Result {
-      [key: string]: unknown;
-    }
-    ```
+   ```typescript
+   interface Result {
+     [key: string]: unknown;
+   }
+   ```
 
 3. **Errors** indicate that a request failed:
-    ```typescript
-    interface Error {
-      code: number;
-      message: string;
-      data?: unknown;
-    }
-    ```
+   ```typescript
+   interface Error {
+     code: number;
+     message: string;
+     data?: unknown;
+   }
+   ```
 
 4. **Notifications** are one-way messages that don't expect a response:
-    ```typescript
-    interface Notification {
-      method: string;
-      params?: { ... };
-    }
-    ```
+   ```typescript
+   interface Notification {
+     method: string;
+     params?: { ... };
+   }
+   ```
 
 ## Connection lifecycle
 
@@ -175,6 +190,7 @@ After initialization, the following patterns are supported:
 ### 3. Termination
 
 Either party can terminate the connection:
+
 - Clean shutdown via `close()`
 - Transport disconnection
 - Error conditions
@@ -190,13 +206,14 @@ enum ErrorCode {
   InvalidRequest = -32600,
   MethodNotFound = -32601,
   InvalidParams = -32602,
-  InternalError = -32603
+  InternalError = -32603,
 }
 ```
 
 SDKs and applications can define their own error codes above -32000.
 
 Errors are propagated through:
+
 - Error responses to requests
 - Error events on transports
 - Protocol-level error handlers
@@ -206,17 +223,18 @@ Errors are propagated through:
 Here's a basic example of implementing an MCP server:
 
 ### TypeScript
+
 ```typescript
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 const server = new Server({
   name: "example-server",
-  version: "1.0.0"
+  version: "1.0.0",
 }, {
   capabilities: {
-    resources: {}
-  }
+    resources: {},
+  },
 });
 
 // Handle requests
@@ -225,9 +243,9 @@ server.setRequestHandler(ListResourcesRequestSchema, async () => {
     resources: [
       {
         uri: "example://resource",
-        name: "Example Resource"
-      }
-    ]
+        name: "Example Resource",
+      },
+    ],
   };
 });
 
@@ -237,6 +255,7 @@ await server.connect(transport);
 ```
 
 ### Python
+
 ```python
 import asyncio
 import mcp.types as types

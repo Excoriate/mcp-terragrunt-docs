@@ -9,12 +9,12 @@ ci/cd:
 documentation:
   - README.md
   - docs/**/*.md # Updated path for all docs
-  - '*.md' # Root level markdown files
+  - "*.md" # Root level markdown files
 
 # Label for source code changes
 source:
   - main.ts
-  - '**/*.ts' # All TypeScript files
+  - "**/*.ts" # All TypeScript files
 
 # Label for configuration changes / patches
 patch:

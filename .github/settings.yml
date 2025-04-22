@@ -47,25 +47,25 @@ repository:
 # Updated Label Strategy (Removed template labels, added project-specific)
 labels:
   - name: bug
-    color: '#CC0000'
+    color: "#CC0000"
     description: Something is not working fine 🐛
   - name: feature
-    color: '#336699'
+    color: "#336699"
     description: New functionality or enhancement 🚀
   - name: documentation
-    color: '#0075ca'
+    color: "#0075ca"
     description: Improvements or additions to documentation 📚
   - name: help-wanted
-    color: '#008672'
+    color: "#008672"
     description: Community contributions welcome 🤝
   - name: mcp
-    color: '#5DADE2' # Example color
+    color: "#5DADE2" # Example color
     description: Related to the Model Context Protocol
   - name: typescript
-    color: '#3178C6' # Official TS color
+    color: "#3178C6" # Official TS color
     description: Related to TypeScript code
   - name: deno
-    color: '#000000' # Deno logo color
+    color: "#000000" # Deno logo color
     description: Related to the Deno runtime or configuration
   # Add other relevant labels as needed, e.g., 'terragrunt', 'refactor', 'testing'
 

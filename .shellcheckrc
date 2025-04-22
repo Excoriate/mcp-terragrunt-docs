@@ -1,0 +1,31 @@
+# ShellCheck configuration file
+# https://github.com/koalaman/shellcheck/wiki/Ignore
+
+# Specify shell dialect
+shell=bash
+
+# Disable specific warnings
+# SC2155: Declare and assign separately to avoid masking return values
+# We're intentionally using compact variable declarations in some cases
+disable=SC2155
+
+# SC2250: Prefer putting braces around variable references
+# This is a style warning that's redundant with require-variable-braces
+disable=SC2250
+
+# Enable optional checks
+# require-variable-braces: Suggest putting braces around all variable references
+# quote-safe-variables: Suggest quoting variables without metacharacters
+# check-unassigned-uppercase: Warn when uppercase variables are unassigned
+# deprecate-which: Suggest 'command -v' instead of 'which'
+enable=require-variable-braces
+enable=quote-safe-variables
+enable=check-unassigned-uppercase
+enable=deprecate-which
+
+# Set severity level (error, warning, info, style)
+severity=warning
+
+# External sources
+# Allow sourcing of external files
+external-sources=true

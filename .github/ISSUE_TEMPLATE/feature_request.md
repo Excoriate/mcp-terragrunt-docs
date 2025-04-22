@@ -9,14 +9,16 @@ assignees: ["Excoriate"] # Adjust if needed
 ## 🌟 Feature Description
 
 > [!TIP]
-> Provide a clear and concise description of the feature you're proposing for the MCP server.
+> Provide a clear and concise description of the feature you're proposing for
+> the MCP server.
 
 ### Problem Statement
 
 > [!NOTE]
 > Is your feature request related to a problem? Describe the pain point.
 >
-> Example: "I'm always frustrated when I cannot get X context from the server..."
+> Example: "I'm always frustrated when I cannot get X context from the
+> server..."
 
 ### Proposed Solution
 
@@ -32,7 +34,8 @@ assignees: ["Excoriate"] # Adjust if needed
 > Explain the specific use case and the value this feature would bring:
 
 - How would this feature be used?
-- What benefits would it provide (e.g., better context, new capabilities, improved developer experience)?
+- What benefits would it provide (e.g., better context, new capabilities,
+  improved developer experience)?
 
 ## 🔍 Alternatives Considered
 
@@ -45,11 +48,13 @@ assignees: ["Excoriate"] # Adjust if needed
 ## 🖼️ Additional Context
 
 > [!TIP]
-> Add any other context, screenshots, examples, or references that might help explain the feature request.
+> Add any other context, screenshots, examples, or references that might help
+> explain the feature request.
 
 ### Checklist
 
-- [ ] I've checked that a similar feature doesn't already exist in open/closed issues
+- [ ] I've checked that a similar feature doesn't already exist in open/closed
+      issues
 - [ ] I've provided a clear problem statement (if applicable)
 - [ ] I've described the proposed solution
 - [ ] I've explained the use case and value

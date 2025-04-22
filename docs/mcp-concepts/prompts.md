@@ -3,14 +3,18 @@ title: "Prompts"
 description: "Create reusable prompt templates and workflows"
 ---
 
-Prompts enable servers to define reusable prompt templates and workflows that clients can easily surface to users and LLMs. They provide a powerful way to standardize and share common LLM interactions.
+Prompts enable servers to define reusable prompt templates and workflows that
+clients can easily surface to users and LLMs. They provide a powerful way to
+standardize and share common LLM interactions.
 
-> **Note:**
->   Prompts are designed to be **user-controlled**, meaning they are exposed from servers to clients with the intention of the user being able to explicitly select them for use.
+> **Note:** Prompts are designed to be **user-controlled**, meaning they are
+> exposed from servers to clients with the intention of the user being able to
+> explicitly select them for use.
 
 ## Overview
 
 Prompts in MCP are predefined templates that can:
+
 - Accept dynamic arguments
 - Include context from resources
 - Chain multiple interactions
@@ -42,7 +46,7 @@ Clients can discover available prompts through the `prompts/list` endpoint:
 ```typescript
 // Request
 {
-  method: "prompts/list"
+  method: "prompts/list";
 }
 
 // Response
@@ -55,11 +59,11 @@ Clients can discover available prompts through the `prompts/list` endpoint:
         {
           name: "language",
           description: "Programming language",
-          required: true
-        }
-      ]
-    }
-  ]
+          required: true,
+        },
+      ],
+    },
+  ];
 }
 ```
 
@@ -67,7 +71,7 @@ Clients can discover available prompts through the `prompts/list` endpoint:
 
 To use a prompt, clients make a `prompts/get` request:
 
-```typescript
+````typescript
 // Request
 {
   method: "prompts/get",
@@ -92,7 +96,7 @@ To use a prompt, clients make a `prompts/get` request:
     }
   ]
 }
-```
+````
 
 ## Dynamic prompts
 
@@ -168,25 +172,25 @@ const debugWorkflow = {
         role: "user",
         content: {
           type: "text",
-          text: `Here's an error I'm seeing: ${error}`
-        }
+          text: `Here's an error I'm seeing: ${error}`,
+        },
       },
       {
         role: "assistant",
         content: {
           type: "text",
-          text: "I'll help analyze this error. What have you tried so far?"
-        }
+          text: "I'll help analyze this error. What have you tried so far?",
+        },
       },
       {
         role: "user",
         content: {
           type: "text",
-          text: "I've tried restarting the service, but the error persists."
-        }
-      }
+          text: "I've tried restarting the service, but the error persists.",
+        },
+      },
     ];
-  }
+  },
 };
 ```
 
@@ -195,11 +199,12 @@ const debugWorkflow = {
 Here's a complete example of implementing prompts in an MCP server:
 
 ### TypeScript
+
 ```typescript
 import { Server } from "@modelcontextprotocol/sdk/server";
 import {
+  GetPromptRequestSchema,
   ListPromptsRequestSchema,
-  GetPromptRequestSchema
 } from "@modelcontextprotocol/sdk/types";
 
 const PROMPTS = {
@@ -210,9 +215,9 @@ const PROMPTS = {
       {
         name: "changes",
         description: "Git diff or description of changes",
-        required: true
-      }
-    ]
+        required: true,
+      },
+    ],
   },
   "explain-code": {
     name: "explain-code",
@@ -221,30 +226,30 @@ const PROMPTS = {
       {
         name: "code",
         description: "Code to explain",
-        required: true
+        required: true,
       },
       {
         name: "language",
         description: "Programming language",
-        required: false
-      }
-    ]
-  }
+        required: false,
+      },
+    ],
+  },
 };
 
 const server = new Server({
   name: "example-prompts-server",
-  version: "1.0.0"
+  version: "1.0.0",
 }, {
   capabilities: {
-    prompts: {}
-  }
+    prompts: {},
+  },
 });
 
 // List available prompts
 server.setRequestHandler(ListPromptsRequestSchema, async () => {
   return {
-    prompts: Object.values(PROMPTS)
+    prompts: Object.values(PROMPTS),
   };
 });
 
@@ -262,10 +267,11 @@ server.setRequestHandler(GetPromptRequestSchema, async (request) => {
           role: "user",
           content: {
             type: "text",
-            text: `Generate a concise but descriptive commit message for these changes:\n\n${request.params.arguments?.changes}`
-          }
-        }
-      ]
+            text:
+              `Generate a concise but descriptive commit message for these changes:\n\n${request.params.arguments?.changes}`,
+          },
+        },
+      ],
     };
   }
 
@@ -277,10 +283,11 @@ server.setRequestHandler(GetPromptRequestSchema, async (request) => {
           role: "user",
           content: {
             type: "text",
-            text: `Explain how this ${language} code works:\n\n${request.params.arguments?.code}`
-          }
-        }
-      ]
+            text:
+              `Explain how this ${language} code works:\n\n${request.params.arguments?.code}`,
+          },
+        },
+      ],
     };
   }
 
@@ -289,6 +296,7 @@ server.setRequestHandler(GetPromptRequestSchema, async (request) => {
 ```
 
 ### Python
+
 ```python
 from mcp.server import Server
 import mcp.types as types
